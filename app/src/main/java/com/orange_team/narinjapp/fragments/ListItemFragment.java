@@ -27,7 +27,7 @@ import java.util.List;
 public class ListItemFragment extends Fragment {
 
     CategoriesAdapter mCategoriesAdapter;
-    List<Food> mFoodList;               //for testing
+    List<Food> mFoodList;               //for testing.
     int mOrderQuantity;
     String mOrderLink;
     OrderedItem mOrderedItem;

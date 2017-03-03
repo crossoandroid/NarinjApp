@@ -7,7 +7,7 @@ package com.orange_team.narinjapp.model;
 public class OrderedItem {
 
     private String itemLink;
-    private int quantity;
+    private int quantity; //
 
     public OrderedItem(String itemLink, int quantity) {
         this.itemLink = itemLink;

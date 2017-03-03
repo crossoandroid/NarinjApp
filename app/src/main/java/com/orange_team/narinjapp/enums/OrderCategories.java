@@ -14,7 +14,7 @@ public enum OrderCategories {
         MEAL,                 //utestner
         GARNISH,              //xavartner
         COOKS,                //xohararner,
-        ALL;                  //bolory
+        ALL;                  //boloryxz
 
 
 }

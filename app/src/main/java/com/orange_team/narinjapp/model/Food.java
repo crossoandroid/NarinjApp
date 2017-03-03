@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class Food {
     public String name;
-    public String price;
+    public String price; //
     public String desc;
     public String cookName;
     URL url;
