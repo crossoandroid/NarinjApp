@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:weightSum="2">
+
+    <RelativeLayout
+        android:id="@+id/relLayRec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+
+            android:id="@+id/foodImageRec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:layout_marginLeft="@dimen/rec_item_margins"
+            android:layout_marginBottom="@dimen/item_image_margin_bottom"/>
+
+        <TextView
+            android:id="@+id/foodNameRec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/foodImageRec"
+            android:text="Food Name"
+            android:layout_marginLeft="@dimen/rec_item_margins"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/item_nameTV_size"/>
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:lines="3"
+            android:layout_alignParentRight="true"
+            android:text="Description"
+            android:layout_marginRight="@dimen/rec_item_margins"            android:textColor="@color/secondary_text"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/rec_item_margins"            android:layout_below="@id/desc"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/primary_text"
+            android:text="1500dr"
+            android:textSize="@dimen/item_priceTV_size"/>
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Add item"
+            android:layout_marginTop="@dimen/item_addTV_margin_top"
+            android:layout_marginRight="@dimen/rec_item_margins"
+            android:textColor="@color/primary_text"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/buttonshape"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/price"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
