@@ -11,4 +11,6 @@
     <dimen name="dialog_desc">14sp</dimen>
     <dimen name="dialog_margins">14dp</dimen>
     <dimen name="rec_item_margins">14dp</dimen>
+    <dimen name="total_size">25dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

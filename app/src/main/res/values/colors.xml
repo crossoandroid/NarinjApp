@@ -9,4 +9,7 @@
     <color name="secondary_text">#757575</color>
     <color name="icons">#212121</color>
     <color name="divider">#BDBDBD</color>
+    <color name="btn_color">#80FFFFFF</color>
+    <color name="layout_color">#81f77d</color>
+
 </resources>
