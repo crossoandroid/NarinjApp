@@ -2,7 +2,6 @@ package com.orange_team.narinjapp.recyclers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
     //TODO
     List<Food> mFoodList;
     IOnItemSelectedListener mOnItemSelectedListener;
-    //IOnItemButtonSelectedListener mIOnItemButtonSelectedListener;
+
     public static final int FADE_DURATION = 500;
     public static final String LOG_TAG = "MyLogs";
 
@@ -46,23 +45,29 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
                 if(mOnItemSelectedListener != null);
                 mOnItemSelectedListener.onItemSelected(mFoodList.get(position));
             }
+
+            @Override
+            public void onButtonClick(int position) {
+                if(mOnItemSelectedListener!=null);
+                mOnItemSelectedListener.onAddButtonClicked(mFoodList.get(position));
+            }
         });
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final CategoriesViewHolder holder, int position) {
+    public void onBindViewHolder(CategoriesViewHolder holder, int position) {
         holder.setData(mFoodList.get(position));
         setScaleAnimation(holder.itemView);
 
-        holder.mAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAdapterPosition = holder.getAdapterPosition();
-                Log.d(LOG_TAG, "Button "+ mFoodList.get(mAdapterPosition).getName());
-            }
-        });
+//        holder.mAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mAdapterPosition = holder.getAdapterPosition();
+//                Log.d(LOG_TAG, "Button "+ mFoodList.get(mAdapterPosition).getName());
+//            }
+//        });
     }
 
     @Override
@@ -89,6 +94,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
     public interface IOnItemSelectedListener {
         //TODO
         void onItemSelected(Food food);
+        void onAddButtonClicked(Food food);
     }
 //    public void setOnItemButtonSelectedListener(IOnItemButtonSelectedListener onItemButtonSelectedListener) {
 //        mIOnItemButtonSelectedListener = onItemButtonSelectedListener;

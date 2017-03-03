@@ -27,7 +27,7 @@ import java.util.List;
 public class ListItemFragment extends Fragment {
 
     CategoriesAdapter mCategoriesAdapter;
-    List<Food> mFoodList;               //for testing.
+    List<Food> mFoodList;               //for testing
     int mOrderQuantity;
     String mOrderLink;
     OrderedItem mOrderedItem;
@@ -73,6 +73,11 @@ public class ListItemFragment extends Fragment {
                     Log.d(LOG_TAG, food.getName() + " View");
                     createDialog(food);
 
+        }
+
+        @Override
+        public void onAddButtonClicked(Food food) {
+            Log.d(LOG_TAG, food.getName()+" Button");
         }
     };
 

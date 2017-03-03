@@ -14,7 +14,7 @@ import com.orange_team.user_application.narinj.tester.model.Food;
 public class CategoriesViewHolder extends RecyclerView.ViewHolder {
 
     IOnClickListener mOnClickListener;
-    IOnButtonClickListener mOnButtonClickListener;
+
     ImageView mFoodImage;
     TextView mName, mDesc, mPrice;
     public Button mAdd;
@@ -40,6 +40,15 @@ public class CategoriesViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnClickListener != null){
+                    mOnClickListener.onButtonClick(getAdapterPosition());
+                }
+            }
+        });
+
 
     }
     //TODO
@@ -56,15 +65,17 @@ public class CategoriesViewHolder extends RecyclerView.ViewHolder {
 
     public interface IOnClickListener {
         void onItemClick(int position);
+        void onButtonClick(int position);
     }
 
-    public void setOnButtonClickListener(IOnButtonClickListener onButtonClickListener) {
-        mOnButtonClickListener = onButtonClickListener;
-    }
-
-    public interface IOnButtonClickListener {
-        void onItemButtonClick(int position);
-    }
+//    public void setOnButtonClickListener(IOnButtonClickListener onButtonClickListener) {
+//        mOnButtonClickListener = onButtonClickListener;
+//    }
+//
+//    public interface IOnButtonClickListener {
+//        void onItemButtonClick(int position);
+//        void onItemButtonClick(int position);
+//    }
 
 
 
