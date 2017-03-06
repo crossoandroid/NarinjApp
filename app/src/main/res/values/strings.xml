@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Narinj</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="card_icon_menu">Shop card</string>
+    <string name="logo_image_description">Logo of company</string>
+    <string name="basket_total">Total:</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="err_msg_name">Enter your name</string>
+    <string name="err_msg_email">Enter your surname</string>
+    <string name="err_msg_password">Enter your phone number</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_domain_word">narinj.am</string>
+    <string name="internet_access">Միացրեք Ձեր սմարտֆոնի ինտերնետը:Հավելվածով կարող եք օգտվել միայն ինտերնետի առկայության դեպքւմ!</string>
+    <string name="enable_internet">Միացնել</string>
+    <string name="disable_internet">Դուրս գալ</string>
+
+</resources>
