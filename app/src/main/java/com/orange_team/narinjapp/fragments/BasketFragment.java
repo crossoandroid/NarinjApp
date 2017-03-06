@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.adapters.ChoiceAdapter;
+import com.orange_team.narinjapp.adapters.DividerItemDecor;
+import com.orange_team.narinjapp.model.Food;
 
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.adapters.ChoiceAdapter;
-import com.orange_team.user_application.narinj.adapters.DividerItemDecor;
-import com.orange_team.user_application.narinj.model.Food;
 
 import java.util.ArrayList;
 import java.util.List;

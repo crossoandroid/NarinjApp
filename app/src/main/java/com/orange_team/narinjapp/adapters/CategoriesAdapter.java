@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.adapters.viewholder.CategoriesViewHolder;
+import com.orange_team.narinjapp.model.Food;
 
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.adapters.viewholder.CategoriesViewHolder;
-import com.orange_team.user_application.narinj.model.Food;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +61,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
         holder.setData(mFoodList.get(position));
         setScaleAnimation(holder.itemView);
 
-//        holder.mAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mAdapterPosition = holder.getAdapterPosition();
-//                Log.d(LOG_TAG, "Button "+ mFoodList.get(mAdapterPosition).getName());
-//            }
-//        });
+
     }
 
     @Override
@@ -96,12 +90,5 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
         void onItemSelected(Food food);
         void onAddButtonClicked(Food food);
     }
-//    public void setOnItemButtonSelectedListener(IOnItemButtonSelectedListener onItemButtonSelectedListener) {
-//        mIOnItemButtonSelectedListener = onItemButtonSelectedListener;
-//    }
-//
-//    public interface IOnItemButtonSelectedListener {
-//        //TODO
-//        void onItemButtonSelected(Food food);
-//    }
+
 }

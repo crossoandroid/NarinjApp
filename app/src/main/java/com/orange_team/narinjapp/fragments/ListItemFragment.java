@@ -13,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.adapters.CategoriesAdapter;
+import com.orange_team.narinjapp.enums.OrderCategories;
+import com.orange_team.narinjapp.model.Food;
+import com.orange_team.narinjapp.model.OrderedItem;
 
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.adapters.CategoriesAdapter;
-import com.orange_team.user_application.narinj.enums.OrderCategories;
-import com.orange_team.user_application.narinj.model.Food;
-import com.orange_team.user_application.narinj.model.OrderedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,26 +81,6 @@ public class ListItemFragment extends Fragment {
         }
     };
 
-//    CategoriesAdapter.IOnItemButtonSelectedListener mIOnItemButtonSelectedListener = new CategoriesAdapter.IOnItemButtonSelectedListener() {
-//        @Override
-//        public void onItemButtonSelected(Food food) {
-//            //TODO
-//            Log.d(LOG_TAG, food.getName());
-//            mOrderLink = food.toString();         //MUST GET ITEM LINK FROM RETROFIT
-//            for(OrderedItem item : mOrderedItemsList){
-//                if(item.getItemLink().equals(mOrderLink)) {                    //Checking with food link
-//                    item.setQuantity(item.getQuantity()+ SINGLE_ORDER_QUANTITY);
-//                    mChecker = true;
-//                    break;
-//                }
-//            }
-//            if(!mChecker){
-//                mOrderedItem = new OrderedItem("", SINGLE_ORDER_QUANTITY);
-//                mOrderedItemsList.add(mOrderedItem);
-//            }
-//            mChecker = false;
-//        }
-//    };
 
 
     private void defineRecyclerAndAdapter() {

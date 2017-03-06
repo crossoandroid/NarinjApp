@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.fragments.ListItemFragment;
+import com.orange_team.narinjapp.fragments.ListItemFragment;
+import com.orange_team.narinjapp.R;
 
 /**
  * Created by User on 02.03.2017.

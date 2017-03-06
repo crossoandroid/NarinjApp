@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.orange_team.user_application.narinj.R.layout.activity_splash);
+        setContentView(com.orange_team.narinjapp.R.layout.activity_splash);
         startAnimations();
     }
 

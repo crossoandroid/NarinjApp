@@ -15,8 +15,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.orange_team.narinjapp.R;
 
-import com.orange_team.user_application.narinj.R;
 
 public class OrderDetailsFragment extends Fragment {
 

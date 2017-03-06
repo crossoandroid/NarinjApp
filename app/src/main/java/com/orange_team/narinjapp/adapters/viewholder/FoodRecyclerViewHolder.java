@@ -7,9 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.model.Food;
 
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.model.Food;
 
 public class FoodRecyclerViewHolder extends RecyclerView.ViewHolder{
 

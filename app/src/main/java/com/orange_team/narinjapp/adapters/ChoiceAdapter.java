@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.adapters.viewholder.FoodRecyclerViewHolder;
-import com.orange_team.user_application.narinj.model.Food;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.adapters.viewholder.FoodRecyclerViewHolder;
+import com.orange_team.narinjapp.model.Food;
 
 import java.util.List;
 

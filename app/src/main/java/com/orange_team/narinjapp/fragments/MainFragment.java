@@ -9,10 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.adapters.CatAdapter;
-import com.orange_team.user_application.narinj.adapters.CustomSwipeAdapter;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.adapters.CatAdapter;
+import com.orange_team.narinjapp.adapters.CustomSwipeAdapter;
 
 
 public class MainFragment extends Fragment {

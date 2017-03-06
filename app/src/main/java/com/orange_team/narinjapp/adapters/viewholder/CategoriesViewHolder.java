@@ -6,9 +6,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.model.Food;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.model.Food;
 
 
 public class CategoriesViewHolder extends RecyclerView.ViewHolder {
@@ -68,14 +67,7 @@ public class CategoriesViewHolder extends RecyclerView.ViewHolder {
         void onButtonClick(int position);
     }
 
-//    public void setOnButtonClickListener(IOnButtonClickListener onButtonClickListener) {
-//        mOnButtonClickListener = onButtonClickListener;
-//    }
-//
-//    public interface IOnButtonClickListener {
-//        void onItemButtonClick(int position);
-//        void onItemButtonClick(int position);
-//    }
+
 
 
 

@@ -16,10 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.fragments.BasketFragment;
+import com.orange_team.narinjapp.fragments.MainFragment;
 
-import com.orange_team.user_application.narinj.R;
-import com.orange_team.user_application.narinj.fragments.BasketFragment;
-import com.orange_team.user_application.narinj.fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

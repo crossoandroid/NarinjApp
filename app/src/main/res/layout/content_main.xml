@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:name="com.orange_team.user_application.narinjapp.fragments.MainFragment"
+    android:name="com.orange_team.narinjapp.fragments.MainFragment"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 

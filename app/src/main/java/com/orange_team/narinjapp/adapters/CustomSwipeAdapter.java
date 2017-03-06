@@ -6,8 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.orange_team.user_application.narinj.R;
+import com.orange_team.narinjapp.R;
 
 /**
  * Created by User on 01.03.2017.
