@@ -24,4 +24,6 @@ public interface RetrofitInterface {
     @GET("get-dishes-by-chef")
     Call<Result.JSONFoodList> getChefFoodList(@Query("chefId") String category);
 
+
+
 }

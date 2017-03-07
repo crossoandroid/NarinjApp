@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -20,7 +23,9 @@ import com.orange_team.narinjapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 
+
     Thread thread;
+    ConnectivityManager connec;
 
     @Override
     public void onAttachedToWindow() {
@@ -32,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.orange_team.narinjapp.R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);
         startAnimations();
     }
 
@@ -62,10 +67,7 @@ public class SplashActivity extends AppCompatActivity {
                             sleep(100);
                             waited += 100;
                         }
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        SplashActivity.this.finish();
+                        isInternetConnected();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -88,11 +90,9 @@ public class SplashActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.enable_internet, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                        wifi.setWifiEnabled(true);
-                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
+                        WifiManager wifiManager=(WifiManager) getSystemService(Context.WIFI_SERVICE);
+                        wifiManager.setWifiEnabled(true);
+                        isInternetConnected();
                     }
                 })
                 .setNegativeButton(R.string.disable_internet, new DialogInterface.OnClickListener() {
@@ -103,5 +103,41 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }).create();
         return accessInternet;
+    }
+    public void isInternetConnected()
+    {
+        connec = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        thread = new Thread() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void run() {
+                try {
+                    int waited = 0;
+                    while (waited < 3500) {
+                        sleep(100);
+                        waited += 100;
+                    }
+                    if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
+                            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {
+                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                    }
+                    else {
+                        AlertDialog accessInternet=new AlertDialog.Builder(SplashActivity.this)
+                                .setMessage(getString(R.string.error_internet_connection)).create();
+                        accessInternet.show();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                    SplashActivity.this.finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    SplashActivity.this.finish();
+                }
+            }
+        };
+        thread.start();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.orange_team.narinjapp.constants.Constants;
+import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.fragments.ListItemFragment;
 import com.orange_team.narinjapp.R;
 
@@ -76,7 +77,33 @@ public class CatAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Fragment fragment = new Fragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.CATEGORY_KEY, title[position]);
+                if(title[position].equals(OrderCategories.ALL.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.ALL);
+                }
+                if(title[position].equals(OrderCategories.CAKE.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.CAKE);
+                }
+                if(title[position].equals(OrderCategories.CHEF.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.CHEF);
+                }
+                if(title[position].equals(OrderCategories.GARNISH.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.GARNISH);
+                }
+                if(title[position].equals(OrderCategories.HOT_DISHES.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.HOT_DISHES);
+                }
+                if(title[position].equals(OrderCategories.LUNCH.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.LUNCH);
+                }
+                if(title[position].equals(OrderCategories.RECEPTION.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.RECEPTION);
+                }
+                if(title[position].equals(OrderCategories.SALAD.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.SALAD);
+                }
+                if(title[position].equals(OrderCategories.SOUP.toString())) {
+                    bundle.putSerializable(Constants.CATEGORY_KEY, OrderCategories.SOUP);
+                }
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

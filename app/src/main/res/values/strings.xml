@@ -24,5 +24,6 @@
     <string name="internet_access">Միացրեք Ձեր սմարտֆոնի ինտերնետը:Հավելվածով կարող եք օգտվել միայն ինտերնետի առկայության դեպքւմ!</string>
     <string name="enable_internet">Միացնել</string>
     <string name="disable_internet">Դուրս գալ</string>
+    <string name="error_internet_connection">Հասանելի ինտեռնետ չկա!Խնդրում ենք միացնել հասանելի WiFi կապ կամ 3G/4G ինտերնետը</string>
 
 </resources>

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import com.orange_team.narinjapp.R;
+
 import com.orange_team.narinjapp.adapters.ChoiceAdapter;
 import com.orange_team.narinjapp.adapters.DividerItemDecor;
 import com.orange_team.narinjapp.model.Food;
