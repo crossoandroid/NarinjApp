@@ -13,4 +13,6 @@
     <color name="btn_color">#80FFFFFF</color>
     <color name="layout_color">#81f77d</color>
     <color name="nav_color">#F0F4C3</color>
+    <color name="menu_icon_circle">#d50000</color>
+
 </resources>

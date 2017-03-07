@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/shop_card"
-        android:orderInCategory="100"
-        android:title="@string/card_icon_menu"
-        android:icon="@drawable/ic_shopping_cart_white_24px"
+        android:id="@+id/shop_cart"
+        android:title="@string/cart_icon_menu"
+        app:actionLayout="@layout/menu_item_cart"
         app:showAsAction="always" />
 </menu>

@@ -2,16 +2,17 @@ package com.orange_team.narinjapp.enums;
 
 
 public enum OrderCategories {
-        SOUP("Ապուր"),                 //apur
-        SALAD("Աղցան"),                //axcanner
-        RECEPTION("Ֆուրշետ"),            //furshetner
-        LUNCH("Լանչ"),                //lunch
-        CAKE("Թխվածք"),                 //txvacqner
-        MEAL("Ուտեստ"),                 //utestner
-        GARNISH("Խավարտ"),              //xavartner
-        COOKS("Խոհարար"),                //xohararner,
-        ALL("Բոլորը");                  //boloryxz
+         SOUP("Ապուր"),
+         SALAD("Աղցան"),
+        RECEPTION("Ֆուրշետ"), //must be deleted
+         LUNCH("Լանչ"),
+         CAKE("Թխվածք"),
+         HOT_DISHES("Ուտեստ"),
+         GARNISH("Խավարտ"),
+         CHEF("Խոհարար"),
+         ALL("Բոլորը");
         String catName;
+
         OrderCategories(String catName) {
                 this.catName=catName;
         }

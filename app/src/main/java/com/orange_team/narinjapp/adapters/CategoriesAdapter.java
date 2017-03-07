@@ -23,9 +23,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
     //TODO
     List<Food> mFoodList;
     IOnItemSelectedListener mOnItemSelectedListener;
-
     public static final int FADE_DURATION = 500;
-    public static final String LOG_TAG = "MyLogs";
 
 
     public CategoriesAdapter(Context context) {
@@ -66,7 +64,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
 
     @Override
     public int getItemCount() {
-        return mFoodList.size();
+
+        if(mFoodList.size() == 0){
+            return 0;
+        }else {
+
+            return mFoodList.size();
+        }
     }
 
 

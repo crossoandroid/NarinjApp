@@ -5,12 +5,12 @@ import java.net.URL;
 
 public class Food {
     public String name;
-    public String price; //
+    public int price;
     public String desc;
     public String cookName;
     URL url;
 
-    public Food(String name, String price) {
+    public Food(String name, int price) {
         this.name = name;
         this.price = price;
     }
@@ -24,10 +24,7 @@ public class Food {
     }
 
     public Food() {
-        name = "Anun";
-        price = "1500 dr";
-        desc = "sadjsa sadhgsah  sagaskcja sacsabjfksag asasf";
-        cookName = "sajdhsha";
+
     }
 
     public String getName() {
@@ -38,11 +35,11 @@ public class Food {
         this.name = name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -21,4 +21,5 @@
     <dimen name="dialog_margins">14dp</dimen>
     <dimen name="rec_item_margins">14dp</dimen>
     <dimen name="total_size">25dp</dimen>
+
 </resources>

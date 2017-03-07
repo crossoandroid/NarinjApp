@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.fragments.ListItemFragment;
 import com.orange_team.narinjapp.R;
 
@@ -74,7 +76,7 @@ public class CatAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Fragment fragment = new Fragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(key, title[position]);
+                bundle.putSerializable(Constants.CATEGORY_KEY, title[position]);
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -76,22 +76,22 @@ public class BasketFragment extends Fragment {
     }
 
     public void addFood() {
-        Food food = new Food("Pizza Peperoni",1500 + "");
+        Food food = new Food("Pizza Peperoni",1500);
         foodList.add(food);
 
-        food = new Food("Apur",800 + "");
+        food = new Food("Apur",800);
         foodList.add(food);
 
-        food = new Food("Txvacq",500 + "");
+        food = new Food("Txvacq",500 );
         foodList.add(food);
 
-        food = new Food("Axcan",1000 + "");
+        food = new Food("Axcan",1000);
         foodList.add(food);
 
-        food = new Food("Xavart",500 + "");
+        food = new Food("Xavart",500);
         foodList.add(food);
 
-        food = new Food("Xorovac",2300 + "");
+        food = new Food("Xorovac",2300);
         foodList.add(food);
 
     }
