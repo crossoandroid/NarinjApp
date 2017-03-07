@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.CategoriesAdapter;
 import com.orange_team.narinjapp.application.NApplication;
@@ -73,50 +72,37 @@ public class ListItemFragment extends Fragment {
 
     public void init(){
 
-        //createObjectsForTest();    //for test, will be deleted
+        createObjects();
         defineAdapterContent();
         defineComponents();
 
     }
-    CategoriesAdapter.IOnItemSelectedListener mOnItemSelectedListener = new CategoriesAdapter.IOnItemSelectedListener() {
-        @Override
-        public void onItemSelected(Food food) {
 
-                    Log.d(Constants.LOG_TAG, food.getName() + " View");
-                    createDialog(food);
+    private void createObjects() {
 
-        }
-
-        @Override
-        public void onAddButtonClicked(Food food) {
-            Log.d(Constants.LOG_TAG, food.getName()+" Button");
-            addOneItem();
-        }
-    };
-
-
-
-
-    private void defineComponents() {
-        mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
-        mRedCircle = (FrameLayout)getActivity().findViewById(R.id.menuIconRedCircleFrame);
-        mItemsCountTV = (TextView)getActivity().findViewById(R.id.menuIconRedCircleText);
-
-        mOrderedItemsList = new ArrayList<>();
-        mCategoriesAdapter = new CategoriesAdapter(getActivity());
-        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
-        mCategoriesAdapter.setFoodList(mFoodList);
-        mRecyclerView.setAdapter(mCategoriesAdapter);
-        mCategoriesAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
-    }
-
-    private void defineAdapterContent() {
         mParamsMap = new HashMap();
         mParamsMap.put("page", "0");
         mParamsMap.put("count", "10");
         mFoodList = new ArrayList<>();
+        mOrderedItemsList = new ArrayList<>();
+        mCategoriesAdapter = new CategoriesAdapter(getActivity());
+        mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
+
+    }
+
+    private void defineComponents() {
+
+        mRedCircle = (FrameLayout)getActivity().findViewById(R.id.menuIconRedCircleFrame);
+        mItemsCountTV = (TextView)getActivity().findViewById(R.id.menuIconRedCircleText);
+        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.chefsRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mCategoriesAdapter);
+        mCategoriesAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
+
+    }
+
+    private void defineAdapterContent() {
 
         if(getArguments()!=null){
             Bundle args = getArguments();
@@ -127,36 +113,37 @@ public class ListItemFragment extends Fragment {
                     mParamsMap.put("category", "soup");
                 }
                 break;
+
                 case SALAD: {
                     mParamsMap.put("category", "salad");
                 }
                 break;
-        /*
-                case RECEPTION: {
 
-                }
-                break;
-        */
                 case LUNCH: {
                     mParamsMap.put("category", "lunch");
                 }
                 break;
+
                 case CAKE: {
                     mParamsMap.put("category", "cake");
                 }
                 break;
+
                 case HOT_DISHES: {
                     mParamsMap.put("category", "hotDishes");
                 }
                 break;
+
                 case GARNISH: {
                     mParamsMap.put("category", "garnish");
                 }
                 break;
+
                 case ALL: {
                     mParamsMap.put("category", "all");
                 }
                 break;
+
             }
 
             mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
@@ -175,6 +162,9 @@ public class ListItemFragment extends Fragment {
                         //mFood.setID(food.dishID);
                         mFoodList.add(mFood);
                     }
+
+                    mCategoriesAdapter.setFoodList(mFoodList);
+
                 }
 
                 @Override
@@ -187,7 +177,26 @@ public class ListItemFragment extends Fragment {
 
     }
 
+    CategoriesAdapter.IOnItemSelectedListener mOnItemSelectedListener = new CategoriesAdapter.IOnItemSelectedListener() {
+        @Override
+        public void onItemSelected(Food food) {
+
+            Log.d(Constants.LOG_TAG, food.getName() + " View");
+            createDialog(food);
+
+        }
+
+        @Override
+        public void onAddButtonClicked(Food food) {
+
+            Log.d(Constants.LOG_TAG, food.getName()+" Button");
+            addOneItem();
+
+        }
+    };
+
     public void createDialog(Food food){
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
@@ -232,6 +241,7 @@ public class ListItemFragment extends Fragment {
 
         Dialog dialog = alertDialog.create();
         dialog.show();
+
     }
 
     private void addOneItem() {
@@ -252,14 +262,6 @@ public class ListItemFragment extends Fragment {
 
         }*/
         updateMenuCount(Constants.increaseCartCount());
-    }
-
-    private void createObjectsForTest(){
-        for (int i = 0; i <20; i++){           // Just for testing rec view
-            mFood = new Food();
-            mFood.setName("m"+i);
-            mFoodList.add(mFood);
-        }
     }
 
     public void updateMenuCount(int itemCount){

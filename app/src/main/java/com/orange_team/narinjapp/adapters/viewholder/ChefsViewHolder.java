@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.model.Food;
 
 
-public class CategoriesViewHolder extends RecyclerView.ViewHolder {
+public class ChefsViewHolder extends RecyclerView.ViewHolder {
 
     IOnClickListener mOnClickListener;
     ImageView mFoodImage;
@@ -18,7 +18,7 @@ public class CategoriesViewHolder extends RecyclerView.ViewHolder {
     Button mAdd;
 
 
-    public CategoriesViewHolder(View itemView) {
+    public ChefsViewHolder(View itemView) {
         super(itemView);
 
         mFoodImage = (ImageView) itemView.findViewById(R.id.foodImageRec);

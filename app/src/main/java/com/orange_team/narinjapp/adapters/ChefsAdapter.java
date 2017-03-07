@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.viewholder.CategoriesViewHolder;
 import com.orange_team.narinjapp.model.Food;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder> {
+public class ChefsAdapter extends RecyclerView.Adapter<CategoriesViewHolder> {
 
     Context mContext;
     List<Food> mFoodList;
@@ -24,7 +24,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
     public static final int FADE_DURATION = 500;
 
 
-    public CategoriesAdapter(Context context) {
+    public ChefsAdapter(Context context) {
         mContext = context;
         mFoodList = new ArrayList<>();
 
@@ -54,17 +54,21 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
 
     @Override
     public void onBindViewHolder(CategoriesViewHolder holder, int position) {
-
         holder.setData(mFoodList.get(position));
         setScaleAnimation(holder.itemView);
+
 
     }
 
     @Override
     public int getItemCount() {
 
-        return mFoodList.size();
+        if(mFoodList.size() == 0){
+            return 0;
+        }else {
 
+            return mFoodList.size();
+        }
     }
 
 
@@ -74,22 +78,19 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder
     }
 
     private void setScaleAnimation(View view) {
-
         ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         anim.setDuration(FADE_DURATION);
         view.startAnimation(anim);
 
     }
-
     public void setOnItemSelectedListener(IOnItemSelectedListener onItemSelectedListener) {
         mOnItemSelectedListener = onItemSelectedListener;
     }
 
     public interface IOnItemSelectedListener {
-
+        //TODO
         void onItemSelected(Food food);
         void onAddButtonClicked(Food food);
-
     }
 
 }
