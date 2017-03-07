@@ -117,19 +117,17 @@ public class SplashActivity extends AppCompatActivity {
                         sleep(100);
                         waited += 100;
                     }
-                    if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
-                            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {
+                    /*if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
+                            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {*/
                         Intent i = new Intent(SplashActivity.this, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
-                    }
+                   /* }
                     else {
-                        AlertDialog accessInternet=new AlertDialog.Builder(SplashActivity.this)
-                                .setMessage(getString(R.string.error_internet_connection)).create();
-                        accessInternet.show();
+
                         android.os.Process.killProcess(android.os.Process.myPid());
                         System.exit(1);
-                    }
+                    }*/
                     SplashActivity.this.finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

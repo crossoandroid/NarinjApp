@@ -1,30 +1,31 @@
-package com.orange_team.narinjapp.model;
+package com.orange_team.narinjapp.model;  //H
 
 
-import java.net.URL;
 
 public class Food {
-    public String name;
-    public int price;
-    public String desc;
-    public String cookName;
-    URL url;
+
+    private long id;
+    private int price;
+    private String name;
+    private String desc;
+    private String chefName;
+    private String picture;
+
+    public Food() {
+
+    }
 
     public Food(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
-    public String getCookName() {
-        return cookName;
+    public long getId() {
+        return id;
     }
 
-    public void setCookName(String cookName) {
-        this.cookName = cookName;
-    }
-
-    public Food() {
-
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -51,11 +52,19 @@ public class Food {
         this.desc = desc;
     }
 
-    public URL getUrl() {
-        return url;
+    public String getChefName() {
+        return chefName;
     }
 
-    public void setUrl(URL url) {
-        this.url = url;
+    public void setChefName(String chefName) {
+        this.chefName = chefName;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

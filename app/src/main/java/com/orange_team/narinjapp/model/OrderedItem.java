@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.model;
+package com.orange_team.narinjapp.model; //H
 
 /**
  * Created by Hayk on 02-Mar-17.
@@ -6,20 +6,20 @@ package com.orange_team.narinjapp.model;
 
 public class OrderedItem {
 
-    private String itemLink;
-    private int quantity; //
+    private long dishId;
+    private int quantity;
 
-    public OrderedItem(String itemLink, int quantity) {
-        this.itemLink = itemLink;
+    public OrderedItem(long dishId, int quantity) {
+        this.dishId = dishId;
         this.quantity = quantity;
     }
 
-    public String getItemLink() {
-        return itemLink;
+    public long getDishId() {
+        return dishId;
     }
 
-    public void setItemLink(String itemLink) {
-        this.itemLink = itemLink;
+    public void setDishId(long dishId) {
+        this.dishId = dishId;
     }
 
     public int getQuantity() {

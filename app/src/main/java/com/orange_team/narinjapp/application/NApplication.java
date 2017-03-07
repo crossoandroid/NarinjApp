@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.application;
+package com.orange_team.narinjapp.application; //H
 
 import android.app.Application;
 

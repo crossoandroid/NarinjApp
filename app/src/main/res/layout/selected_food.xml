@@ -34,7 +34,7 @@
         android:textSize="@dimen/item_priceTV_size"/>
 
     <TextView
-        android:id="@+id/cookName"
+        android:id="@+id/chefName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -47,7 +47,7 @@
         android:id="@+id/minus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cookName"
+        android:layout_below="@id/chefName"
         android:text="-   "
         android:textColor="@color/primary_text"
         android:textSize="@dimen/dialog_count"/>
@@ -56,7 +56,7 @@
         android:id="@+id/countDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cookName"
+        android:layout_below="@id/chefName"
         android:layout_centerHorizontal="true"
         android:inputType="number"
         android:text="1"
@@ -67,7 +67,7 @@
         android:id="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cookName"
+        android:layout_below="@id/chefName"
         android:layout_toRightOf="@id/countDialog"
         android:text="   +"
         android:textColor="@color/primary_text"

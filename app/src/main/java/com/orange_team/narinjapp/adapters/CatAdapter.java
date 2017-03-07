@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.enums.OrderCategories;
-import com.orange_team.narinjapp.fragments.ListItemFragment;
+import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.R;
 
 /**
@@ -107,8 +107,8 @@ public class CatAdapter extends BaseAdapter {
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ListItemFragment listItemFragment=new ListItemFragment();
-                fragmentTransaction.replace(R.id.fragment_main,listItemFragment);
+                FoodListFragment foodListFragment =new FoodListFragment();
+                fragmentTransaction.replace(R.id.fragment_main, foodListFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

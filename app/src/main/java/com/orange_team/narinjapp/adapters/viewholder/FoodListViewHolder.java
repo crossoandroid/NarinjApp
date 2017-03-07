@@ -1,16 +1,16 @@
-package com.orange_team.narinjapp.adapters.viewholder;
+package com.orange_team.narinjapp.adapters.viewholder; //H
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.model.Food;
 
 
-public class ChefsViewHolder extends RecyclerView.ViewHolder {
+public class FoodListViewHolder extends RecyclerView.ViewHolder {
 
     IOnClickListener mOnClickListener;
     ImageView mFoodImage;
@@ -18,7 +18,7 @@ public class ChefsViewHolder extends RecyclerView.ViewHolder {
     Button mAdd;
 
 
-    public ChefsViewHolder(View itemView) {
+    public FoodListViewHolder(View itemView) {
         super(itemView);
 
         mFoodImage = (ImageView) itemView.findViewById(R.id.foodImageRec);
@@ -49,7 +49,7 @@ public class ChefsViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Food food){
-
+//TODO Food image must be set
         mName.setText(food.getName());
         mDesc.setText(food.getDesc());
         mPrice.setText(food.getPrice());

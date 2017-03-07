@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.interfaces;
+package com.orange_team.narinjapp.interfaces; //H
 
 import com.orange_team.narinjapp.model.Result;
 
@@ -16,13 +16,13 @@ import retrofit2.http.QueryMap;
 public interface RetrofitInterface {
 
     @GET("get-chefs")
-    Call<Result.JSONFoodList> getAllChefs();
+    Call<Result.NChefList> getAllChefs();
 
     @GET("get-dishes")
-    Call<Result.JSONFoodList> getFoodByCategory(@QueryMap Map<String, String> paramsMap);
+    Call<Result.NFoodList> getFoodByCategory(@QueryMap Map<String, String> paramsMap);
 
     @GET("get-dishes-by-chef")
-    Call<Result.JSONFoodList> getChefFoodList(@Query("chefId") String category);
+    Call<Result.NFoodList> getChefFoodList(@Query("chefId") Long category);
 
 
 

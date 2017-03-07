@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.model;
+package com.orange_team.narinjapp.model; //H
 
 import java.util.List;
 
@@ -7,25 +7,31 @@ import java.util.List;
  */
 
 public class Result {
-    public static class JSONFoodList {
-        public List<JSONFood> items;
+    public static class NFoodList {
+        public List<NFood> items;
     }
 
-    public static class JSONFood {
-       // public long dishId;
+    public static class NFood {
+
+        public long dishId;
+        public int price;
         public String name;
         public String description;
-                                        //picture url
-                                        //chef name
-        public int price;
+        public String picture;                                //must be amended
+        public String chefName;
+
     }
 
     public static class NChefList {
         public List<NChef> chefList;
     }
 
-    public static class NChef {       //must be improved
-        public String name;
+    public static class NChef {
 
+        public long id;
+        public String name;
+        public String surename;
+        public String phone;
+        public String avatar;  //must be amended
     }
 }
