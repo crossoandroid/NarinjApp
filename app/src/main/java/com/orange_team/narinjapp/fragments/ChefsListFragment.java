@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.ChefsListAdapter;
 import com.orange_team.narinjapp.application.NApplication;
-import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Chef;
@@ -80,9 +79,9 @@ public class ChefsListFragment extends Fragment {
                     mChef = new Chef();
                     mChef.setId(chef.id);
                     mChef.setName(chef.name);
-                    mChef.setSurname(chef.surename);
+                    mChef.setSurname(chef.surName);
                     mChef.setPhone(chef.phone);
-                    mChef.setAvatar(chef.avatar);
+                   // mChef.setAvatar(chef.avatar);
                     mChefList.add(mChef);
                 }
             }

@@ -7,11 +7,11 @@ package com.orange_team.narinjapp.model; //H
 public class OrderedItem {
 
     private long dishId;
-    private int quantity;
+    private int count;
 
-    public OrderedItem(long dishId, int quantity) {
+    public OrderedItem(long dishId, int count) {
         this.dishId = dishId;
-        this.quantity = quantity;
+        this.count = count;
     }
 
     public long getDishId() {
@@ -22,11 +22,11 @@ public class OrderedItem {
         this.dishId = dishId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getCount() {
+        return count;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

@@ -17,8 +17,8 @@ public class Result {
         public int price;
         public String name;
         public String description;
-        public String picture;                                //must be amended
-        public String chefName;
+    //    public String picture;                                //must be amended
+    //   public String chefName;
 
     }
 
@@ -30,8 +30,8 @@ public class Result {
 
         public long id;
         public String name;
-        public String surename;
+        public String surName;
         public String phone;
-        public String avatar;  //must be amended
+   //     public String avatar;  //must be amended
     }
 }

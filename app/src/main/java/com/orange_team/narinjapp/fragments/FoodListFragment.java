@@ -104,15 +104,19 @@ public class FoodListFragment extends Fragment {
     }
 
     private void defineAdapterContent() {
+        Log.d(Constants.LOG_TAG, "Defining adapter content 1");
 
         if(getArguments()!=null) {
-            Bundle args = getArguments();
-            OrderCategories request = (OrderCategories) args.getSerializable(CATEGORY_KEY);
+            Log.d(Constants.LOG_TAG, "Defining adapter content 2");
 
+            OrderCategories request = (OrderCategories) getArguments().getSerializable(CATEGORY_KEY);
             switch (request) {
                 case SOUP: {
                     mParamsMap.put("category", "soup");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    String s = "soup&page=0&count=10";
+
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1("soup");
+                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
                 }
                 break;
 
@@ -154,7 +158,7 @@ public class FoodListFragment extends Fragment {
 
                 case CHEF: {
 
-                    mFoodListCall = mRetrofitInterface.getChefFoodList(args.getLong(CHEF_ID));
+                    mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID));
 
                 }
                 break;
@@ -164,16 +168,20 @@ public class FoodListFragment extends Fragment {
             mFoodListCall.enqueue(new Callback<Result.NFoodList>() {
                 @Override
                 public void onResponse(Call<Result.NFoodList> call, Response<Result.NFoodList> response) {
+                    Log.d(Constants.LOG_TAG, "Success");
+                    Log.d(Constants.LOG_TAG, ""+response.code());
                     List<Result.NFood> NFoodList = response.body().items;
-                    for(Result.NFood food : NFoodList){
+                    Log.d(Constants.LOG_TAG, ""+response.code());
 
+                    for(Result.NFood food : NFoodList){
                         mFood = new Food();
+                        mFood.setId(food.dishId);
                         mFood.setName(food.name);
                         mFood.setDesc(food.description);
                         mFood.setPrice(food.price);
                         //mFood.setUrl(food.);        Food image
                         //mFood.setChefName(food.chefName);
-                        mFood.setId(food.dishId);
+                        Log.d(Constants.LOG_TAG, mFood.getName());
                         mFoodList.add(mFood);
                     }
 
@@ -230,7 +238,7 @@ public class FoodListFragment extends Fragment {
 
             for(OrderedItem item : mOrderedItemsList){
                 if(item.getDishId() == dishId) {
-                    item.setQuantity(item.getQuantity()+ mOrderQuantity);
+                    item.setCount(item.getCount()+ mOrderQuantity);
                     mChecker = true;
                     break;
                 }
@@ -266,7 +274,7 @@ public class FoodListFragment extends Fragment {
 
         for(OrderedItem item : mOrderedItemsList){
             if(item.getDishId() == dishId) {
-                item.setQuantity(item.getQuantity()+ SINGLE_ORDER_QUANTITY);
+                item.setCount(item.getCount()+ SINGLE_ORDER_QUANTITY);
                 mChecker = true;
                 break;
             }
