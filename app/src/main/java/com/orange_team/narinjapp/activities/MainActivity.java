@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainFragment mainFragment=new MainFragment();
-        fragmentTransaction.add(R.id.fragment_main,mainFragment);
+        fragmentTransaction.add(R.id.fragment_main, mainFragment);
         fragmentTransaction.commit();
 
         final ActionBar actionBar = getSupportActionBar();

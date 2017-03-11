@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.enums.OrderCategories;
+import com.orange_team.narinjapp.fragments.ChefsListFragment;
 import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.R;
 
@@ -83,7 +85,16 @@ public class CatAdapter extends BaseAdapter {
                     bundle.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.CAKE);
                 }
                 if(title[position].equals(OrderCategories.CHEF.toString())) {
-                    bundle.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.CHEF);
+                    Log.d(Constants.LOG_TAG, "must come here");
+
+                    ChefsListFragment chefsListFragment = new ChefsListFragment();
+                    FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_main, chefsListFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    return;
+
                 }
                 if(title[position].equals(OrderCategories.GARNISH.toString())) {
                     bundle.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.GARNISH);
@@ -103,6 +114,7 @@ public class CatAdapter extends BaseAdapter {
                 if(title[position].equals(OrderCategories.SOUP.toString())) {
                     bundle.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.SOUP);
                 }
+                Log.d(Constants.LOG_TAG, "must not come here");
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 FoodListFragment foodListFragment =new FoodListFragment();

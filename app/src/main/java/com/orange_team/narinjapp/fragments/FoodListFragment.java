@@ -46,15 +46,26 @@ public class FoodListFragment extends Fragment {
     View mDialogView;
     Food mFood;
     Boolean mChecker = false;
-    Map mParamsMap;
     RetrofitInterface mRetrofitInterface;
-    Call<Result.NFoodList> mFoodListCall;
+    Call<List<Result.NFood>> mFoodListCall;
 
     public static final int SINGLE_ORDER_QUANTITY = 1;
-    public static final String CHEF_ID = "Chef id";
+    public static final String CHEF_ID = "Chef partnerId";
     public static final String CATEGORY_KEY = "Category";
     public static final String MAKE_ORDER = "Order";
     public static final String DO_NOT_ORDER = "Cancel";
+    public static final String SOUP = "soup";
+    public static final String SALAD = "salad";
+    public static final String LUNCH = "lunch";
+    public static final String CAKE = "cake";
+    public static final String HOT_DISHES = "hotDishes";
+    public static final String GARNISH = "garnish";
+    public static final String ALL = "all";
+    public static final String COUNT_VALUE = "10";
+    public static final String PAGE_VALUE_0 = "0";
+    public static final String PAGE_VALUE_1 = "1";
+
+
 
 
 
@@ -81,9 +92,7 @@ public class FoodListFragment extends Fragment {
 
     private void createObjects() {
 
-        mParamsMap = new HashMap();
-        mParamsMap.put("page", "0");
-        mParamsMap.put("count", "10");
+
         mFoodList = new ArrayList<>();
         mOrderedItemsList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
@@ -112,91 +121,112 @@ public class FoodListFragment extends Fragment {
             OrderCategories request = (OrderCategories) getArguments().getSerializable(CATEGORY_KEY);
             switch (request) {
                 case SOUP: {
-                    mParamsMap.put("category", "soup");
-                    String s = "soup&page=0&count=10";
-
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1("soup");
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1("soup", 0, 10);
+                    getJSONObjects(mFoodListCall);
                     Log.d(Constants.LOG_TAG, "Defining adapter content 3");
                 }
                 break;
 
                 case SALAD: {
-                    mParamsMap.put("category", "salad");
+/*                    mParamsMap.put(CATEGORY_KEY, SALAD);
                     mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    getJSONObjects(mFoodListCall);
+                    mParamsMap.put(PAGE_KEY, PAGE_VALUE_1);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    getJSONObjects(mFoodListCall);
+                    mFoodListAdapter.setFoodList(mFoodList);*/
                 }
                 break;
 
                 case LUNCH: {
-                    mParamsMap.put("category", "lunch");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, 0, 10);
+                    getJSONObjects(mFoodListCall);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, 1, 10);
+                    getJSONObjects(mFoodListCall);
+                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
+
+                    Log.d(Constants.LOG_TAG, ">>>>>>>>>>><<<<<<<<<<<");
+
+                    for(Food food: mFoodList){
+                        Log.d(Constants.LOG_TAG, food.getName());
+                    }
                 }
                 break;
 
                 case CAKE: {
-                    mParamsMap.put("category", "cake");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(CAKE, 0, 10);
+                    getJSONObjects(mFoodListCall);
+
                 }
                 break;
 
                 case HOT_DISHES: {
-                    mParamsMap.put("category", "hotDishes");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(HOT_DISHES, 0, 10);
+                    getJSONObjects(mFoodListCall);
                 }
                 break;
 
                 case GARNISH: {
-                    mParamsMap.put("category", "garnish");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(GARNISH, 0, 10);
+                    getJSONObjects(mFoodListCall);
                 }
                 break;
 
                 case ALL: {
-                    mParamsMap.put("category", "all");
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
+                    for(int i=0; i<6; i++) {
+                        mFoodListCall = mRetrofitInterface.getFoodByCategory1(ALL, i, 10);
+                        getJSONObjects(mFoodListCall);
+
+                     }
                 }
                 break;
 
                 case CHEF: {
-
-                    mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID));
-
+                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
+                    for(int i=0; i<4; i++) {
+                        mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), i, 10);
+                        getJSONObjects(mFoodListCall);
+                    }
                 }
                 break;
 
             }
 
-            mFoodListCall.enqueue(new Callback<Result.NFoodList>() {
-                @Override
-                public void onResponse(Call<Result.NFoodList> call, Response<Result.NFoodList> response) {
-                    Log.d(Constants.LOG_TAG, "Success");
-                    Log.d(Constants.LOG_TAG, ""+response.code());
-                    List<Result.NFood> NFoodList = response.body().items;
-                    Log.d(Constants.LOG_TAG, ""+response.code());
 
-                    for(Result.NFood food : NFoodList){
-                        mFood = new Food();
-                        mFood.setId(food.dishId);
-                        mFood.setName(food.name);
-                        mFood.setDesc(food.description);
-                        mFood.setPrice(food.price);
-                        //mFood.setUrl(food.);        Food image
-                        //mFood.setChefName(food.chefName);
-                        Log.d(Constants.LOG_TAG, mFood.getName());
-                        mFoodList.add(mFood);
-                    }
-
-                    mFoodListAdapter.setFoodList(mFoodList);
-
-                }
-
-                @Override
-                public void onFailure(Call<Result.NFoodList> call, Throwable t) {
-                    Toast.makeText(getContext(), "Files are not found", Toast.LENGTH_SHORT).show();
-                }
-            });
 
 
         }
+    }
+
+    private void getJSONObjects(Call<List<Result.NFood>> FoodListCall){
+
+        FoodListCall.enqueue(new Callback<List<Result.NFood>>() {
+            @Override
+            public void onResponse(Call<List<Result.NFood>> call, Response<List<Result.NFood>> response) {
+                Log.d(Constants.LOG_TAG, "Success");
+                Log.d(Constants.LOG_TAG, ""+response.code());
+                List<Result.NFood> NFoodList = response.body();
+                Log.d(Constants.LOG_TAG, ""+response.code());
+
+                for(Result.NFood food : NFoodList){
+                    mFood = new Food();
+                    mFood.setId(food.dishId);
+                    mFood.setName(food.name);
+                    mFood.setDesc(food.description);
+                    mFood.setPrice(food.price);
+                    //mFood.setUrl(food.);        Food image
+                    //mFood.setChefName(food.chefName);
+                    Log.d(Constants.LOG_TAG, mFood.getName());
+                    mFoodList.add(mFood);
+                }
+                mFoodListAdapter.setFoodList(mFoodList);
+            }
+
+            @Override
+            public void onFailure(Call<List<Result.NFood>> call, Throwable t) {
+                Toast.makeText(getContext(), "Food list was not found", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     FoodListAdapter.IOnItemSelectedListener mOnItemSelectedListener = new FoodListAdapter.IOnItemSelectedListener() {
@@ -217,23 +247,22 @@ public class FoodListFragment extends Fragment {
         }
     };
 
-    public void createDialog(final Food food){
+    public void createDialog(Food food){
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
         alertDialog.setView(mDialogView);
         ((TextView)mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
-        ((TextView)mDialogView.findViewById(R.id.itemPriceDialog)).setText(food.getPrice());
+        ((TextView)mDialogView.findViewById(R.id.itemPriceDialog)).setText(""+food.getPrice());
         ((TextView)mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
+        final long dishId = food.getId();
 
 
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                updateMenuCount(increaseCartCount());
 
-            long dishId = food.getId();
             mOrderQuantity = Integer.parseInt(((TextView)mDialogView.findViewById(R.id.countDialog)).getText().toString());
 
             for(OrderedItem item : mOrderedItemsList){
@@ -242,11 +271,13 @@ public class FoodListFragment extends Fragment {
                     mChecker = true;
                     break;
                 }
+                Log.d(Constants.LOG_TAG, "end of iteration");
             }
             if(!mChecker){
                 mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
                 mOrderedItemsList.add(mOrderedItem);
                 updateMenuCount(increaseCartCount());
+                Log.d(Constants.LOG_TAG, "adding object");
 
             }
             mChecker = false;

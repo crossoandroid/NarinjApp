@@ -7,9 +7,6 @@ import java.util.List;
  */
 
 public class Result {
-    public static class NFoodList {
-        public List<NFood> items;
-    }
 
     public static class NFood {
 
@@ -22,13 +19,10 @@ public class Result {
 
     }
 
-    public static class NChefList {
-        public List<NChef> chefList;
-    }
 
     public static class NChef {
 
-        public long id;
+        public long partnerId;
         public String name;
         public String surName;
         public String phone;

@@ -52,7 +52,7 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
 //TODO Food image must be set
         mName.setText(food.getName());
         mDesc.setText(food.getDesc());
-        mPrice.setText(food.getPrice());
+        mPrice.setText(""+food.getPrice());
 
     }
 
