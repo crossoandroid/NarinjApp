@@ -43,8 +43,6 @@ public class FoodListFragment extends Fragment {
     int mOrderQuantity;
     OrderedItem mOrderedItem;
     List<OrderedItem> mOrderedItemsList;
-    FrameLayout mRedCircle;
-    TextView mItemsCountTV;
     RecyclerView mRecyclerView;
     View mDialogView;
     Food mFood;
@@ -117,8 +115,6 @@ public class FoodListFragment extends Fragment {
 
     private void defineComponents() {
 
-        mRedCircle = (FrameLayout)getActivity().findViewById(R.id.menuIconRedCircleFrame);
-        mItemsCountTV = (TextView)getActivity().findViewById(R.id.menuIconRedCircleText);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
@@ -281,7 +277,7 @@ public class FoodListFragment extends Fragment {
             if(!mChecker){
                 mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
                 MainActivity.orderedItems.add(mOrderedItem);
-                updateMenuCount();
+                MainActivity.updateMenuCount();
                 Log.d(Constants.LOG_TAG, "adding object");
 
             }
@@ -318,21 +314,13 @@ public class FoodListFragment extends Fragment {
         if(!mChecker){
             mOrderedItem = new OrderedItem(dishId, SINGLE_ORDER_QUANTITY);
             MainActivity.orderedItems.add(mOrderedItem);
-            updateMenuCount();
+            MainActivity.updateMenuCount();
 
         }
         mChecker = false;
 
     }
 
-    private void updateMenuCount(){
-        if(MainActivity.orderedItems.size()==0){
-            mItemsCountTV.setText("");
-            mRedCircle.setVisibility(View.GONE);
-        }else{
-            mRedCircle.setVisibility(View.VISIBLE);
-            mItemsCountTV.setText(""+MainActivity.orderedItems.size());
-        }
-    }
+
 
 }

@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.fragments.BasketFragment;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static List<OrderedItem> orderedItems;
+    static FrameLayout mMenuRootFrame, mRedCircle;
+    static TextView mItemsCountTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem cartItem = menu.findItem(R.id.shop_cart);
+        mMenuRootFrame = (FrameLayout)cartItem.getActionView();
+        mRedCircle = (FrameLayout)mMenuRootFrame.findViewById(R.id.menuIconRedCircleFrame);
+        mItemsCountTV = (TextView)mMenuRootFrame.findViewById(R.id.menuIconRedCircleText);
+        mMenuRootFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(cartItem);
+            }
+        });
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -147,5 +166,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public static void updateMenuCount(){
+        if(orderedItems.size()==0){
+            mItemsCountTV.setText("");
+            mRedCircle.setVisibility(View.GONE);
+        }else{
+            mRedCircle.setVisibility(View.VISIBLE);
+            mItemsCountTV.setText(""+orderedItems.size());
+        }
     }
 }
