@@ -33,7 +33,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListViewHolder> {
     @Override
     public FoodListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_item, parent, false);
-        FoodListViewHolder viewHolder = new FoodListViewHolder(view);
+        FoodListViewHolder viewHolder = new FoodListViewHolder(view, mContext);
         viewHolder.setOnClickListener(new FoodListViewHolder.IOnClickListener() {
 
             @Override

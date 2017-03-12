@@ -20,11 +20,16 @@ import android.view.View;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.fragments.BasketFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
+import com.orange_team.narinjapp.model.OrderedItem;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static List<OrderedItem> orderedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        orderedItems = new ArrayList<>();
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainFragment mainFragment=new MainFragment();

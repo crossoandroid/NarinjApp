@@ -30,7 +30,7 @@ public class ChefsListAdapter extends RecyclerView.Adapter<ChefsListViewHolder> 
     @Override
     public ChefsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.chef_item, parent, false);
-        ChefsListViewHolder viewHolder = new ChefsListViewHolder(view);
+        ChefsListViewHolder viewHolder = new ChefsListViewHolder(view, mContext);
         viewHolder.setOnClickListener(new ChefsListViewHolder.IOnClickListener() {
             @Override
             public void onItemClick(int position) {

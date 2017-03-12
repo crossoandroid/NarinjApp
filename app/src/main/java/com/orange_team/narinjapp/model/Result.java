@@ -14,9 +14,11 @@ public class Result {
         public int price;
         public String name;
         public String description;
-    //    public String picture;                                //must be amended
-    //   public String chefName;
-
+       // public Map<String, String> files;
+        public List<NFoodFile> files;
+        public class NFoodFile {
+            public String path;
+        }
     }
 
 
@@ -26,6 +28,9 @@ public class Result {
         public String name;
         public String surName;
         public String phone;
-   //     public String avatar;  //must be amended
+        public List<NChefFiles> files;
+        public class NChefFiles {
+            public String path;
+        }
     }
 }

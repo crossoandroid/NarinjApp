@@ -3,6 +3,7 @@ package com.orange_team.narinjapp.fragments; //H
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.FoodListAdapter;
 import com.orange_team.narinjapp.application.NApplication;
 import com.orange_team.narinjapp.constants.Constants;
@@ -25,9 +27,10 @@ import com.orange_team.narinjapp.model.Food;
 import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +51,7 @@ public class FoodListFragment extends Fragment {
     Boolean mChecker = false;
     RetrofitInterface mRetrofitInterface;
     Call<List<Result.NFood>> mFoodListCall;
+    android.os.Handler mHandler;
 
     public static final int SINGLE_ORDER_QUANTITY = 1;
     public static final String CHEF_ID = "Chef partnerId";
@@ -61,9 +65,11 @@ public class FoodListFragment extends Fragment {
     public static final String HOT_DISHES = "hotDishes";
     public static final String GARNISH = "garnish";
     public static final String ALL = "all";
-    public static final String COUNT_VALUE = "10";
-    public static final String PAGE_VALUE_0 = "0";
-    public static final String PAGE_VALUE_1 = "1";
+    public static final int COUNT_VALUE = 10;
+    public static final int PAGE_VALUE_0 = 0;
+    public static final int PAGE_VALUE_1 = 1;
+    public static final String IMAGE_BASE_URL = "http://narinj.am/resources/site/assets/img/";
+    public static final int HANDLER_MESSAGE = 0;
 
 
 
@@ -92,10 +98,19 @@ public class FoodListFragment extends Fragment {
 
     private void createObjects() {
 
-
         mFoodList = new ArrayList<>();
         mOrderedItemsList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
+        mHandler = new android.os.Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case HANDLER_MESSAGE:{
+                        mFoodListAdapter.setFoodList(mFoodList);
+                    }
+                }
+            }
+        };
         mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
 
     }
@@ -121,13 +136,13 @@ public class FoodListFragment extends Fragment {
             OrderCategories request = (OrderCategories) getArguments().getSerializable(CATEGORY_KEY);
             switch (request) {
                 case SOUP: {
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1("soup", 0, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(SOUP, PAGE_VALUE_0, COUNT_VALUE);
                     getJSONObjects(mFoodListCall);
-                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
                 }
                 break;
 
                 case SALAD: {
+                    //Salad page is currently unavailable.
 /*                    mParamsMap.put(CATEGORY_KEY, SALAD);
                     mFoodListCall = mRetrofitInterface.getFoodByCategory(mParamsMap);
                     getJSONObjects(mFoodListCall);
@@ -139,42 +154,36 @@ public class FoodListFragment extends Fragment {
                 break;
 
                 case LUNCH: {
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, 0, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, PAGE_VALUE_0, COUNT_VALUE);    // 2 pages
                     getJSONObjects(mFoodListCall);
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, 1, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(LUNCH, PAGE_VALUE_1, COUNT_VALUE);
                     getJSONObjects(mFoodListCall);
-                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
 
-                    Log.d(Constants.LOG_TAG, ">>>>>>>>>>><<<<<<<<<<<");
-
-                    for(Food food: mFoodList){
-                        Log.d(Constants.LOG_TAG, food.getName());
-                    }
                 }
                 break;
 
                 case CAKE: {
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(CAKE, 0, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(CAKE, PAGE_VALUE_0, COUNT_VALUE);
                     getJSONObjects(mFoodListCall);
 
                 }
                 break;
 
                 case HOT_DISHES: {
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(HOT_DISHES, 0, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(HOT_DISHES, PAGE_VALUE_0, COUNT_VALUE);
                     getJSONObjects(mFoodListCall);
                 }
                 break;
 
                 case GARNISH: {
-                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(GARNISH, 0, 10);
+                    mFoodListCall = mRetrofitInterface.getFoodByCategory1(GARNISH, PAGE_VALUE_0, COUNT_VALUE);
                     getJSONObjects(mFoodListCall);
                 }
                 break;
 
                 case ALL: {
-                    for(int i=0; i<6; i++) {
-                        mFoodListCall = mRetrofitInterface.getFoodByCategory1(ALL, i, 10);
+                    for(int i=0; i<6; i++) {        //all the dishes are included in 5 pages
+                        mFoodListCall = mRetrofitInterface.getFoodByCategory1(ALL, i, COUNT_VALUE);
                         getJSONObjects(mFoodListCall);
 
                      }
@@ -182,19 +191,13 @@ public class FoodListFragment extends Fragment {
                 break;
 
                 case CHEF: {
-                    Log.d(Constants.LOG_TAG, "Defining adapter content 3");
-                    for(int i=0; i<4; i++) {
+                    for(int i=0; i<4; i++) {     //the max number of dishes made by 1 chef are included in 4 pages
                         mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), i, 10);
                         getJSONObjects(mFoodListCall);
                     }
                 }
                 break;
-
             }
-
-
-
-
         }
     }
 
@@ -203,23 +206,21 @@ public class FoodListFragment extends Fragment {
         FoodListCall.enqueue(new Callback<List<Result.NFood>>() {
             @Override
             public void onResponse(Call<List<Result.NFood>> call, Response<List<Result.NFood>> response) {
-                Log.d(Constants.LOG_TAG, "Success");
-                Log.d(Constants.LOG_TAG, ""+response.code());
-                List<Result.NFood> NFoodList = response.body();
-                Log.d(Constants.LOG_TAG, ""+response.code());
 
+                List<Result.NFood> NFoodList = response.body();
                 for(Result.NFood food : NFoodList){
                     mFood = new Food();
                     mFood.setId(food.dishId);
                     mFood.setName(food.name);
                     mFood.setDesc(food.description);
                     mFood.setPrice(food.price);
-                    //mFood.setUrl(food.);        Food image
-                    //mFood.setChefName(food.chefName);
+                    if(food.files.get(0).path!=null) {
+                        mFood.setPicture(IMAGE_BASE_URL + food.files.get(0).path);
+                    }
                     Log.d(Constants.LOG_TAG, mFood.getName());
-                    mFoodList.add(mFood);
+                    addBulkToList(mFood);
                 }
-                mFoodListAdapter.setFoodList(mFoodList);
+                mHandler.sendEmptyMessage(HANDLER_MESSAGE);
             }
 
             @Override
@@ -227,6 +228,10 @@ public class FoodListFragment extends Fragment {
                 Toast.makeText(getContext(), "Food list was not found", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private synchronized void addBulkToList(Food food) {
+        mFoodList.add(food);
     }
 
     FoodListAdapter.IOnItemSelectedListener mOnItemSelectedListener = new FoodListAdapter.IOnItemSelectedListener() {
@@ -247,7 +252,7 @@ public class FoodListFragment extends Fragment {
         }
     };
 
-    public void createDialog(Food food){
+    private void createDialog(Food food){
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
@@ -265,7 +270,7 @@ public class FoodListFragment extends Fragment {
 
             mOrderQuantity = Integer.parseInt(((TextView)mDialogView.findViewById(R.id.countDialog)).getText().toString());
 
-            for(OrderedItem item : mOrderedItemsList){
+            for(OrderedItem item : MainActivity.orderedItems){
                 if(item.getDishId() == dishId) {
                     item.setCount(item.getCount()+ mOrderQuantity);
                     mChecker = true;
@@ -275,8 +280,8 @@ public class FoodListFragment extends Fragment {
             }
             if(!mChecker){
                 mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
-                mOrderedItemsList.add(mOrderedItem);
-                updateMenuCount(increaseCartCount());
+                MainActivity.orderedItems.add(mOrderedItem);
+                updateMenuCount();
                 Log.d(Constants.LOG_TAG, "adding object");
 
             }
@@ -303,7 +308,7 @@ public class FoodListFragment extends Fragment {
 
         long dishId = food.getId();
 
-        for(OrderedItem item : mOrderedItemsList){
+        for(OrderedItem item : MainActivity.orderedItems){
             if(item.getDishId() == dishId) {
                 item.setCount(item.getCount()+ SINGLE_ORDER_QUANTITY);
                 mChecker = true;
@@ -312,25 +317,22 @@ public class FoodListFragment extends Fragment {
         }
         if(!mChecker){
             mOrderedItem = new OrderedItem(dishId, SINGLE_ORDER_QUANTITY);
-            mOrderedItemsList.add(mOrderedItem);
-            updateMenuCount(increaseCartCount());
+            MainActivity.orderedItems.add(mOrderedItem);
+            updateMenuCount();
 
         }
         mChecker = false;
 
     }
 
-    public void updateMenuCount(int itemCount){
-        if(itemCount == 0){
+    private void updateMenuCount(){
+        if(MainActivity.orderedItems.size()==0){
             mItemsCountTV.setText("");
             mRedCircle.setVisibility(View.GONE);
         }else{
             mRedCircle.setVisibility(View.VISIBLE);
-            mItemsCountTV.setText(""+Constants.CART_COUNT);
+            mItemsCountTV.setText(""+MainActivity.orderedItems.size());
         }
     }
 
-    public static int increaseCartCount() {
-        return Constants.CART_COUNT = Constants.CART_COUNT + SINGLE_ORDER_QUANTITY;
-    }
 }

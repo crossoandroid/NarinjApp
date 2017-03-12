@@ -40,6 +40,8 @@ public class ChefsListFragment extends Fragment {
     List<Chef> mChefList;
     ChefsListAdapter mChefsListAdapter;
     RetrofitInterface mRetrofitInterface;
+    public static final String IMAGE_BASE_URL = "http://narinj.am/resources/site/assets/img/";
+
 
 
 
@@ -71,21 +73,7 @@ public class ChefsListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mChefsListAdapter);
-        mChefsListAdapter.setOnItemSelectedListener(new ChefsListAdapter.IOnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Chef chef) {
-                Bundle args = new Bundle();
-                args.putLong(FoodListFragment.CHEF_ID, chef.getId());
-                args.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.CHEF);
-                args.putLong(FoodListFragment.CHEF_ID, chef.getId());
-                FoodListFragment foodListFragment = new FoodListFragment();
-                foodListFragment.setArguments(args);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_main, foodListFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+        mChefsListAdapter.setOnItemSelectedListener(onItemSelectedListener);
 
     }
 
@@ -101,7 +89,9 @@ public class ChefsListFragment extends Fragment {
                     mChef.setName(chef.name);
                     mChef.setSurname(chef.surName);
                     mChef.setPhone(chef.phone);
-                    //mChef.setAvatar(chef.avatar);
+                    if(chef.files.get(0)!=null) {
+                        mChef.setAvatar(IMAGE_BASE_URL + chef.files.get(0).path);
+                    }
                     mChefList.add(mChef);
                     Log.d(Constants.LOG_TAG, mChef.getName());
                 }
@@ -117,13 +107,22 @@ public class ChefsListFragment extends Fragment {
     }
 
 
-//    ChefsListAdapter.IOnItemSelectedListener onItemSelectedListener = new ChefsListAdapter.IOnItemSelectedListener() {
-//        @Override
-//        public void onItemSelected(Chef chef) {
-//
-//
-//
-//        }
-//    };
+    ChefsListAdapter.IOnItemSelectedListener onItemSelectedListener = new ChefsListAdapter.IOnItemSelectedListener() {
+        @Override
+        public void onItemSelected(Chef chef) {
+            Bundle args = new Bundle();
+            args.putLong(FoodListFragment.CHEF_ID, chef.getId());
+            args.putSerializable(FoodListFragment.CATEGORY_KEY, OrderCategories.CHEF);
+            args.putLong(FoodListFragment.CHEF_ID, chef.getId());
+            FoodListFragment foodListFragment = new FoodListFragment();
+            foodListFragment.setArguments(args);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_main, foodListFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+
+        }
+    };
 
 }

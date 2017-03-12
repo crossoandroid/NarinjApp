@@ -1,5 +1,6 @@
 package com.orange_team.narinjapp.adapters.viewholder; //H
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.model.Food;
+import com.squareup.picasso.Picasso;
 
 
 public class FoodListViewHolder extends RecyclerView.ViewHolder {
@@ -16,11 +18,13 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
     ImageView mFoodImage;
     TextView mName, mDesc, mPrice;
     Button mAdd;
+    Context mContext;
 
 
-    public FoodListViewHolder(View itemView) {
+    public FoodListViewHolder(View itemView, Context context) {
         super(itemView);
 
+        mContext=context;
         mFoodImage = (ImageView) itemView.findViewById(R.id.foodImageRec);
         mName = (TextView) itemView.findViewById(R.id.foodNameRec);
         mDesc = (TextView) itemView.findViewById(R.id.desc);
@@ -49,10 +53,11 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Food food){
-//TODO Food image must be set
+//TODO Food image must be resized
         mName.setText(food.getName());
         mDesc.setText(food.getDesc());
         mPrice.setText(""+food.getPrice());
+        Picasso.with(mContext).load(food.getPicture()).into(mFoodImage);
 
     }
 
