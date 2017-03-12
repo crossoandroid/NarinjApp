@@ -2,9 +2,6 @@ package com.orange_team.narinjapp.model; //H
 
 import java.util.List;
 
-/**
- * Created by Hayk on 07-Mar-17.
- */
 
 public class Chef {
 
