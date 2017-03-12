@@ -14,7 +14,6 @@ public class Result {
         public int price;
         public String name;
         public String description;
-       // public Map<String, String> files;
         public List<NFoodFile> files;
         public class NFoodFile {
             public String path;

@@ -17,7 +17,7 @@ public interface RetrofitInterface {
 
 
     @GET("get-dishes")
-    Call<List<Result.NFood>> getFoodByCategory1(@Query("category") String category, @Query(value = "page")int page, @Query(value = "count")int count);
+    Call<List<Result.NFood>> getFoodByCategory(@Query("category") String category, @Query(value = "page")int page, @Query(value = "count")int count);
 
     @GET("get-dishes-by-chef")
     Call<List<Result.NFood>> getChefFoodList(@Query("chefId") Long chefId,  @Query(value = "page")int page, @Query(value = "count")int count);
