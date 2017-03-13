@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.File;
@@ -14,100 +15,29 @@ import java.io.OutputStream;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-	private static String DB_PATH = "/data/data/orange_team.narinj/databases/";
+	private static final String DATABASE_NAME="Cart.db";
+	private static final int DATABASE_VERSION=1;
 
-	private static String DB_NAME = "Res.sqlite";
-
-	private SQLiteDatabase myDataBase;
-
-	private final Context myContext;
-
-	public DataBaseHelper(Context context) {
-
-		super(context, DB_NAME, null, 1);
-		this.myContext = context;
-	}
-
-	public void createDataBase() throws IOException {
-
-		boolean dbExist = checkDataBase();
-
-		if (dbExist) {
-
-		} else {
-			this.getReadableDatabase();
-
-			try {
-
-				copyDataBase();
-
-			} catch (IOException e) {
-				Log.d("Error", "Copy Database");
-				throw new Error("Error copying database" + e);
-
-			}
-		}
-	}
-
-	private boolean checkDataBase() {
-
-		File dbFile = new File(DB_PATH + DB_NAME);
-		Log.d("db", "" + dbFile);
-		return dbFile.exists();
-	}
-
-	@Override
-	public synchronized SQLiteDatabase getReadableDatabase() {
-		return super.getReadableDatabase();
-	}
-
-	@Override
-	public synchronized SQLiteDatabase getWritableDatabase() {
-		// TODO Auto-generated method stub
-		return super.getWritableDatabase();
-	}
-
-	private void copyDataBase() throws IOException {
-		InputStream myInput = myContext.getAssets().open(DB_NAME);
-		String outFileName = DB_PATH + DB_NAME;
-		OutputStream myOutput = new FileOutputStream(outFileName);
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = myInput.read(buffer)) > 0) {
-			myOutput.write(buffer, 0, length);
-		}
-
-		myOutput.flush();
-		myOutput.close();
-		myInput.close();
-	}
-
-	public void openDataBase() throws SQLException {
-
-		String myPath = DB_PATH + DB_NAME;
-		myDataBase = SQLiteDatabase.openDatabase(myPath, null,
-				SQLiteDatabase.OPEN_READONLY
-						| SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-
-	}
-
-	@Override
-	public synchronized void close() {
-
-		if (myDataBase != null)
-			myDataBase.close();
-
-		super.close();
-
+	public DataBaseHelper(Context context)
+	{
+		super(context,DATABASE_NAME,null,DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-
+		final String CREATE_NOTES_TABLE =
+				"CREATE TABLE " + DBDescription.Cart.TABLE_NAME + "(" +
+						DBDescription.Cart._ID + " integer primary key, " +
+						DBDescription.Cart.COLUMN_NAME + " TEXT, " +
+						DBDescription.Cart.COLUMN_QTY + " TEXT, " +
+						DBDescription.Cart.COLUMN_TOTAL + " TEXT, "+
+						DBDescription.Cart.COLUMN_IMG_PATH+" TEXT);";
+		db.execSQL(CREATE_NOTES_TABLE);
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion)
+	{
 
 	}
 

@@ -1,14 +1,19 @@
-package com.orange_team.narinjapp.fragments; //H
+package com.orange_team.narinjapp.fragments;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +35,7 @@ import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Food;
 import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
+import com.orange_team.narinjapp.utils.DBDescription;
 import com.squareup.picasso.Picasso;
 
 import com.orange_team.narinjapp.utils.DataBaseHelper;
@@ -43,12 +49,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FoodListFragment extends Fragment {
+public class FoodListFragment extends Fragment  {
 
     FoodListAdapter mFoodListAdapter;
     List<Food> mFoodList;
     int mOrderQuantity;
-    int mPageValue=0;
+    int mPageValue = 0;
     String mCurrentCategory;
     OrderedItem mOrderedItem;
     List<OrderedItem> mOrderedItemsList;
@@ -62,7 +68,7 @@ public class FoodListFragment extends Fragment {
     int value = 1;
     Button count;
     TextView itemPrice;
-    int total= 0;
+    int total = 0;
     SQLiteDatabase db;
     DataBaseHelper myDbHelpel;
 
@@ -85,10 +91,6 @@ public class FoodListFragment extends Fragment {
     public static final int HANDLER_MESSAGE_1 = 1;
 
 
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,7 +103,8 @@ public class FoodListFragment extends Fragment {
         init();
     }
 
-    public void init(){
+
+    public void init() {
 
         createObjects();
         defineAdapterContent();
@@ -114,28 +117,28 @@ public class FoodListFragment extends Fragment {
         mFoodList = new ArrayList<>();
         mOrderedItemsList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
-        mHandler = new android.os.Handler(){
+        mHandler = new android.os.Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what){
-                    case HANDLER_MESSAGE_0:{
+                switch (msg.what) {
+                    case HANDLER_MESSAGE_0: {
                         mFoodListAdapter.setFoodList(mFoodList);
-                        if(mFoodList.size()==0){
+                        if (mFoodList.size() == 0) {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
-                        if(mFoodList.size()%10==0){
+                        if (mFoodList.size() % 10 == 0) {
                             mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
                         }
                     }
                     break;
 
-                    case HANDLER_MESSAGE_1:{
+                    case HANDLER_MESSAGE_1: {
                         mFoodListAdapter.setFoodList(mFoodList);
-                        if(mFoodList.size()==0){
+                        if (mFoodList.size() == 0) {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
-                        if(mFoodList.size()%10==0){
+                        if (mFoodList.size() % 10 == 0) {
                             mFoodListCall = mRetrofitInterface.getFoodByCategory(mCurrentCategory, mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
                         }
@@ -160,69 +163,77 @@ public class FoodListFragment extends Fragment {
 
     private void defineAdapterContent() {
 
-        if(getArguments()!= null) {
+        if (getArguments() != null) {
 
             OrderCategories request = (OrderCategories) getArguments().getSerializable(CATEGORY_KEY);
             switch (request) {
-                case SOUP: mCurrentCategory = SOUP;
-                break;
+                case SOUP:
+                    mCurrentCategory = SOUP;
+                    break;
 
-                case SALAD: mCurrentCategory=SALAD;
-                break;
+                case SALAD:
+                    mCurrentCategory = SALAD;
+                    break;
 
-                case LUNCH: mCurrentCategory=LUNCH;
-                break;
+                case LUNCH:
+                    mCurrentCategory = LUNCH;
+                    break;
 
-                case CAKE: mCurrentCategory=CAKE;
-                break;
+                case CAKE:
+                    mCurrentCategory = CAKE;
+                    break;
 
-                case HOT_DISHES: mCurrentCategory=HOT_DISHES;
-                break;
+                case HOT_DISHES:
+                    mCurrentCategory = HOT_DISHES;
+                    break;
 
-                case GARNISH: mCurrentCategory=GARNISH;
-                break;
+                case GARNISH:
+                    mCurrentCategory = GARNISH;
+                    break;
 
-                case ALL: mCurrentCategory=ALL;
-                break;
+                case ALL:
+                    mCurrentCategory = ALL;
+                    break;
 
-                case CHEF: mCurrentCategory = CHEF;
-                break;
+                case CHEF:
+                    mCurrentCategory = CHEF;
+                    break;
             }
             defineFoodListCall();
         }
     }
 
-    private void defineFoodListCall(){
-        if(mCurrentCategory.equals(CHEF)){
+    private void defineFoodListCall() {
+        if (mCurrentCategory.equals(CHEF)) {
             mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
-        }else {
+        } else {
             mFoodListCall = mRetrofitInterface.getFoodByCategory(mCurrentCategory, mPageValue, COUNT_VALUE);
         }
         getObjects(mFoodListCall);
     }
 
-    private void getObjects(Call<List<Result.NFood>> FoodListCall){
+    private void getObjects(Call<List<Result.NFood>> FoodListCall) {
 
         FoodListCall.enqueue(new Callback<List<Result.NFood>>() {
             @Override
             public void onResponse(Call<List<Result.NFood>> call, Response<List<Result.NFood>> response) {
 
                 List<Result.NFood> NFoodList = response.body();
-                for(Result.NFood food : NFoodList){
+                for (Result.NFood food : NFoodList) {
                     mFood = new Food();
                     mFood.setId(food.dishId);
                     mFood.setName(food.name);
                     mFood.setDesc(food.description);
                     mFood.setPrice(food.price);
-                    if(food.files.get(0).path!=null) {
+                    if (food.files.get(0).path != null) {
                         mFood.setPicture(IMAGE_BASE_URL + food.files.get(0).path);
                     }
                     mFoodList.add(mFood);
                 }
                 mPageValue++;
-                if(mCurrentCategory.equals(CHEF)){
+                if (mCurrentCategory.equals(CHEF)) {
                     mHandler.sendEmptyMessage(HANDLER_MESSAGE_0);
-                }else{
+                } else {
                     mHandler.sendEmptyMessage(HANDLER_MESSAGE_1);
                 }
             }
@@ -247,7 +258,7 @@ public class FoodListFragment extends Fragment {
         @Override
         public void onAddButtonClicked(Food food) {
 
-            Log.d(Constants.LOG_TAG, food.getName()+" Button");
+            Log.d(Constants.LOG_TAG, food.getName() + " Button");
             addOneItem(food);
 
         }
@@ -258,31 +269,29 @@ public class FoodListFragment extends Fragment {
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
         alertDialog.setView(mDialogView);
-        ((TextView)mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
-        itemPrice=(TextView)mDialogView.findViewById(R.id.itemPriceDialog);
-        itemPrice.setText(""+food.getPrice()+" ԴՐԱՄ");
-        ((TextView)mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
-        Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView)mDialogView.findViewById(R.id.foodImageDialog));
-        Button minus=(Button)mDialogView.findViewById(R.id.btn_minus);
-        count=(Button)mDialogView.findViewById(R.id.btn_display);
-        Button plus=(Button)mDialogView.findViewById(R.id.btn_plus);
-        value=1;
-        count.setText(""+value);
+        ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
+        itemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
+        itemPrice.setText("" + food.getPrice() + " ԴՐԱՄ");
+        ((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
+        Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
+        Button minus = (Button) mDialogView.findViewById(R.id.btn_minus);
+        count = (Button) mDialogView.findViewById(R.id.btn_display);
+        Button plus = (Button) mDialogView.findViewById(R.id.btn_plus);
+        value = 1;
+        count.setText("" + value);
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (value <= 1) {
                     value = 1;
-                    total=value * food.getPrice();
+                    total = value * food.getPrice();
                     count.setText("" + value);
-                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
-                }
-                else
-                {
+                    itemPrice.setText(String.valueOf(total) + " ԴՐԱՄ");
+                } else {
                     value--;
-                    total=value * food.getPrice();
+                    total = value * food.getPrice();
                     count.setText("" + value);
-                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
+                    itemPrice.setText(String.valueOf(total) + " ԴՐԱՄ");
                 }
             }
         });
@@ -290,10 +299,10 @@ public class FoodListFragment extends Fragment {
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    value++;
-                    total=value * food.getPrice();
-                    count.setText("" + value);
-                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
+                value++;
+                total = value * food.getPrice();
+                count.setText("" + value);
+                itemPrice.setText(String.valueOf(total) + " ԴՐԱՄ");
             }
         });
 
@@ -307,15 +316,15 @@ public class FoodListFragment extends Fragment {
 
                 mOrderQuantity = Integer.parseInt(count.getText().toString());
 
-                for(OrderedItem item : MainActivity.orderedItems){
-                    if(item.getDishId() == dishId) {
-                        item.setCount(item.getCount()+ mOrderQuantity);
+                for (OrderedItem item : MainActivity.orderedItems) {
+                    if (item.getDishId() == dishId) {
+                        item.setCount(item.getCount() + mOrderQuantity);
                         mChecker = true;
                         break;
                     }
                     Log.d(Constants.LOG_TAG, "end of iteration");
                 }
-                if(!mChecker){
+                if (!mChecker) {
                     mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
                     MainActivity.orderedItems.add(mOrderedItem);
                     MainActivity.updateMenuCount();
@@ -328,7 +337,6 @@ public class FoodListFragment extends Fragment {
         });
 
 
-
         alertDialog.setNegativeButton(DO_NOT_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -339,45 +347,33 @@ public class FoodListFragment extends Fragment {
         Dialog dialog = alertDialog.create();
         dialog.show();
     }
+
     private void addOneItem(Food food) {
 
         long dishId = food.getId();
 
-        for(OrderedItem item : MainActivity.orderedItems){
-            if(item.getDishId() == dishId) {
-                item.setCount(item.getCount()+ SINGLE_ORDER_QUANTITY);
+        for (OrderedItem item : MainActivity.orderedItems) {
+            if (item.getDishId() == dishId) {
+                item.setCount(item.getCount() + SINGLE_ORDER_QUANTITY);
                 mChecker = true;
                 break;
             }
         }
-        if(!mChecker){
+        if (!mChecker) {
             mOrderedItem = new OrderedItem(dishId, SINGLE_ORDER_QUANTITY);
             MainActivity.orderedItems.add(mOrderedItem);
             MainActivity.updateMenuCount();
 
         }
         mChecker = false;
-        total= Integer.parseInt(itemPrice.getText().toString());
-        String qty=count.getText().toString();
-        myDbHelpel = new DataBaseHelper(getContext());
-        try {
-            myDbHelpel.createDataBase();
-        } catch (IOException io) {
-            throw new Error("Unable TO Create DataBase");
-        }
-        try {
-            myDbHelpel.openDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        db = myDbHelpel.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("Name", "" + food.getName());
-        values.put("Quantity", qty);
-        values.put("Price", total);
+        total = mOrderQuantity * food.getPrice();
 
-        db.insert("details",null,values);
-        myDbHelpel.close();
+        ContentValues values = new ContentValues();
+        values.put(DBDescription.Cart.COLUMN_NAME, "" + food.getName());
+        values.put(DBDescription.Cart.COLUMN_QTY, value);
+        values.put(DBDescription.Cart.COLUMN_TOTAL, total);
+        values.put(DBDescription.Cart.COLUMN_IMG_PATH, total);
+        getContext().getContentResolver().insert(DBDescription.Cart.NOTE_URI,values);
 
         Toast.makeText(getContext(), getString(R.string.orderplace), Toast.LENGTH_LONG).show();
     }
