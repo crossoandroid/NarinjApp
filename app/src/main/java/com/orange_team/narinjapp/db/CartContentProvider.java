@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.utils;
+package com.orange_team.narinjapp.db;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-
-import com.orange_team.narinjapp.R;
 
 import java.sql.SQLException;
 

@@ -1,7 +1,9 @@
 package com.orange_team.narinjapp.application; //H
 
 import android.app.Application;
+import android.media.MediaPlayer;
 
+import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 
 import retrofit2.Retrofit;
@@ -28,4 +30,6 @@ public class NApplication extends Application{
     }
 
     public RetrofitInterface getRetrofitInterface(){return mRetrofitInterface;}
+
+
 }

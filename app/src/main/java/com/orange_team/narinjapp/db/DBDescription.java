@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.utils;
+package com.orange_team.narinjapp.db;
 
 import android.content.ContentUris;
 import android.net.Uri;

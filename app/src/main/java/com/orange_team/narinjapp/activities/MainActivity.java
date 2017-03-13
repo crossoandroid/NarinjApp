@@ -1,9 +1,6 @@
 package com.orange_team.narinjapp.activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,10 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.fragments.AboutUsFragment;
@@ -33,10 +28,7 @@ import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
 import com.orange_team.narinjapp.model.OrderedItem;
-import com.orange_team.narinjapp.model.SendItemInfo;
-import com.orange_team.narinjapp.utils.DataBaseHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

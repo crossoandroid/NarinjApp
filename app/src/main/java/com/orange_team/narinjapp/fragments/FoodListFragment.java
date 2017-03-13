@@ -2,23 +2,19 @@ package com.orange_team.narinjapp.fragments;
 
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,12 +31,11 @@ import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Food;
 import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
-import com.orange_team.narinjapp.utils.DBDescription;
+import com.orange_team.narinjapp.db.DBDescription;
 import com.squareup.picasso.Picasso;
 
-import com.orange_team.narinjapp.utils.DataBaseHelper;
+import com.orange_team.narinjapp.db.DataBaseHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +66,7 @@ public class FoodListFragment extends Fragment  {
     int total = 0;
     SQLiteDatabase db;
     DataBaseHelper myDbHelpel;
+    MediaPlayer mMediaPlayer;
 
     public static final int SINGLE_ORDER_QUANTITY = 1;
     public static final String CHEF_ID = "Chef partnerId";
@@ -117,6 +113,7 @@ public class FoodListFragment extends Fragment  {
         mFoodList = new ArrayList<>();
         mOrderedItemsList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
+        mMediaPlayer = MediaPlayer.create(getContext(), R.raw.click_one);
         mHandler = new android.os.Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -279,9 +276,12 @@ public class FoodListFragment extends Fragment  {
         Button plus = (Button) mDialogView.findViewById(R.id.btn_plus);
         value = 1;
         count.setText("" + value);
+
         minus.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                mMediaPlayer.start();
                 if (value <= 1) {
                     value = 1;
                     total = value * food.getPrice();
@@ -295,10 +295,10 @@ public class FoodListFragment extends Fragment  {
                 }
             }
         });
-
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMediaPlayer.start();
                 value++;
                 total = value * food.getPrice();
                 count.setText("" + value);
@@ -313,7 +313,7 @@ public class FoodListFragment extends Fragment  {
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                mMediaPlayer.start();
                 mOrderQuantity = Integer.parseInt(count.getText().toString());
 
                 for (OrderedItem item : MainActivity.orderedItems) {
@@ -351,6 +351,8 @@ public class FoodListFragment extends Fragment  {
     private void addOneItem(Food food) {
 
         long dishId = food.getId();
+        mMediaPlayer.start();
+
 
         for (OrderedItem item : MainActivity.orderedItems) {
             if (item.getDishId() == dishId) {
