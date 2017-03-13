@@ -27,6 +27,7 @@ import com.orange_team.narinjapp.fragments.BasketFragment;
 import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
+import com.orange_team.narinjapp.model.DishOrder;
 import com.orange_team.narinjapp.model.OrderedItem;
 
 import java.util.ArrayList;
@@ -37,9 +38,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static List<OrderedItem> orderedItems;
+    public static int menuCount;
     static FrameLayout mMenuRootFrame, mRedCircle;
     static TextView mItemsCountTV;
-    Intent intent;
     DrawerLayout drawer;
 
     @Override
@@ -188,14 +189,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public static void updateMenuCount() {
-        if (orderedItems.size() == 0) {
+    public static void updateMenuCount(int count) {
+        menuCount=count;
+        if (count == 0) {
             mItemsCountTV.setText("");
             mRedCircle.setVisibility(View.GONE);
 
         } else {
             mRedCircle.setVisibility(View.VISIBLE);
-            mItemsCountTV.setText("" + orderedItems.size());
+            mItemsCountTV.setText("" + count);
         }
     }
 

@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,12 +32,9 @@ import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
 import com.orange_team.narinjapp.db.DBDescription;
 import com.squareup.picasso.Picasso;
-
 import com.orange_team.narinjapp.db.DataBaseHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -281,6 +277,9 @@ public class FoodListFragment extends Fragment  {
 
             @Override
             public void onClick(View v) {
+                if (mMediaPlayer.isPlaying()){
+                    mMediaPlayer.stop();
+                }
                 mMediaPlayer.start();
                 if (value <= 1) {
                     value = 1;
@@ -298,6 +297,9 @@ public class FoodListFragment extends Fragment  {
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mMediaPlayer.isPlaying()){
+                    mMediaPlayer.stop();
+                }
                 mMediaPlayer.start();
                 value++;
                 total = value * food.getPrice();
@@ -307,31 +309,16 @@ public class FoodListFragment extends Fragment  {
         });
 
 
-        final long dishId = food.getId();
-
-
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (mMediaPlayer.isPlaying()){
+                    mMediaPlayer.stop();
+                }
                 mMediaPlayer.start();
                 mOrderQuantity = Integer.parseInt(count.getText().toString());
 
-                for (OrderedItem item : MainActivity.orderedItems) {
-                    if (item.getDishId() == dishId) {
-                        item.setCount(item.getCount() + mOrderQuantity);
-                        mChecker = true;
-                        break;
-                    }
-                    Log.d(Constants.LOG_TAG, "end of iteration");
-                }
-                if (!mChecker) {
-                    mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
-                    MainActivity.orderedItems.add(mOrderedItem);
-                    MainActivity.updateMenuCount();
-                    Log.d(Constants.LOG_TAG, "adding object");
-
-                }
-                mChecker = false;
+                MainActivity.updateMenuCount(MainActivity.menuCount+mOrderQuantity);
 
             }
         });
@@ -349,34 +336,17 @@ public class FoodListFragment extends Fragment  {
     }
 
     private void addOneItem(Food food) {
-
-        long dishId = food.getId();
+        if (mMediaPlayer.isPlaying()){
+            mMediaPlayer.stop();
+        }
         mMediaPlayer.start();
-
-
-        for (OrderedItem item : MainActivity.orderedItems) {
-            if (item.getDishId() == dishId) {
-                item.setCount(item.getCount() + SINGLE_ORDER_QUANTITY);
-                mChecker = true;
-                break;
-            }
-        }
-        if (!mChecker) {
-            mOrderedItem = new OrderedItem(dishId, SINGLE_ORDER_QUANTITY);
-            MainActivity.orderedItems.add(mOrderedItem);
-            MainActivity.updateMenuCount();
-
-        }
-        mChecker = false;
+        MainActivity.updateMenuCount(MainActivity.menuCount + SINGLE_ORDER_QUANTITY);
         total = mOrderQuantity * food.getPrice();
-
         ContentValues values = new ContentValues();
         values.put(DBDescription.Cart.COLUMN_NAME, "" + food.getName());
         values.put(DBDescription.Cart.COLUMN_QTY, value);
         values.put(DBDescription.Cart.COLUMN_TOTAL, total);
         values.put(DBDescription.Cart.COLUMN_IMG_PATH, total);
         getContext().getContentResolver().insert(DBDescription.Cart.NOTE_URI,values);
-
-        Toast.makeText(getContext(), getString(R.string.orderplace), Toast.LENGTH_LONG).show();
     }
 }
