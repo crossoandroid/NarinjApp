@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.orange_team.narinjapp.fragments.HelpPageFragment"
+    android:id="@+id/fragment_help_page">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <TextView
+            android:text="@string/help_title"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/help"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_title_size"
+            android:contentDescription="@string/help_title"/>
+
+        <ImageView
+            android:layout_width="@dimen/logo_letters_size"
+            android:layout_height="@dimen/logo_letters_size"
+            android:src="@drawable/orangeicon"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:text="@string/help_text"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/help_text"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_text_size"
+            android:contentDescription="@string/help_text"/>
+
+        <TextView
+            android:text="@string/help_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/help_phone"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_text_size"
+            android:contentDescription="@string/help_phone"/>
+
+        <TextView
+            android:text="@string/help_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/help_email"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_text_size"
+            android:contentDescription="@string/help_email"/>
+        </LinearLayout>
+    </ScrollView>

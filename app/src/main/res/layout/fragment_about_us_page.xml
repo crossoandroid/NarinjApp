@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.orange_team.narinjapp.fragments.AboutUsFragment"
+    android:id="@+id/fragment_about_us_page">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <TextView
+            android:text="@string/about_us_title"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/about_us"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_title_size"
+            android:contentDescription="@string/about_us_title"/>
+
+        <ImageView
+            android:layout_width="@dimen/logo_letters_size"
+            android:layout_height="@dimen/logo_letters_size"
+            android:src="@drawable/orangecoloricon"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:text="@string/about_us_text"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/about_us_text"
+            android:gravity="center"
+            android:textSize="@dimen/navbar_pages_text_size"
+            android:contentDescription="@string/about_us_text"/>
+        </LinearLayout>
+    </ScrollView>
