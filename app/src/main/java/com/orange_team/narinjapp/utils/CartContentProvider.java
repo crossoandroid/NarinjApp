@@ -16,13 +16,13 @@ public class CartContentProvider extends ContentProvider {
     private DataBaseHelper dbHelper;
     private static final UriMatcher uriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
 
-    private static final int ONE_NOTE=1;
-    private static final int NOTES=2;
+    private static final int ONE_ITEM=1;
+    private static final int ITEMS=2;
 
     static
     {
-        uriMatcher.addURI(DBDescription.AUTHORITY, DBDescription.Cart.TABLE_NAME+"/#",ONE_NOTE);
-        uriMatcher.addURI(DBDescription.AUTHORITY, DBDescription.Cart.TABLE_NAME,NOTES);
+        uriMatcher.addURI(DBDescription.AUTHORITY, DBDescription.Cart.TABLE_NAME+"/#",ONE_ITEM);
+        uriMatcher.addURI(DBDescription.AUTHORITY, DBDescription.Cart.TABLE_NAME,ITEMS);
     }
 
     @Override
@@ -40,10 +40,10 @@ public class CartContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri))
         {
-            case ONE_NOTE:
+            case ONE_ITEM:
                 queryBuilder.appendWhere(DBDescription.Cart._ID+"="+uri.getLastPathSegment());
                 break;
-            case NOTES:
+            case ITEMS:
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -62,14 +62,14 @@ public class CartContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Uri newNoteUri=null;
+        Uri newUri=null;
         switch (uriMatcher.match(uri))
         {
-            case NOTES:
+            case ITEMS:
                 long rowId=dbHelper.getWritableDatabase().insert(DBDescription.Cart.TABLE_NAME,null,values);
                 if (rowId > 0)
                 {
-                    newNoteUri= DBDescription.Cart.builtNoteUri(rowId);
+                    newUri= DBDescription.Cart.builtNoteUri(rowId);
                     getContext().getContentResolver().notifyChange(uri,null);
                 }
                 else
@@ -84,7 +84,7 @@ public class CartContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException();
         }
-        return  newNoteUri;
+        return  newUri;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CartContentProvider extends ContentProvider {
         int numOfDeletedRows;
         switch (uriMatcher.match(uri))
         {
-            case ONE_NOTE:
+            case ONE_ITEM:
                 String id=uri.getLastPathSegment();
                 numOfDeletedRows=dbHelper.getWritableDatabase().delete(DBDescription.Cart.TABLE_NAME, DBDescription.Cart._ID+"="+id,selectionArgs);
                 break;
@@ -115,7 +115,7 @@ public class CartContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri))
         {
-            case ONE_NOTE:
+            case ONE_ITEM:
                 String id=uri.getLastPathSegment();
                 numOfUpdatedRows=dbHelper.getWritableDatabase().update(DBDescription.Cart.TABLE_NAME,values, DBDescription.Cart._ID+"="+id,selectionArgs);
                 break;
