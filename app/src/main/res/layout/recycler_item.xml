@@ -1,72 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:weightSum="2">
+<LinearLayout android:id="@+id/relLayRec"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:weightSum="4"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <RelativeLayout
-        android:id="@+id/relLayRec"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
+            android:layout_width="@dimen/logo_letters_size"
+            android:layout_height="@dimen/logo_letters_size"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/rel_img">
 
-            android:id="@+id/foodImageRec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            app:srcCompat="@mipmap/ic_launcher"
-            android:layout_marginLeft="@dimen/rec_item_margins"
-            android:layout_marginBottom="@dimen/item_image_margin_bottom"/>
+            <com.orange_team.narinjapp.utils.RoundedImageView
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:id="@+id/foodImageRec"
+                android:layout_centerVertical="true"/>
 
-        <TextView
-            android:id="@+id/foodNameRec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/foodImageRec"
-            android:text="Food Name"
-            android:layout_marginLeft="@dimen/rec_item_margins"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/item_nameTV_size"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:id="@+id/textview">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|left"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/foodNameRec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="Food Name"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/item_nameTV_size"/>
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:text="Food Name"
+                    android:textColor="@color/primary_text"
+                    android:textSize="14dp"/>
 
-        <TextView
-            android:id="@+id/desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:lines="3"
-            android:layout_alignParentRight="true"
-            android:text="Description"
-            android:layout_marginRight="@dimen/rec_item_margins"            android:textColor="@color/secondary_text"
-            android:layout_centerHorizontal="true"/>
+            </LinearLayout>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/rec_item_margins"            android:layout_below="@id/desc"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/primary_text"
-            android:text="1500dr"
-            android:textSize="@dimen/item_priceTV_size"/>
 
-        <Button
-            android:id="@+id/addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="Add item"
-            android:layout_marginTop="@dimen/item_addTV_margin_top"
-            android:layout_marginRight="@dimen/rec_item_margins"
-            android:textColor="@color/primary_text"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/buttonshape"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/price"
-            />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:id="@+id/rel_but"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/primary_text"
+                android:text="1500dr"
+                android:textSize="@dimen/item_priceTV_size"/>
+
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Add item"
+                android:layout_marginTop="@dimen/item_addTV_margin_top"
+                android:layout_marginRight="@dimen/rec_item_margins"
+                android:textColor="@color/primary_text"
+                android:background="@drawable/buttonshape"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>

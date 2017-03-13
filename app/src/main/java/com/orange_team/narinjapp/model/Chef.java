@@ -1,7 +1,9 @@
-package com.orange_team.narinjapp.model; //H
+package com.orange_team.narinjapp.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-
 
 public class Chef {
 

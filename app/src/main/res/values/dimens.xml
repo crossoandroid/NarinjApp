@@ -10,10 +10,10 @@
     <dimen name="logo_letters_size">70dp</dimen>
     <dimen name="category_image_margin">5dp</dimen>
     <dimen name="category_text_margin">15dp</dimen>
-    <dimen name="category_text_size">9sp</dimen>
+    <dimen name="category_text_size">10sp</dimen>
     <dimen name="item_image_margin_bottom">8dp</dimen>
-    <dimen name="item_priceTV_size">26sp</dimen>
-    <dimen name="item_nameTV_size">26sp</dimen>
+    <dimen name="item_priceTV_size">20dp</dimen>
+    <dimen name="item_nameTV_size">16dp</dimen>
     <dimen name="item_addTV_size">20sp</dimen>
     <dimen name="item_addTV_margin_top">9dp</dimen>
     <dimen name="dialog_count">36sp</dimen>
@@ -21,5 +21,7 @@
     <dimen name="dialog_margins">14dp</dimen>
     <dimen name="rec_item_margins">14dp</dimen>
     <dimen name="total_size">25dp</dimen>
-
+    <dimen name="navbar_pages_title_size">40sp</dimen>
+    <dimen name="navbar_pages_subtitle_size">25sp</dimen>
+    <dimen name="navbar_pages_text_size">18sp</dimen>
 </resources>

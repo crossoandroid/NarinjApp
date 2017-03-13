@@ -1,7 +1,10 @@
 package com.orange_team.narinjapp.fragments; //H
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,9 @@ import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
 import com.squareup.picasso.Picasso;
 
+import com.orange_team.narinjapp.utils.DataBaseHelper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +59,12 @@ public class FoodListFragment extends Fragment {
     RetrofitInterface mRetrofitInterface;
     Call<List<Result.NFood>> mFoodListCall;
     android.os.Handler mHandler;
+    int value = 1;
+    Button count;
+    TextView itemPrice;
+    int total= 0;
+    SQLiteDatabase db;
+    DataBaseHelper myDbHelpel;
 
     public static final int SINGLE_ORDER_QUANTITY = 1;
     public static final String CHEF_ID = "Chef partnerId";
@@ -240,16 +253,51 @@ public class FoodListFragment extends Fragment {
         }
     };
 
-    private void createDialog(Food food){
-
+    private void createDialog(final Food food) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
         alertDialog.setView(mDialogView);
         ((TextView)mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
-        ((TextView)mDialogView.findViewById(R.id.itemPriceDialog)).setText(""+food.getPrice());
+        itemPrice=(TextView)mDialogView.findViewById(R.id.itemPriceDialog);
+        itemPrice.setText(""+food.getPrice()+" ԴՐԱՄ");
         ((TextView)mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView)mDialogView.findViewById(R.id.foodImageDialog));
+        Button minus=(Button)mDialogView.findViewById(R.id.btn_minus);
+        count=(Button)mDialogView.findViewById(R.id.btn_display);
+        Button plus=(Button)mDialogView.findViewById(R.id.btn_plus);
+        value=1;
+        count.setText(""+value);
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (value <= 1) {
+                    value = 1;
+                    total=value * food.getPrice();
+                    count.setText("" + value);
+                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
+                }
+                else
+                {
+                    value--;
+                    total=value * food.getPrice();
+                    count.setText("" + value);
+                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
+                }
+            }
+        });
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    value++;
+                    total=value * food.getPrice();
+                    count.setText("" + value);
+                    itemPrice.setText(String.valueOf(total)+ " ԴՐԱՄ");
+            }
+        });
+
+
         final long dishId = food.getId();
 
 
@@ -257,24 +305,24 @@ public class FoodListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-            mOrderQuantity = Integer.parseInt(((TextView)mDialogView.findViewById(R.id.countDialog)).getText().toString());
+                mOrderQuantity = Integer.parseInt(count.getText().toString());
 
-            for(OrderedItem item : MainActivity.orderedItems){
-                if(item.getDishId() == dishId) {
-                    item.setCount(item.getCount()+ mOrderQuantity);
-                    mChecker = true;
-                    break;
+                for(OrderedItem item : MainActivity.orderedItems){
+                    if(item.getDishId() == dishId) {
+                        item.setCount(item.getCount()+ mOrderQuantity);
+                        mChecker = true;
+                        break;
+                    }
+                    Log.d(Constants.LOG_TAG, "end of iteration");
                 }
-                Log.d(Constants.LOG_TAG, "end of iteration");
-            }
-            if(!mChecker){
-                mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
-                MainActivity.orderedItems.add(mOrderedItem);
-                MainActivity.updateMenuCount();
-                Log.d(Constants.LOG_TAG, "adding object");
+                if(!mChecker){
+                    mOrderedItem = new OrderedItem(dishId, mOrderQuantity);
+                    MainActivity.orderedItems.add(mOrderedItem);
+                    MainActivity.updateMenuCount();
+                    Log.d(Constants.LOG_TAG, "adding object");
 
-            }
-            mChecker = false;
+                }
+                mChecker = false;
 
             }
         });
@@ -290,9 +338,7 @@ public class FoodListFragment extends Fragment {
 
         Dialog dialog = alertDialog.create();
         dialog.show();
-
     }
-
     private void addOneItem(Food food) {
 
         long dishId = food.getId();
@@ -311,7 +357,28 @@ public class FoodListFragment extends Fragment {
 
         }
         mChecker = false;
+        total= Integer.parseInt(itemPrice.getText().toString());
+        String qty=count.getText().toString();
+        myDbHelpel = new DataBaseHelper(getContext());
+        try {
+            myDbHelpel.createDataBase();
+        } catch (IOException io) {
+            throw new Error("Unable TO Create DataBase");
+        }
+        try {
+            myDbHelpel.openDataBase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        db = myDbHelpel.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Name", "" + food.getName());
+        values.put("Quantity", qty);
+        values.put("Price", total);
 
+        db.insert("details",null,values);
+        myDbHelpel.close();
+
+        Toast.makeText(getContext(), getString(R.string.orderplace), Toast.LENGTH_LONG).show();
     }
-
 }

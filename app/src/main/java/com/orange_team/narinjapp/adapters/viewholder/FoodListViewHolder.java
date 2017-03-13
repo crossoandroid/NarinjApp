@@ -56,7 +56,7 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
 //TODO Food image must be resized
         mName.setText(food.getName());
         mDesc.setText(food.getDesc());
-        mPrice.setText(""+food.getPrice());
+        mPrice.setText(""+food.getPrice()+" դրամ");
         Picasso.with(mContext).load(food.getPicture()).into(mFoodImage);
 
     }
@@ -69,9 +69,5 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
         void onItemClick(int position);
         void onButtonClick(int position);
     }
-
-
-
-
 
 }

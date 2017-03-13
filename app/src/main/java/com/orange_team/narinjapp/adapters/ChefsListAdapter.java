@@ -52,7 +52,7 @@ public class ChefsListAdapter extends RecyclerView.Adapter<ChefsListViewHolder> 
 
     @Override
     public int getItemCount() {
-            return mChefList.size();
+        return mChefList.size();
     }
 
     public void setChefList(List<Chef> chefList){

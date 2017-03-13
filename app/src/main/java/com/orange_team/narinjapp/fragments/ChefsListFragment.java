@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.fragments; //H
+package com.orange_team.narinjapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,9 +27,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Hayk on 07-Mar-17.
- */
 
 public class ChefsListFragment extends Fragment {
 
@@ -124,5 +121,6 @@ public class ChefsListFragment extends Fragment {
 
         }
     };
+
 
 }

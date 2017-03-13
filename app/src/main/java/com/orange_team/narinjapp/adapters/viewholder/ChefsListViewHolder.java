@@ -50,5 +50,4 @@ public class ChefsListViewHolder extends RecyclerView.ViewHolder {
     public interface IOnClickListener {
         void onItemClick(int position);
     }
-
 }

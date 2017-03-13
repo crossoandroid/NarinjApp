@@ -17,13 +17,38 @@
     <string name="err_msg_name">Enter your name</string>
     <string name="err_msg_email">Enter your surname</string>
     <string name="err_msg_password">Enter your phone number</string>
+    <string name="noselect">Select Atleast one item.</string>
+    <string name="orderplace">Your order is successfully placed in cart.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_domain_word">narinj.am</string>
     <string name="internet_access">Միացրեք Ձեր սմարտֆոնի ինտերնետը:Հավելվածով կարող եք օգտվել միայն ինտերնետի առկայության դեպքւմ!</string>
     <string name="enable_internet">Միացնել</string>
+    <string name="description">Description</string>
     <string name="disable_internet">Դուրս գալ</string>
     <string name="error_internet_connection">Հասանելի ինտեռնետ չկա!Խնդրում ենք միացնել հասանելի WiFi կապ կամ 3G/4G ինտերնետը</string>
-
+    <string name="home_page">Գլխավոր</string>
+    <string name="why_use">Ինչու՞ օգտվել</string>
+    <string name="help">Օգնություն</string>
+    <string name="about_us">Մեր մասին</string>
+    <string name="order_details">Պատվերի տվյալներ</string>
+    <string name="setting">Կարգավորումներ</string>
+    <string name="share">Տարածել</string>
+    <string name="send">Ուղարկել</string>
+    <string name="why_use_title">Ինչու՞ օգտվել\n</string>
+    <string name="why_use_subtitle1">ԱՌՈՂՋ ՀՈՒՄՔ\n</string>
+    <string name="why_use_subtitle2">ՀԱՄԵՂ\n</string>
+    <string name="why_use_subtitle3">ԱՆՄԻՋԱՊԵՍ ԽՈՀԱՐԱՐԻՑ\n</string>
+    <string name="why_use_page_text1">\n Lorem Ipsum is simply dummy text of the printing and typesetting industry. \n</string>
+    <string name="why_use_page_text2">\n Lorem Ipsum is simply dummy text of the printing and typesetting industry. \n</string>
+    <string name="why_use_page_text3">\n Lorem Ipsum is simply dummy text of the printing and typesetting industry. \n</string>
+    <string name="help_title">Եղեք կապի մեջ \n</string>
+    <string name="help_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. \n \n \n</string>
+    <string name="help_phone">Հեռ. +37491277879 \n</string>
+    <string name="help_email">Email. support@narinj.am \n</string>
+    <string name="about_us_title">Մեր մասին \n</string>
+    <string name="about_us_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </string>
+    <string name="share_message">Պատվիրեք տնական պատրաստված համեղ ուտելիքներ Narinj հավելվածի օգնությամբ: \n https://itunes.apple.com/us/app/narinj/id1173335884?mt=8</string>
+    <string name="share_via">Տարածել...</string>
 </resources>

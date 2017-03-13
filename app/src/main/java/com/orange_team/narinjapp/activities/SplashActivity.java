@@ -22,11 +22,8 @@ import android.widget.LinearLayout;
 import com.orange_team.narinjapp.R;
 
 public class SplashActivity extends AppCompatActivity {
-
-
     Thread thread;
-    ConnectivityManager connec;
-
+    CheckNetworkConnection checkNetworkConnection;
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -53,29 +50,11 @@ public class SplashActivity extends AppCompatActivity {
         ImageView logoImage = (ImageView) findViewById(R.id.logo_imageView);
         logoImage.clearAnimation();
         logoImage.startAnimation(anim);
-        final CheckNetworkConnection checkNetworkConnection = new CheckNetworkConnection();
+        checkNetworkConnection = new CheckNetworkConnection(getBaseContext());
 
 
-        if (checkNetworkConnection.isConnectionAvailable(getApplicationContext())) {
-            thread = new Thread() {
-                @TargetApi(Build.VERSION_CODES.M)
-                @Override
-                public void run() {
-                    try {
-                        int waited = 0;
-                        while (waited < 3500) {
-                            sleep(100);
-                            waited += 100;
-                        }
-                        isInternetConnected();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        SplashActivity.this.finish();
-                    }
-                }
-            };
-            thread.start();
+        if (checkNetworkConnection.isConnectingToInternet()) {
+            waitTillConnection();
         } else {
             AlertDialog access = alert();
             access.show();
@@ -83,6 +62,26 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    private void waitTillConnection()
+    {
+        thread = new Thread() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void run() {
+                try {
+                    sleep(3500);
+                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    SplashActivity.this.finish();
+                }
+            }
+        };
+        thread.start();
+    }
     private AlertDialog alert()
     {
         AlertDialog accessInternet=new AlertDialog.Builder(SplashActivity.this)
@@ -90,9 +89,18 @@ public class SplashActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.enable_internet, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WifiManager wifiManager=(WifiManager) getSystemService(Context.WIFI_SERVICE);
-                        wifiManager.setWifiEnabled(true);
-                        isInternetConnected();
+
+                        if(!checkNetworkConnection.isConnectingToInternet()) {
+                            WifiManager wifiManager=(WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            wifiManager.setWifiEnabled(true);
+                            waitTillConnection();
+
+                        }
+                        else
+                        {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.disable_internet, new DialogInterface.OnClickListener() {
@@ -103,39 +111,5 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }).create();
         return accessInternet;
-    }
-    public void isInternetConnected()
-    {
-        connec = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        thread = new Thread() {
-            @TargetApi(Build.VERSION_CODES.M)
-            @Override
-            public void run() {
-                try {
-                    int waited = 0;
-                    while (waited < 3500) {
-                        sleep(100);
-                        waited += 100;
-                    }
-                    /*if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
-                            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {*/
-                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                   /* }
-                    else {
-
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                    }*/
-                    SplashActivity.this.finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    SplashActivity.this.finish();
-                }
-            }
-        };
-        thread.start();
     }
 }

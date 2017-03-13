@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.ChoiceAdapter;
-import com.orange_team.narinjapp.adapters.DividerItemDecor;
+import com.orange_team.narinjapp.utils.DividerItemDecor;
 import com.orange_team.narinjapp.model.Food;
 
 
@@ -77,7 +77,7 @@ public class BasketFragment extends Fragment {
     }
 
     public void addFood() {
-        Food food = new Food("Pizza Peperoni",1500);
+        /*Food food = new Food("Pizza Peperoni",1500);
         foodList.add(food);
 
         food = new Food("Apur",800);
@@ -94,7 +94,7 @@ public class BasketFragment extends Fragment {
 
         food = new Food("Xorovac",2300);
         foodList.add(food);
-
+*/
     }
 }
 

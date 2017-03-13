@@ -19,13 +19,10 @@ import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.fragments.ChefsListFragment;
 import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.R;
+import com.squareup.picasso.Picasso;
 
-/**
- * Created by User on 02.03.2017.
- */
 
 public class CatAdapter extends BaseAdapter {
-    private static final String key="Category";
     Context context;
     private final int[] imageId;
     private final String[] title;
@@ -63,12 +60,11 @@ public class CatAdapter extends BaseAdapter {
         View rowView;
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView==null) {
-            rowView=new View(context);
             rowView = inflater.inflate(R.layout.category_items, null);
             holder.img = (ImageView) rowView.findViewById(R.id.lunch);
             holder.textView=(TextView)rowView.findViewById(R.id.grid_text);
             holder.textView.setText(title[position]);
-            holder.img.setImageResource(imageId[position]);
+            Picasso.with(context).load(imageId[position]).resize(150,150).into(holder.img);
         }
         else
         {

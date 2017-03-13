@@ -22,6 +22,8 @@ public interface RetrofitInterface {
     @GET("get-dishes-by-chef")
     Call<List<Result.NFood>> getChefFoodList(@Query("chefId") Long chefId,  @Query(value = "page")int page, @Query(value = "count")int count);
 
-
-
+   /* @FormUrlEncoded
+    @POST("make-order")
+    public void sendToServer(@Field("phone") String phone, @Field("comment") String comment, @Field("price") int price, @Field("location") String location, @Field("dishOrders[]")List<SendItemInfo> dishOrders);
+*/
 }

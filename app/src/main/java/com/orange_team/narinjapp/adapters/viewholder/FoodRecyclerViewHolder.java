@@ -64,6 +64,4 @@ public class FoodRecyclerViewHolder extends RecyclerView.ViewHolder{
         mFoodName.setText(food.getName() + "");
         mFoodPrice.setText(food.getPrice() + "");
     }
-
-
 }

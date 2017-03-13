@@ -62,5 +62,4 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
         anim.setDuration(FADE_DURATION);
         view.startAnimation(anim);
     }
-
 }

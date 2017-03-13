@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.orange_team.narinjapp.R;
+import com.squareup.picasso.Picasso;
 
 /**
- * Created by User on 01.03.2017.
+ * Created by Dish on 01.03.2017.
  */
 
 public class CustomSwipeAdapter extends PagerAdapter {
@@ -37,7 +38,7 @@ public class CustomSwipeAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int i) {
         ImageView mImageView = new ImageView(mContext);
         mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        mImageView.setImageResource(sliderImagesId[i]);
+        Picasso.with(mContext).load(sliderImagesId[i]).into(mImageView);
         ((ViewPager) container).addView(mImageView, 0);
         return mImageView;
     }
