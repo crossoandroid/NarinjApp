@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.orange_team.narinjapp.R;
@@ -57,6 +58,7 @@ public class FoodListFragment extends Fragment  {
     SQLiteDatabase db;
     DataBaseHelper myDbHelpel;
     MediaPlayer mMediaPlayer;
+    ProgressBar mProgressBar;
 
     public static final String CHEF_ID = "Chef partnerId";
     public static final String CATEGORY_KEY = "Category";
@@ -115,6 +117,7 @@ public class FoodListFragment extends Fragment  {
                             mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
                         }else {
+                            mProgressBar.setVisibility(View.GONE);
                             mFoodListAdapter.setFoodList(mFoodList);
                         }
 
@@ -132,6 +135,7 @@ public class FoodListFragment extends Fragment  {
                             getObjects(mFoodListCall);
                         }
                         else {
+                            mProgressBar.setVisibility(View.GONE);
                             mFoodListAdapter.setFoodList(mFoodList);
                         }
 
@@ -146,6 +150,7 @@ public class FoodListFragment extends Fragment  {
 
     private void defineComponents() {
 
+        mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarFoodListFragment);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);

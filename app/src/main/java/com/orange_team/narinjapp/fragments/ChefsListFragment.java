@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.ChefsListAdapter;
@@ -37,6 +38,7 @@ public class ChefsListFragment extends Fragment {
     List<Chef> mChefList;
     ChefsListAdapter mChefsListAdapter;
     RetrofitInterface mRetrofitInterface;
+    ProgressBar mProgressBar;
     public static final String IMAGE_BASE_URL = "http://narinj.am/resources/site/assets/img/";
 
 
@@ -62,6 +64,7 @@ public class ChefsListFragment extends Fragment {
 
     private void createObjects() {
 
+        mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarChefListFragment);
         mChefList = new ArrayList<>();
         mChefsListAdapter = new ChefsListAdapter(getContext());
         mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
@@ -92,6 +95,7 @@ public class ChefsListFragment extends Fragment {
                     mChefList.add(mChef);
                     Log.d(Constants.LOG_TAG, mChef.getName());
                 }
+                mProgressBar.setVisibility(View.GONE);
                 mChefsListAdapter.setChefList(mChefList);
 
             }
