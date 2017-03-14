@@ -56,7 +56,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListViewHolder> {
     public void onBindViewHolder(FoodListViewHolder holder, int position) {
 
         holder.setData(mFoodList.get(position));
-        setScaleAnimation(holder.itemView);
+       // setScaleAnimation(holder.itemView);
 
     }
 

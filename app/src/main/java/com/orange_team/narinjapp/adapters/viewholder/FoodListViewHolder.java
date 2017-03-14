@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.model.Food;
 import com.squareup.picasso.Picasso;
 
@@ -57,8 +58,11 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
         mName.setText(food.getName());
         mDesc.setText(food.getDesc());
         mPrice.setText(""+food.getPrice()+" դրամ");
-        Picasso.with(mContext).load(food.getPicture()).into(mFoodImage);
-
+        if(food.getPicture().equals(FoodListFragment.DEFAULT_FOOD)){
+            Picasso.with(mContext).load(R.drawable.default_food).resize(100, 100).centerCrop().into(mFoodImage);
+        }else{
+            Picasso.with(mContext).load(food.getPicture()).resize(100, 100).centerCrop().into(mFoodImage);
+        }
     }
 
     public void setOnClickListener(IOnClickListener onClickListener) {

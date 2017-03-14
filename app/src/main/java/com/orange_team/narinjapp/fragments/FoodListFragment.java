@@ -74,6 +74,7 @@ public class FoodListFragment extends Fragment  {
     public static final int COUNT_VALUE = 10;
     public static final int HANDLER_MESSAGE_0 = 0;
     public static final int HANDLER_MESSAGE_1 = 1;
+    public static final String DEFAULT_FOOD = "default_food";
 
 
     @Nullable
@@ -110,10 +111,13 @@ public class FoodListFragment extends Fragment  {
                         if (mFoodList.size() == 0) {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
-                        if (mFoodList.size() % 10 == 0) {
+                        if (mFoodList.size() % (mPageValue*10) == 0) {
                             mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
-                        }else mFoodListAdapter.setFoodList(mFoodList);
+                        }else {
+                            mFoodListAdapter.setFoodList(mFoodList);
+                        }
+
 
                     }
                     break;
@@ -122,10 +126,14 @@ public class FoodListFragment extends Fragment  {
                         if (mFoodList.size() == 0) {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
-                        if (mFoodList.size() % 10 == 0) {
+
+                        if (mFoodList.size() % (mPageValue*10) == 0) {
                             mFoodListCall = mRetrofitInterface.getFoodByCategory(mCurrentCategory, mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
-                        }else mFoodListAdapter.setFoodList(mFoodList);
+                        }
+                        else {
+                            mFoodListAdapter.setFoodList(mFoodList);
+                        }
 
                     }
                     break;
@@ -212,9 +220,14 @@ public class FoodListFragment extends Fragment  {
                     mFood.setPrice(food.price);
                     if (food.files.size() > 0) {
                         mFood.setPicture(IMAGE_BASE_URL + food.files.get(0).path);
+                    }else{
+                        mFood.setPicture(DEFAULT_FOOD);
                     }
                     mFoodList.add(mFood);
+
                 }
+
+
                 mPageValue++;
                 if (mCurrentCategory.equals(CHEF)) {
                     mHandler.sendEmptyMessage(HANDLER_MESSAGE_0);
