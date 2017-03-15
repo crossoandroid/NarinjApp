@@ -20,12 +20,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/about_us"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_title_size"
+            android:textSize="@dimen/secondary_fragment_pages_title_size"
             android:contentDescription="@string/about_us_title"/>
 
         <ImageView
-            android:layout_width="@dimen/logo_letters_size"
-            android:layout_height="@dimen/logo_letters_size"
+            android:layout_width="@dimen/splash_logo_letters_size"
+            android:layout_height="@dimen/splash_logo_letters_size"
             android:src="@drawable/orangecoloricon"
             android:layout_gravity="center" />
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/about_us_text"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_text_size"
+            android:textSize="@dimen/secondary_fragment_page_text_size"
             android:contentDescription="@string/about_us_text"/>
         </LinearLayout>
     </ScrollView>

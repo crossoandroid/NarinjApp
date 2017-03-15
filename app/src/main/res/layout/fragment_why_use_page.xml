@@ -20,12 +20,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/why_use_title"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_title_size"
+            android:textSize="@dimen/secondary_fragment_pages_title_size"
             android:contentDescription="@string/why_use"/>
 
         <ImageView
-            android:layout_width="@dimen/logo_letters_size"
-            android:layout_height="@dimen/logo_letters_size"
+            android:layout_width="@dimen/splash_logo_letters_size"
+            android:layout_height="@dimen/splash_logo_letters_size"
             android:src="@drawable/appleicon"
             android:layout_gravity="center" />
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/why_use_title1"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_subtitle_size"
+            android:textSize="@dimen/secondary_fragment_page_subtitle_size"
             android:contentDescription="@string/why_use"/>
 
         <TextView
@@ -45,12 +45,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_one"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_text_size"
+            android:textSize="@dimen/secondary_fragment_page_text_size"
             android:contentDescription="@string/why_use_page_text1"/>
 
         <ImageView
-            android:layout_width="@dimen/logo_letters_size"
-            android:layout_height="@dimen/logo_letters_size"
+            android:layout_width="@dimen/splash_logo_letters_size"
+            android:layout_height="@dimen/splash_logo_letters_size"
             android:src="@drawable/cookicon"
             android:layout_gravity="center" />
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/why_use_title2"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_subtitle_size"
+            android:textSize="@dimen/secondary_fragment_page_subtitle_size"
             android:contentDescription="@string/why_use"/>
 
 
@@ -71,12 +71,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_two"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_text_size"
+            android:textSize="@dimen/secondary_fragment_page_text_size"
             android:contentDescription="@string/why_use_page_text2"/>
 
         <ImageView
-            android:layout_width="@dimen/logo_letters_size"
-            android:layout_height="@dimen/logo_letters_size"
+            android:layout_width="@dimen/splash_logo_letters_size"
+            android:layout_height="@dimen/splash_logo_letters_size"
             android:src="@drawable/dishicon"
             android:layout_gravity="center" />
         <TextView
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/why_use_title3"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_subtitle_size"
+            android:textSize="@dimen/secondary_fragment_page_subtitle_size"
             android:contentDescription="@string/why_use"/>
 
         <TextView
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_three"
             android:gravity="center"
-            android:textSize="@dimen/navbar_pages_text_size"
+            android:textSize="@dimen/secondary_fragment_page_text_size"
             android:contentDescription="@string/why_use_page_text3"/>
     </LinearLayout>
 </ScrollView>

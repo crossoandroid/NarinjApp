@@ -70,7 +70,7 @@ public class BasketFragment extends Fragment {
         android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         OrderDetailsFragment orderDetailsFragment = new OrderDetailsFragment();
-        fragmentTransaction.replace(R.id.container, orderDetailsFragment);
+        fragmentTransaction.replace(R.id.basket_fragment, orderDetailsFragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

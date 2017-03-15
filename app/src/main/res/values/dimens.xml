@@ -5,8 +5,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="spacing">8dp</dimen>
+    <dimen name="splash_fab_margin">16dp</dimen>
+    <dimen name="splash_spacing">8dp</dimen>
     <dimen name="logo_letters_size">70dp</dimen>
     <dimen name="category_image_margin">5dp</dimen>
     <dimen name="category_text_margin">15dp</dimen>
@@ -19,9 +19,9 @@
     <dimen name="dialog_count">36sp</dimen>
     <dimen name="dialog_desc">14sp</dimen>
     <dimen name="dialog_margins">14dp</dimen>
-    <dimen name="rec_item_margins">14dp</dimen>
+    <dimen name="rec_item_margins">20dp</dimen>
     <dimen name="total_size">25dp</dimen>
-    <dimen name="navbar_pages_title_size">40sp</dimen>
-    <dimen name="navbar_pages_subtitle_size">25sp</dimen>
-    <dimen name="navbar_pages_text_size">18sp</dimen>
+    <dimen name="secondary_fragment_pages_title_size">40sp</dimen>
+    <dimen name="secondary_fragment_page_subtitle_size">25sp</dimen>
+    <dimen name="secondary_fragment_page_text_size">18sp</dimen>
 </resources>

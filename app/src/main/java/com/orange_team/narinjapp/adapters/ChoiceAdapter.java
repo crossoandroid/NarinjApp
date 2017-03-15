@@ -28,7 +28,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
 
     @Override
     public FoodRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.food_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.basket_food_item, parent, false);
         FoodRecyclerViewHolder foodRecyclerViewHolder = new FoodRecyclerViewHolder(view);
 
         return foodRecyclerViewHolder;

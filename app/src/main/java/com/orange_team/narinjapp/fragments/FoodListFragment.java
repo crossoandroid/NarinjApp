@@ -36,6 +36,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.orange_team.narinjapp.utils.DividerItemDecor;
 
 
 public class FoodListFragment extends Fragment  {
@@ -44,7 +45,8 @@ public class FoodListFragment extends Fragment  {
     List<Food> mFoodList;
     int mOrderQuantity;
     int mPageValue = 0;
-    String mCurrentCategory;
+    static String mCurrentCategory;
+    static long mCurrentChefId;
     RecyclerView mRecyclerView;
     View mDialogView;
     Food mFood;
@@ -89,10 +91,14 @@ public class FoodListFragment extends Fragment  {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         init();
+        Log.d(Constants.LOG_TAG, "onViewCreated");
     }
 
 
+
+
     public void init() {
+        Log.d(Constants.LOG_TAG, "init");
 
         createObjects();
         defineAdapterContent();
@@ -101,6 +107,7 @@ public class FoodListFragment extends Fragment  {
     }
 
     private void createObjects() {
+        Log.d(Constants.LOG_TAG, "createObjects");
 
         mFoodList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
@@ -114,7 +121,7 @@ public class FoodListFragment extends Fragment  {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
                         if (mFoodList.size() % (mPageValue*10) == 0) {
-                            mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
+                            mFoodListCall = mRetrofitInterface.getChefFoodList(mCurrentChefId, mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
                         }else {
                             mProgressBar.setVisibility(View.GONE);
@@ -149,10 +156,12 @@ public class FoodListFragment extends Fragment  {
     }
 
     private void defineComponents() {
+        Log.d(Constants.LOG_TAG, "defineComponents");
 
         mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarFoodListFragment);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mFoodListAdapter);
         mFoodListAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
@@ -191,19 +200,21 @@ public class FoodListFragment extends Fragment  {
 
                 case ALL:
                     mCurrentCategory = ALL;
+
                     break;
 
                 case CHEF:
                     mCurrentCategory = CHEF;
                     break;
             }
-            defineFoodListCall();
         }
+        defineFoodListCall();
     }
 
     private void defineFoodListCall() {
         if (mCurrentCategory.equals(CHEF)) {
-            mFoodListCall = mRetrofitInterface.getChefFoodList(getArguments().getLong(CHEF_ID), mPageValue, COUNT_VALUE);
+            mCurrentChefId = getArguments().getLong(CHEF_ID);
+            mFoodListCall = mRetrofitInterface.getChefFoodList(mCurrentChefId, mPageValue, COUNT_VALUE);
         } else {
             mFoodListCall = mRetrofitInterface.getFoodByCategory(mCurrentCategory, mPageValue, COUNT_VALUE);
         }
@@ -270,12 +281,12 @@ public class FoodListFragment extends Fragment  {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
-        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
+        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food_dialog, null);
         alertDialog.setView(mDialogView);
         ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
         mDialogItemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
         mDialogItemPrice.setText("" + food.getPrice() + " ԴՐԱՄ");
-        ((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
+        //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
 
         Button minus = (Button) mDialogView.findViewById(R.id.btn_minus);

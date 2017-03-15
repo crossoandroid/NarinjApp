@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.fragments.FoodListFragment;
@@ -18,7 +17,7 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
     IOnClickListener mOnClickListener;
     ImageView mFoodImage;
     TextView mName, mDesc, mPrice;
-    Button mAdd;
+    TextView mAdd;
     Context mContext;
 
 
@@ -30,7 +29,7 @@ public class FoodListViewHolder extends RecyclerView.ViewHolder {
         mName = (TextView) itemView.findViewById(R.id.foodNameRec);
         mDesc = (TextView) itemView.findViewById(R.id.desc);
         mPrice = (TextView) itemView.findViewById(R.id.price);
-        mAdd = (Button) itemView.findViewById(R.id.addButton);
+        mAdd = (TextView) itemView.findViewById(R.id.itemAddTextView);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

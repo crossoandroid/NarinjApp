@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding">
+
+    <ImageView
+        android:id="@+id/foodImageDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dialog_margins"
+        app:srcCompat="@mipmap/ic_launcher"/>
+
+
+    <TextView
+        android:id="@+id/descDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/foodImageDialog"
+        android:layout_marginBottom="@dimen/dialog_margins"
+        android:layout_marginLeft="@dimen/dialog_margins"
+        android:layout_marginTop="@dimen/dialog_margins"
+        android:text="Description"
+        android:textColor="@color/secondary_text"/>
+
+    <TextView
+        android:id="@+id/itemPriceDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/descDialog"
+        android:layout_marginBottom="@dimen/dialog_margins"
+        android:layout_marginRight="@dimen/dialog_margins"
+        android:text="Price"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/food_item_price_text_size"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemPriceDialog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dialog_margins"
+        android:layout_marginTop="@dimen/dialog_margins">
+
+        <include layout="@layout/plus_minus_controller"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

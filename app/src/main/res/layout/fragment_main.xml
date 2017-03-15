@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/category_menu"
-        android:columnWidth="100dp"
+        android:columnWidth="@dimen/grid_view_column_width"
         android:gravity="center"
         android:numColumns="3"
         android:stretchMode="spacingWidthUniform"

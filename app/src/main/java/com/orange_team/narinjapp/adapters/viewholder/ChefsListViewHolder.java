@@ -37,9 +37,9 @@ public class ChefsListViewHolder extends RecyclerView.ViewHolder {
 
     public void setData(Chef chef){
 //TODO set chef's avatar picture
-        mChefName.setText(chef.getName());
+        mChefName.setText(chef.getName()+" "+chef.getSurname());
         mTelNumber.setText(chef.getPhone());
-        Picasso.with(mContext).load(chef.getAvatar()).into(mChefAvatar);
+        Picasso.with(mContext).load(chef.getAvatar()).resize(75, 100).centerCrop().into(mChefAvatar);
 
     }
 

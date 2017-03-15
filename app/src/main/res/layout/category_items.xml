@@ -11,15 +11,15 @@
     android:contentDescription="@string/logo_image_description"
     android:scaleType="fitCenter"
     android:layout_gravity="center"
-    android:layout_marginTop="@dimen/category_image_margin"
-    android:layout_marginBottom="@dimen/category_image_margin" />
+    android:layout_marginTop="@dimen/main_menu_category_image_margin"
+    android:layout_marginBottom="@dimen/main_menu_category_image_margin" />
 
     <TextView
         android:id="@+id/grid_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/category_text_margin"
-        android:textSize="@dimen/category_text_size"
+        android:layout_marginTop="@dimen/main_menu_category_text_margin"
+        android:textSize="@dimen/main_menu_category_text_size"
         android:layout_gravity="center">
     </TextView>
     </LinearLayout>

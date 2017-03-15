@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_minus"
+        android:layout_width="@dimen/plus_minus_custom_view_sub_items_width"
+        android:layout_height="@dimen/plus_minus_custom_view_height"
+        android:background="@drawable/minus_btn" />
+
+    <Button
+        android:id="@+id/btn_display"
+        android:layout_width="@dimen/plus_minus_custom_view_main_items_width"
+        android:layout_height="@dimen/plus_minus_custom_view_height"
+        android:layout_toRightOf="@+id/btn_minus"
+        android:background="@drawable/number_bg"
+        android:textColor="#009B7C" />
+
+    <Button
+        android:id="@+id/btn_plus"
+        android:layout_width="@dimen/plus_minus_custom_view_sub_items_width"
+        android:layout_height="@dimen/plus_minus_custom_view_height"
+        android:layout_toRightOf="@id/btn_display"
+        android:background="@drawable/plus_btn" />
+
+</RelativeLayout>

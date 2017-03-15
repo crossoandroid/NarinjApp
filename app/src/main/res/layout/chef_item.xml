@@ -1,31 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/chefAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"/>
-
     <LinearLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="vertical">
+                  android:layout_width="match_parent"
+                  android:layout_height="82dp"
+                  android:layout_marginLeft="@dimen/root_layout_margins"
+                  android:layout_marginRight="@dimen/root_layout_margins"
+                  android:weightSum="4"
+                  xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
-    <TextView
-        android:text="Name Surename"
-        android:id="@+id/chefFullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:text="Tel Number"
-        android:id="@+id/chefPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-   </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="@dimen/food_picture_layout_size"
+            android:layout_height="@dimen/food_picture_layout_size"
+            android:layout_marginBottom="@dimen/food_item_element_margin"
+            android:layout_marginLeft="@dimen/food_item_element_margin"
+            android:layout_marginTop="@dimen/food_item_element_margin"
+            android:id="@+id/rel_img">
+
+            <com.orange_team.narinjapp.utils.RoundedImageView
+                android:layout_width="@dimen/food_item_picture_size"
+                android:layout_height="@dimen/food_item_picture_size"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:id="@+id/chefAvatar"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/food_item_text_layout_height"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/food_item_inner_layouts_margin"
+                android:gravity="center_vertical|left"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/chefFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="Name"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/chef_item_primary_text"/>
+                <TextView
+                    android:id="@+id/chefPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="phone"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/chef_item_secondary_text"/>
+
+            </LinearLayout>
 </LinearLayout>
