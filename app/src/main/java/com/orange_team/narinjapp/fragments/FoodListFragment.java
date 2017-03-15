@@ -1,6 +1,7 @@
 package com.orange_team.narinjapp.fragments;
 
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,7 +150,7 @@ public class FoodListFragment extends Fragment  {
 
                     }
                     break;
-                }//
+                }
             }
         };
         mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class BasketFragment extends Fragment {
         mBasketRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBasketRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
         mBasketRecyclerView.setAdapter(mAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mBasketRecyclerView);
 
         addFood();
 
@@ -79,5 +82,19 @@ public class BasketFragment extends Fragment {
     public void addFood() {
 
    }
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAdapterPosition();
+            mAdapter.notifyItemRemoved(position);
+            foodList.remove(position);
+            //TODO Delete item from db, notify data set change
+        }
+    };
 }
 
