@@ -148,7 +148,7 @@ public class FoodListFragment extends Fragment  {
 
                     }
                     break;
-                }
+                }//
             }
         };
         mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
