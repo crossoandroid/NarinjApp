@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.orange_team.narinjapp.R;
+
 
 
 public class OrderDetailsFragment extends Fragment {
@@ -53,6 +56,7 @@ public class OrderDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 submitForm();
+
             }
         });
 
@@ -123,21 +127,46 @@ public class OrderDetailsFragment extends Fragment {
         }
     }
 
+
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
+        private boolean backspacingFlag = false;
+        private boolean editedFlag = false;
 
         private MyTextWatcher(View view) {
+
             this.view = view;
         }
 
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
         }
 
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
 
         public void afterTextChanged(Editable editable) {
+
+            String string = editable.toString();
+            String phone = string.replaceAll("[^\\d]", "");
+
+            if (!editedFlag) {
+
+                if (phone.length() >= 6 && !backspacingFlag) {
+
+                    editedFlag = true;
+
+                    String ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3,5) + "-" + phone.substring(5,7) + "-" + phone.substring(7);
+                    mInputNumber.setText(ans);
+
+                    mInputNumber.setSelection(mInputNumber.getText().length());
+
+                }
+            } else {
+                editedFlag = false;
+            }
+
             switch (view.getId()) {
                 case R.id.input_name:
                     validateName();

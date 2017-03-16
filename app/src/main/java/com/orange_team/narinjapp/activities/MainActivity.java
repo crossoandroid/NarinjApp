@@ -1,12 +1,15 @@
 package com.orange_team.narinjapp.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +29,9 @@ import com.orange_team.narinjapp.fragments.AboutUsFragment;
 import com.orange_team.narinjapp.fragments.BasketFragment;
 import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
+import com.orange_team.narinjapp.fragments.MapFrag;
+import com.orange_team.narinjapp.fragments.OrdersDetailsFrag;
+import com.orange_team.narinjapp.fragments.SettingsFragment;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
 
 
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity
             Fragment basketFragment = new BasketFragment();
             fragmentTransaction.replace(R.id.fragment_main, basketFragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
@@ -158,8 +165,12 @@ public class MainActivity extends AppCompatActivity
             HelpPageFragment helpPageFragment = new HelpPageFragment();
             fragmentTransaction.replace(R.id.fragment_main, helpPageFragment);
         } else if (id == R.id.order_details) {
+            OrdersDetailsFrag ordersDetailsFrag = new OrdersDetailsFrag();
+            fragmentTransaction.replace(R.id.fragment_main,ordersDetailsFrag);
 
         } else if (id == R.id.settings) {
+            SettingsFragment settingsFragment = new SettingsFragment();
+            fragmentTransaction.replace(R.id.fragment_main,settingsFragment);
 
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -173,6 +184,24 @@ public class MainActivity extends AppCompatActivity
             sendIntent.putExtra("sms_body", messageBody);
             sendIntent.setType("vnd.android-dir/mms-sms");
             startActivity(sendIntent);
+        }else if(id == R.id.map){
+            MapFrag mapFrag = new MapFrag();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        }, MapFrag.PERMISSION_REQUEST_CODE);
+
+                fragmentTransaction.replace(R.id.fragment_main,mapFrag);
+            }
+            else {
+                fragmentTransaction.replace(R.id.fragment_main,mapFrag);
+            }
+
+
         }
 
         fragmentTransaction.commit();

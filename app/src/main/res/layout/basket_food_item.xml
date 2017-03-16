@@ -5,103 +5,90 @@
     android:layout_height="wrap_content"
     android:paddingBottom="5dp"
     android:id="@+id/food_items">
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="70dp"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/food_image"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pizza Pepperoni"
-        android:textSize="20dp"
-        android:textAppearance="@style/CodeFont"
-        android:id="@+id/food_name"
+        android:text="@string/app_name"
+        android:textSize="@dimen/food_item_primary_text_size"
+        android:id="@+id/basketFoodName"
         android:paddingLeft="10dp"
-        android:layout_toRightOf="@+id/food_image"
+        android:paddingRight="10dp"
+        android:layout_toRightOf="@+id/basketFoodImageRelativeLayout"
+        android:layout_marginLeft="@dimen/food_item_inner_layouts_margin"
+        android:layout_marginTop="@dimen/food_item_element_margin"
          />
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/relativeLayout"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteIconRelativeLayout"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@android:drawable/ic_delete"
-            android:id="@+id/delete"
+            android:id="@+id/basketItemDelete"
             android:clickable="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/food_item_element_margin"
+            android:layout_marginBottom="@dimen/food_item_element_margin"/>
     </RelativeLayout>
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:text="-"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:id="@+id/btn_minus"
-        android:paddingBottom="10dp"
-        android:background="@color/btn_color"
-        android:focusable="false"
-        android:layout_alignBaseline="@+id/count"
-        android:layout_alignBottom="@+id/count"
-        android:layout_toLeftOf="@+id/count"
-        android:layout_toStartOf="@+id/count" />
 
-    <Button
-        android:layout_width="50dp"
+    <RelativeLayout
+        android:layout_width="@dimen/food_picture_layout_size"
+        android:layout_height="@dimen/food_picture_layout_size"
+        android:layout_marginBottom="@dimen/food_item_element_margin"
+        android:layout_marginLeft="@dimen/food_item_element_margin"
+        android:layout_marginTop="@dimen/food_item_element_margin"
+        android:id="@+id/basketFoodImageRelativeLayout">
+
+    <com.orange_team.narinjapp.utils.RoundedImageView
+        android:layout_width="@dimen/food_item_picture_size"
+        android:layout_height="@dimen/food_item_picture_size"
+        android:id="@+id/basketFoodImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/food_item_element_margin"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:id="@+id/btn_plus"
-        android:paddingBottom="10dp"
-        android:background="@color/btn_color"
-        android:layout_alignBaseline="@+id/count"
-        android:layout_alignBottom="@+id/count"
+        android:id="@+id/plusMinusButtonsRelativeLayout"
+        android:layout_alignBottom="@+id/basketFoodImageRelativeLayout"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true">
 
-    <EditText
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:id="@+id/count"
-        android:text="1"
-        android:inputType="numberSigned"
-        android:textAlignment="center"
-        android:background="@drawable/edit_text_design"
-        android:clickable="false"
-        android:focusable="false"
-        android:longClickable="false"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/food_name"
-        android:layout_toLeftOf="@+id/btn_plus"
-        android:layout_toStartOf="@+id/btn_plus" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1400 "
-        android:textSize="20dp"
-        android:id="@+id/food_price"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:textAppearance="@style/boldText"
-        android:layout_below="@+id/food_image"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="@dimen/food_item_price_text_size"
+        android:id="@+id/basketFoodPrice"
+        android:layout_below="@+id/plusMinusButtonsRelativeLayout"
+        android:layout_alignLeft="@+id/basketFoodImageRelativeLayout"
+        android:layout_alignStart="@+id/basketFoodImageRelativeLayout" />
+
+    <include layout="@layout/plus_minus_controller"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignBottom="@+id/basketFoodPrice"
+        android:layout_toLeftOf="@+id/deleteIconRelativeLayout"
+        android:layout_toStartOf="@+id/deleteIconRelativeLayout" />
 
 
 </RelativeLayout>
