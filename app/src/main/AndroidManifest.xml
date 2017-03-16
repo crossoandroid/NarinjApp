@@ -30,12 +30,11 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAYPaN7q-u2xkxOBKlO85H1BDED-9U7bGs">
-
-        </meta-data>
-
+        <provider
+            android:name=".db.CartContentProvider"
+            android:authorities="com.orange_team.narinjapp.utils"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

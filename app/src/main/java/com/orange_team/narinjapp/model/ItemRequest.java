@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SendItemInfo {
+public class ItemRequest {
     @SerializedName("phone")
     @Expose
     private String phone;

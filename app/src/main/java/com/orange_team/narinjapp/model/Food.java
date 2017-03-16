@@ -10,7 +10,7 @@ public class Food {
     private String desc;
     private String chefName;
     private String picture;
-
+    private String count;
     public Food() {
 
     }
@@ -18,6 +18,14 @@ public class Food {
     public Food(String name, int price) {
         this.name = name;
         this.price = price;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public long getId() {

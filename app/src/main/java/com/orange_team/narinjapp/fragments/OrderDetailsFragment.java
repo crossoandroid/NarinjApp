@@ -18,6 +18,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.model.ItemRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
@@ -26,7 +34,7 @@ public class OrderDetailsFragment extends Fragment {
     private EditText mInputName, mInputSurname, mInputNumber;
     private TextInputLayout mInputLayoutName, mInputLayoutSurname, mInputLayoutNumber;
     private Button mOrderBtn;
-
+    Call<ItemRequest> itemRequestCall;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,22 +68,17 @@ public class OrderDetailsFragment extends Fragment {
             }
         });
 
-
     }
 
     private void submitForm() {
-        if (!validateName()) {
+        if (!validateName() || !validateEmail()||!validatePhoneNumber()) {
             return;
         }
-
-        if (!validateEmail()) {
-            return;
-        }
-
-        if (!validatePhoneNumber()) {
-            return;
-        }
-
+        ItemRequest itemRequest=new ItemRequest();
+        itemRequest.setPhone("Android");
+        itemRequest.setPrice(48448);
+        itemRequest.setLocation("sss 2");
+        itemRequest.setComment("hghuhu");
         Toast.makeText(getContext(), "Thank You!", Toast.LENGTH_SHORT).show();
     }
 

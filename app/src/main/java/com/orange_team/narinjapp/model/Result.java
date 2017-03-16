@@ -1,10 +1,7 @@
-package com.orange_team.narinjapp.model; //H
+package com.orange_team.narinjapp.model;
 
 import java.util.List;
 
-/**
- * Created by Hayk on 07-Mar-17.
- */
 
 public class Result {
 

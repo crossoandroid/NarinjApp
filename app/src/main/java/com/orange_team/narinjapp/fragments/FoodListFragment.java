@@ -2,7 +2,9 @@ package com.orange_team.narinjapp.fragments;
 
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -27,10 +29,12 @@ import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.FoodListAdapter;
 import com.orange_team.narinjapp.application.NApplication;
 import com.orange_team.narinjapp.constants.Constants;
+import com.orange_team.narinjapp.db.DBDescription;
 import com.orange_team.narinjapp.db.DataBaseHelper;
 import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Food;
+import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -52,14 +56,19 @@ public class FoodListFragment extends Fragment  {
     RecyclerView mRecyclerView;
     View mDialogView;
     Food mFood;
+    int qtybyId;
+    int totalbyId;
     RetrofitInterface mRetrofitInterface;
     Call<List<Result.NFood>> mFoodListCall;
     android.os.Handler mHandler;
-    int mDialogItemCountValue = 1;
-    Button mDialogItemCount;
-    TextView mDialogItemPrice;
-    int mDialogTotalPriceValue = 0;
+    OrderedItem mOrderedItem;
+    List<OrderedItem> mOrderedItemsList;
+    int value = 1;
+    Button count;
+    TextView itemPrice;
+    int total = 0;
     SQLiteDatabase db;
+    Boolean mChecker = false;
     DataBaseHelper myDbHelpel;
     MediaPlayer mMediaPlayer;
     ProgressBar mProgressBar;
@@ -279,70 +288,77 @@ public class FoodListFragment extends Fragment  {
         }
     };
 
-    private void createDialog(final Food food) {
 
+    private void createDialog(final Food food) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(food.getName());
-        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food_dialog, null);
+        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
         alertDialog.setView(mDialogView);
         ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
-        mDialogItemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
-        mDialogItemPrice.setText("" + food.getPrice() + " ԴՐԱՄ");
-        //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
+        itemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
+        itemPrice.setText("" + food.getPrice());
+        ((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
-
         Button minus = (Button) mDialogView.findViewById(R.id.btn_minus);
-        mDialogItemCount = (Button) mDialogView.findViewById(R.id.btn_display);
+        count = (Button) mDialogView.findViewById(R.id.btn_display);
         Button plus = (Button) mDialogView.findViewById(R.id.btn_plus);
-        mDialogItemCountValue = 1;
-        mDialogItemCount.setText("" + mDialogItemCountValue);
-
+        value = 1;
+        count.setText("" + value);
         minus.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                if (mMediaPlayer.isPlaying()){
-                    mMediaPlayer.stop();
-                }
-                mMediaPlayer.start();
-                if (mDialogItemCountValue <= 1) {
-                    mDialogItemCountValue = 1;
-                    mDialogTotalPriceValue = mDialogItemCountValue * food.getPrice();
-                    mDialogItemCount.setText("" + mDialogItemCountValue);
-                    mDialogItemPrice.setText(String.valueOf(mDialogTotalPriceValue) + " ԴՐԱՄ");
+                if (value <= 1) {
+                    value = 1;
+                    total = value * food.getPrice();
+                    count.setText("" + value);
+                    itemPrice.setText(String.valueOf(total));
                 } else {
-                    mDialogItemCountValue--;
-                    mDialogTotalPriceValue = mDialogItemCountValue * food.getPrice();
-                    mDialogItemCount.setText("" + mDialogItemCountValue);
-                    mDialogItemPrice.setText(String.valueOf(mDialogTotalPriceValue) + " ԴՐԱՄ");
+                    value--;
+                    total = value * food.getPrice();
+                    count.setText("" + value);
+                    itemPrice.setText(String.valueOf(total));
                 }
             }
         });
+
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediaPlayer.isPlaying()){
-                    mMediaPlayer.stop();
-                }
-                mMediaPlayer.start();
-                mDialogItemCountValue++;
-                mDialogTotalPriceValue = mDialogItemCountValue * food.getPrice();
-                mDialogItemCount.setText("" + mDialogItemCountValue);
-                mDialogItemPrice.setText(String.valueOf(mDialogTotalPriceValue) + " ԴՐԱՄ");
+                value++;
+                total = value * food.getPrice();
+                count.setText("" + value);
+                itemPrice.setText(String.valueOf(total));
             }
         });
+
+
+        final long dishId = food.getId();
 
 
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mMediaPlayer.isPlaying()){
-                    mMediaPlayer.stop();
-                }
-                mMediaPlayer.start();
-                mOrderQuantity = Integer.parseInt(mDialogItemCount.getText().toString());
 
-                MainActivity.updateMenuCount(MainActivity.menuCount+mOrderQuantity);
+                qtybyId = Integer.parseInt(count.getText().toString());
+                int q = qtybyId;
+                totalbyId = Integer.parseInt(itemPrice.getText().toString());
+                int t = totalbyId;
+                mOrderQuantity = Integer.parseInt(count.getText().toString());
+
+                myDbHelpel = new DataBaseHelper(getContext());
+                db = myDbHelpel.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+
+                values.put(DBDescription.Cart.COLUMN_NAME, "" + food.getName());
+                values.put(DBDescription.Cart.COLUMN_QTY, count.getText().toString());
+                values.put(DBDescription.Cart.COLUMN_TOTAL, itemPrice.getText().toString());
+
+                values.put(DBDescription.Cart.COLUMN_IMG_PATH, food.getPicture());
+                db.insert(DBDescription.Cart.TABLE_NAME, null, values);
+
+                myDbHelpel.close();
+                Toast.makeText(getContext(), getString(R.string.orderplace) + food.getName(), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -358,5 +374,4 @@ public class FoodListFragment extends Fragment  {
         Dialog dialog = alertDialog.create();
         dialog.show();
     }
-
 }
