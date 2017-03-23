@@ -1,11 +1,15 @@
 <LinearLayout android:id="@+id/relLayRec"
     android:layout_width="match_parent"
     android:layout_height="82dp"
-    android:layout_marginLeft="@dimen/root_layout_margins"
-    android:layout_marginRight="@dimen/root_layout_margins"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
     android:weightSum="4"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/btn_color"
     >
 
 

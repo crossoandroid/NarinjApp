@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,6 +50,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
     private double latitude;
     private GoogleApiClient googleApiClient;
     StringBuilder strReturnedAddress;
+    SupportMapFragment mapFragment;
 
 
     @Nullable
@@ -74,7 +76,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
             startActivity(intent);
         }
 
-        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -107,6 +109,8 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
             }
         });
 
+
+
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -116,7 +120,11 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        getCurrentLocation();
+        try {
+            getCurrentLocation();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -129,7 +137,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
 
     }
 
-    private void getCurrentLocation() {
+    private void getCurrentLocation() throws IOException {
         mMap.clear();
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -148,7 +156,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
 
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
 
-            try {
+
                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
                 if (addresses != null) {
@@ -162,9 +170,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
                 } else {
                     Log.v("address", strReturnedAddress.toString());
                 }
-            } catch (IOException ex) {
 
-            }
 
             moveMap();
         }
@@ -195,5 +201,44 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
         googleApiClient.disconnect();
         super.onStop();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mMap == null){
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    mMap = googleMap;
+
+                    LatLng india = new LatLng(0, 0);
+                    mMap.addMarker(new MarkerOptions().position(india).title("Marker"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(india));
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                }, PERMISSION_REQUEST_CODE);
+
+
+
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true);
+                    mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                }
+            });
+        }
+    }
+
 
 }

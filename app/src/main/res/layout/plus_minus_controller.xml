@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+    android:layout_marginTop="15dp">
     <Button
         android:id="@+id/btn_minus"
         android:layout_width="@dimen/plus_minus_custom_view_sub_items_width"
         android:layout_height="@dimen/plus_minus_custom_view_height"
-        android:background="@drawable/minus_btn" />
+        android:background="@drawable/minus_btn"
+        />
 
     <Button
         android:id="@+id/btn_display"
@@ -15,7 +17,7 @@
         android:layout_height="@dimen/plus_minus_custom_view_height"
         android:layout_toRightOf="@+id/btn_minus"
         android:background="@drawable/number_bg"
-        android:textColor="#009B7C" />
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/btn_plus"

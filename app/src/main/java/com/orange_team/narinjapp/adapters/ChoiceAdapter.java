@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.viewholder.FoodRecyclerViewHolder;
 import com.orange_team.narinjapp.db.DBDescription;
@@ -26,6 +27,8 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
     private List<Food> foods;
     private int newPos;
     static int inttotal;
+    int value = 1;
+    int total = 0;
 
     public ChoiceAdapter(Context context, List<Food> foodList) {
         this.context = context;
@@ -41,21 +44,51 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final FoodRecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(final FoodRecyclerViewHolder holder, final int position) {
         holder.setData(foods.get(position));
+
         Picasso.with(context).load(foods.get(position).getPicture()).into(holder.cartItemImg);
         for (int i = 0; i < foods.size(); i++) {
-            inttotal+=foods.get(position).getPrice();
+            inttotal += foods.get(position).getPrice();
         }
+
+        value = Integer.parseInt(foods.get(position).getCount());
+
+        holder.mMinusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (value <= 1) {
+                    value = 1;
+                    total = value * foods.get(position).getPrice();
+                    holder.mFoodQtyBtn.setText("" + value);
+                    holder.mFoodPrice.setText(String.valueOf(total));
+                } else {
+                    value--;
+                    total = value * foods.get(position).getPrice();
+                    holder.mFoodQtyBtn.setText("" + value);
+                    holder.mFoodPrice.setText(String.valueOf(total));
+                }
+            }
+        });
+
+        holder.mPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                value++;
+                total = value * foods.get(position).getPrice();
+                holder.mFoodQtyBtn.setText("" + value);
+                holder.mFoodPrice.setText(String.valueOf(total));
+            }
+        });
         holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newPos = holder.getAdapterPosition();
                 deleteItem(foods.get(newPos).getName());
-                inttotal-=foods.get(newPos).getPrice();
+                inttotal -= foods.get(newPos).getPrice();
                 foods.remove(newPos);
                 notifyItemRemoved(newPos);
-                notifyItemRangeChanged(newPos,foods.size());
+                notifyItemRangeChanged(newPos, foods.size());
             }
         });
 
@@ -74,11 +107,10 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
         view.startAnimation(anim);
     }
 
-    public void deleteItem(String name)
-    {
+    public void deleteItem(String name) {
         DataBaseHelper myDbHelper = new DataBaseHelper(context);
         SQLiteDatabase db = myDbHelper.getWritableDatabase();
-        db.delete(DBDescription.Cart.TABLE_NAME, DBDescription.Cart.COLUMN_NAME + " = ?", new String[] {name});
+        db.delete(DBDescription.Cart.TABLE_NAME, DBDescription.Cart.COLUMN_NAME + " = ?", new String[]{name});
         db.close();
         myDbHelper.close();
     }

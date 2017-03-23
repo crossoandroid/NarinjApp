@@ -1,6 +1,7 @@
 package com.orange_team.narinjapp.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -31,7 +33,6 @@ import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
 import com.orange_team.narinjapp.fragments.MapFrag;
 import com.orange_team.narinjapp.fragments.OrdersDetailsFrag;
-import com.orange_team.narinjapp.fragments.SettingsFragment;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
 
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             Fragment mainFragment = new MainFragment();
             fragmentTransaction.add(R.id.fragment_main, mainFragment);
+
             fragmentTransaction.commit();
         }
 
@@ -167,10 +169,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.order_details) {
             OrdersDetailsFrag ordersDetailsFrag = new OrdersDetailsFrag();
             fragmentTransaction.replace(R.id.fragment_main,ordersDetailsFrag);
-
-        } else if (id == R.id.settings) {
-            SettingsFragment settingsFragment = new SettingsFragment();
-            fragmentTransaction.replace(R.id.fragment_main,settingsFragment);
 
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);

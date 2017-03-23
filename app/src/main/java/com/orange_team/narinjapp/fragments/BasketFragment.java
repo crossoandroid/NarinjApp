@@ -47,6 +47,8 @@ public class BasketFragment extends Fragment {
     Cursor cursor = null;
     int inttotal;
 
+    Button mPlusBtn,mMinusBtn,mDisplayBtn;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +70,11 @@ public class BasketFragment extends Fragment {
         itemTouch.attachToRecyclerView(mBasketRecyclerView);
         mTotal = (TextView) view.findViewById(R.id.totalText);
         mContinueBtn = (Button) view.findViewById(R.id.continue_btn);
+
+        mPlusBtn = (Button) view.findViewById(R.id.btn_plus);
+        mMinusBtn = (Button) view.findViewById(R.id.btn_minus);
+        mDisplayBtn = (Button) view.findViewById(R.id.btn_display);
+
 
 
         getList();
@@ -123,10 +130,43 @@ public class BasketFragment extends Fragment {
                         imgPath=cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_IMG_PATH));
 
 
+
+//                        mMinusBtn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                if (value <= 1) {
+//                                    value = 1;
+//                                    total = value * Integer.parseInt(price);
+//                                    mDisplayBtn.setText("" + value);
+//                                    //itemPrice.setText(String.valueOf(total));
+//                                } else {
+//                                    value--;
+//                                    total = value * Integer.parseInt(price);
+//                                    mDisplayBtn.setText("" + value);
+//                                    //itemPrice.setText(String.valueOf(total));
+//                                }
+//                            }
+//                        });
+//
+//                        mPlusBtn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                value++;
+//                                total = value * Integer.parseInt(price);
+//                                mDisplayBtn.setText("" + value);
+//                                //itemPrice.setText(String.valueOf(total));
+//                            }
+//                        });
+
+
                         food.setName(name);
                         food.setPrice(Integer.parseInt(price));
                         food.setCount(qty);
                         food.setPicture(imgPath);
+
+
+
+
 
                         foodList.add(food);
 
@@ -146,7 +186,7 @@ public class BasketFragment extends Fragment {
             Log.d("Vishal", "" + foodList.size());
             inttotal = 0;
             mBasketRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mBasketRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
+            //mBasketRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
             mAdapter = new ChoiceAdapter(getActivity(), foodList);
             mBasketRecyclerView.setAdapter(mAdapter);
             for (int i = 0; i < foodList.size(); i++) {

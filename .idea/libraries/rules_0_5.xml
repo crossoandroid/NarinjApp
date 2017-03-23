@@ -1,15 +1,14 @@
 <component name="libraryTable">
   <library name="rules-0.5">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.android/build-cache/56ed64bfe8060ecaed1c1714b539a7330b0eab74/output/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/ae20da668daba5e7d87905c09e0d3bd81234be1e/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/ae20da668daba5e7d87905c09e0d3bd81234be1e/output/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://D:/Android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
       <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
     </SOURCES>
   </library>

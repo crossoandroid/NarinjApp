@@ -3,7 +3,8 @@
               android:id="@+id/fragmentItemsList"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:background="#FFE0B2">
 
     <ProgressBar
         android:id="@+id/progressBarFoodListFragment"

@@ -172,7 +172,7 @@ public class FoodListFragment extends Fragment  {
         mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarFoodListFragment);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
+        //mRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mFoodListAdapter);
         mFoodListAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
@@ -290,14 +290,15 @@ public class FoodListFragment extends Fragment  {
 
 
     private void createDialog(final Food food) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
         alertDialog.setTitle(food.getName());
-        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food, null);
+        mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food_dialog, null);
         alertDialog.setView(mDialogView);
         ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
+
         itemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
         itemPrice.setText("" + food.getPrice());
-        ((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
+        //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
         Button minus = (Button) mDialogView.findViewById(R.id.btn_minus);
         count = (Button) mDialogView.findViewById(R.id.btn_display);
@@ -333,7 +334,6 @@ public class FoodListFragment extends Fragment  {
 
 
         final long dishId = food.getId();
-
 
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
