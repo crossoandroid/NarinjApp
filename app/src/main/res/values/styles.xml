@@ -33,16 +33,16 @@
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
 
-        <item name="android:background">#4CAF50</item>
+        <item name="android:background">#4CAF50 </item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#BDBDBD</item>
+        <item name="android:textColor">#BDBDBD </item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#BDBDBD</item>
+        <item name="android:textColor">#BDBDBD </item>
     </style>
 </resources>

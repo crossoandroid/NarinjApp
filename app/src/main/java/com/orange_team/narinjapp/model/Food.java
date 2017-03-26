@@ -1,10 +1,20 @@
-package com.orange_team.narinjapp.model;  //H
+package com.orange_team.narinjapp.model;
 
 
 
 public class Food {
 
     private long id;
+    private long chiefId;
+
+    public long getChiefId() {
+        return chiefId;
+    }
+
+    public void setChiefId(long chiefId) {
+        this.chiefId = chiefId;
+    }
+
     private int price;
     private String name;
     private String desc;

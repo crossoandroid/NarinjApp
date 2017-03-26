@@ -10,9 +10,10 @@
     <string name="basket_total">Total:</string>
     <string name="button_continue">Continue</string>
 
-    <string name="hint_name">Name</string>
-    <string name="hint_surname">Surname</string>
+    <string name="hint_price">Price</string>
+    <string name="hint_comment">Comment</string>
     <string name="hint_phone_number">Phone Number</string>
+
     <string name="btn_sign_up">Sign Up</string>
     <string name="err_msg_name">Enter your name</string>
     <string name="err_msg_email">Enter your surname</string>
@@ -52,4 +53,9 @@
     <string name="share_message">Պատվիրեք տնական պատրաստված համեղ ուտելիքներ Narinj հավելվածի օգնությամբ: \n https://itunes.apple.com/us/app/narinj/id1173335884?mt=8</string>
     <string name="share_via">Տարածել...</string>
     <string name="request_base_url">http://narinj.am/</string>
+    <string name="hint_address">Address</string>
+    <string name="address_error">Enter your address or find by GPS</string>
+    <string name="service_error">Սերվիսը հասանելի չէ</string>
+    <string name="service_error2">Սխալ լատիտուդ և լոնգիտուդ</string>
+    <string name="error_not_found_message">Not found</string>
 </resources>

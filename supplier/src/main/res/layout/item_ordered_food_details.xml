@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="horizontal"
+              android:layout_height="82dp"
+              android:layout_marginLeft="@dimen/root_layout_margins"
+              android:layout_marginRight="@dimen/root_layout_margins"
+              android:weightSum="4"
+    >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/food_item_text_layout_height"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/food_item_inner_layouts_margin"
+        android:layout_weight="2"
+        android:gravity="center_vertical|left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/foodItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="Food Name"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/food_item_primary_text_size"/>
+
+        <TextView
+            android:id="@+id/foodItemChefName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:text="Chef Name"
+            android:textSize="@dimen/food_item_secondary_text_size"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/food_item_text_layout_height"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/food_item_inner_layouts_margin"
+        android:layout_weight="2"
+        android:gravity="center_vertical|left"
+        android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/foodItemCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/food_item_element_margin"
+                android:layout_marginRight="@dimen/food_item_inner_layouts_margin"
+                android:layout_marginTop="@dimen/food_item_element_margin"
+                android:text="3 Հատ"
+                android:textSize="@dimen/food_item_price_text_size"/>
+
+            <TextView
+                android:id="@+id/foodItemPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodItemCount"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/food_item_element_margin"
+                android:layout_marginRight="@dimen/food_item_inner_layouts_margin"
+                android:layout_marginTop="@dimen/food_item_element_margin"
+                android:text="15000 ԴՐԱՄ"
+                android:textSize="@dimen/food_item_price_text_size"/>
+        </LinearLayout>
+
+</LinearLayout>

@@ -14,63 +14,24 @@ import com.orange_team.narinjapp.model.Food;
 public class FoodRecyclerViewHolder extends RecyclerView.ViewHolder{
 
     public TextView mFoodName, mFoodPrice;
+    public Button mFoodQty;
     public  ImageView mDelBtn;
     public ImageView cartItemImg;
-    int value;
-    int total = 0;
-
-    public Button mPlusBtn,mMinusBtn,mFoodQtyBtn;
-
     public FoodRecyclerViewHolder(View itemView) {
         super(itemView);
+    }
+    public Button mPlusBtn, mMinusBtn;
+
+    public void setData(Food food){
         mFoodName = (TextView) itemView.findViewById(R.id.basketFoodName);
         mFoodPrice = (TextView) itemView.findViewById(R.id.basketFoodPrice);
+        mFoodQty=(Button)itemView.findViewById(R.id.btn_display);
         cartItemImg=(ImageView)itemView.findViewById(R.id.basketFoodImage);
         mDelBtn=(ImageView)itemView.findViewById(R.id.basketItemDelete);
-        mPlusBtn = (Button) itemView.findViewById(R.id.btn_plus);
-        mMinusBtn = (Button) itemView.findViewById(R.id.btn_minus);
-        mFoodQtyBtn = (Button) itemView.findViewById(R.id.btn_display);
-
-
-    }
-
-
-    public void setData(final Food food){
-
-        value = Integer.parseInt(food.getCount());
-
-//        mMinusBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (value <= 1) {
-//                    value = 1;
-//                    total = value * food.getPrice();
-//                    mFoodQtyBtn.setText("" + value);
-//                    mFoodPrice.setText(String.valueOf(total));
-//                } else {
-//                    value--;
-//                    total = value * food.getPrice();
-//                    mFoodQtyBtn.setText("" + value);
-//                    mFoodPrice.setText(String.valueOf(total));
-//                }
-//            }
-//        });
-//
-//        mPlusBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                value++;
-//                total = value * food.getPrice();
-//                mFoodQtyBtn.setText("" + value);
-//                mFoodPrice.setText(String.valueOf(total));
-//            }
-//        });
-
-
-
-
-        mFoodName.setText(food.getName());
-        mFoodPrice.setText(food.getPrice() + "");
-        mFoodQtyBtn.setText(food.getCount());
+        mPlusBtn=(Button)itemView.findViewById(R.id.btn_plus);
+        mMinusBtn=(Button)itemView.findViewById(R.id.btn_minus);
+        mFoodName.setText(food.getName()+"");
+        mFoodPrice.setText(food.getPrice()+"");
+        mFoodQty.setText(food.getCount()+"");
     }
 }

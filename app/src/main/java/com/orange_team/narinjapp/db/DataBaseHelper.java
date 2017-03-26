@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-	private static String DB_NAME = "Cart4.DB";
+	private static String DB_NAME = "Cart7.DB";
 	private static final int DATABASE_VERSION=1;
 
 	private SQLiteDatabase myDataBase;
@@ -29,7 +29,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 						DBDescription.Cart.COLUMN_NAME + " TEXT, " +
 						DBDescription.Cart.COLUMN_QTY + " TEXT, " +
 						DBDescription.Cart.COLUMN_TOTAL + " TEXT, " +
+						DBDescription.Cart.COLUMN_DISH_ID + " TEXT, " +
+						DBDescription.Cart.COLUMN_CHIEF_ID + " TEXT, " +
 						DBDescription.Cart.COLUMN_IMG_PATH + " TEXT);";
+
 		db.execSQL(CREATE_ITEMS_TABLE);
 	}
 

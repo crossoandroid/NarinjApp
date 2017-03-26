@@ -41,9 +41,6 @@ public class ChefsListFragment extends Fragment {
     ProgressBar mProgressBar;
     public static final String IMAGE_BASE_URL = "http://narinj.am/resources/site/assets/img/";
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

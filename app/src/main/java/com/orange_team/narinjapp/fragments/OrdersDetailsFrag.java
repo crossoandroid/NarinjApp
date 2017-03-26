@@ -3,13 +3,8 @@ package com.orange_team.narinjapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +12,6 @@ import android.view.ViewGroup;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.adapters.OrdersDetailsAdapter;
 import com.orange_team.narinjapp.model.OrdersDetails;
-import com.orange_team.narinjapp.utils.DividerItemDecor;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,7 +64,6 @@ public class OrdersDetailsFrag extends Fragment {
 
         mOrdersDetailsRecycler = (RecyclerView) view.findViewById(R.id.orders_details_recycler);
         mOrdersDetailsRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mOrdersDetailsRecycler.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
         mOrdersDetailsRecycler.setAdapter(mAdapter);
 
     }

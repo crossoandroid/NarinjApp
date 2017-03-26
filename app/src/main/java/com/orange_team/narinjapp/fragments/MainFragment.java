@@ -1,5 +1,7 @@
 package com.orange_team.narinjapp.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,16 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.CatAdapter;
 import com.orange_team.narinjapp.adapters.CustomSwipeAdapter;
 
 
 public class MainFragment extends Fragment {
+
     ViewPager viewPager;
     CustomSwipeAdapter adapter;
     GridView gridView;
     CatAdapter catAdapter;
-
     String[] title = {
             "Ապուր",
             "Աղցան",
@@ -65,10 +68,7 @@ public class MainFragment extends Fragment {
         adapter = new CustomSwipeAdapter(this.getActivity());
         viewPager.setAdapter(adapter);
         gridView.setAdapter(catAdapter);
-
         return view;
     }
-
-
 
 }

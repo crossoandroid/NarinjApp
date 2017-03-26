@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.application; //H
+package com.orange_team.narinjapp.application;
 
 import android.app.Application;
 
@@ -8,9 +8,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-/**
- * Created by Hayk on 07-Mar-17.
- */
 
 public class NApplication extends Application{
 
@@ -28,6 +25,5 @@ public class NApplication extends Application{
     }
 
     public RetrofitInterface getRetrofitInterface(){return mRetrofitInterface;}
-
 
 }

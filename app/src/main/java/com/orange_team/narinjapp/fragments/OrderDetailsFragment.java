@@ -6,44 +6,54 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.MaskFilterSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.pinball83.maskededittext.MaskedEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.orange_team.narinjapp.R;
-import com.orange_team.narinjapp.model.ItemRequest;
+import com.orange_team.narinjapp.application.NApplication;
+import com.orange_team.narinjapp.interfaces.RetrofitInterface;
+import com.orange_team.narinjapp.model.Datark;
+import com.orange_team.narinjapp.model.DishOrders;
+import com.orange_team.narinjapp.model.Body;
+import com.orange_team.narinjapp.utils.AlertDialogManager;
+import com.orange_team.narinjapp.utils.InternetConnectionDetector;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class OrderDetailsFragment extends Fragment {
 
-    private EditText mInputName, mInputSurname;
-    private TextInputLayout mInputLayoutName, mInputLayoutSurname, mInputLayoutNumber;
+    private EditText mInputName, mInputSurname, mInputNumber, mInputAddress;
+    private TextInputLayout mInputLayoutPrice, mInputLayoutComment, mInputLayoutNumber,mInputLayoutAddress;
     private Button mOrderBtn;
-    MaskedEditText mInputNumber;
-    Call<ItemRequest> itemRequestCall;
-
+    RetrofitInterface mRetrofitInterface;
+    Body body;
+    List<Body> bodies;
+    List<DishOrders> dishOrders;
+    Boolean isInternetPresent = false;
+    InternetConnectionDetector internetConnectionDetector;
+    FirebaseDatabase fbdb;
+    DatabaseReference ref;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,16 +67,14 @@ public class OrderDetailsFragment extends Fragment {
 
     private void init(View view) {
 
-        mInputLayoutName = (TextInputLayout) view.findViewById(R.id.input_layout_name);
-        mInputLayoutSurname = (TextInputLayout) view.findViewById(R.id.input_layout_surname);
+        mInputLayoutPrice = (TextInputLayout) view.findViewById(R.id.input_layout_price);
+        mInputLayoutComment = (TextInputLayout) view.findViewById(R.id.input_layout_comment);
         mInputLayoutNumber = (TextInputLayout) view.findViewById(R.id.input_layout_number);
-        mInputName = (EditText) view.findViewById(R.id.input_name);
-        mInputSurname = (EditText) view.findViewById(R.id.input_surname);
+        mInputLayoutAddress = (TextInputLayout) view.findViewById(R.id.input_layout_address);
+        mInputName = (EditText) view.findViewById(R.id.input_price);
+        mInputSurname = (EditText) view.findViewById(R.id.input_comment);
         mInputNumber = (MaskedEditText) view.findViewById(R.id.masked_edit_text);
-
-        mInputName.addTextChangedListener(new MyTextWatcher(mInputName));
-        mInputSurname.addTextChangedListener(new MyTextWatcher(mInputSurname));
-//        mInputNumber.addTextChangedListener(new MyTextWatcher(mInputNumber));
+        mInputAddress = (EditText) view.findViewById(R.id.input_address);
 
         mInputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -92,50 +100,78 @@ public class OrderDetailsFragment extends Fragment {
             }
         });
 
+        mInputAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
+
+
         mOrderBtn = (Button) view.findViewById(R.id.toOrder);
         mOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                submitForm();
-
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                MainFragment mainFragment = new MainFragment();
-                //fragmentTransaction.add(R.id.order_details_fragment,mainFragment);
-                fragmentTransaction.replace(R.id.order_details_fragment,mainFragment);
-                fragmentTransaction.commit();
-
-
+                internetConnectionDetector=new InternetConnectionDetector(getContext());
+                isInternetPresent=internetConnectionDetector.isConnectingToInternet();
+                if(isInternetPresent) {
+                    sendPost();
+                }
+                else
+                {
+                    AlertDialogManager alertDialogManager=new AlertDialogManager();
+                    alertDialogManager.showAlertDialog(getContext(),getString(R.string.enable_internet),getString(R.string.internet_access),true);
+                }
             }
         });
 
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+    }
 
+    public void sendPost()
+    {
+        bodies=new ArrayList<>();
+        fbdb=FirebaseDatabase.getInstance();
+        ref=fbdb.getReference().push();
+        body =new Body();
+        dishOrders=BasketFragment.listInstance();
+        mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
+        body.setPhone(mInputNumber.getText().toString());
+        body.setComment(mInputSurname.getText().toString());
+        body.setPrice(BasketFragment.inttotal);
+        body.setLocation(mInputAddress.getText().toString());
+
+        body.setDishOrders(dishOrders);
+        bodies.add(body);
+        ref.setValue(bodies);
+        Call<Datark> call=mRetrofitInterface.sendItems(body);
+        call.enqueue(new Callback<Datark>() {
+            @Override
+            public void onResponse(Call<Datark> call, Response<Datark> response) {
+                Toast.makeText(getContext(),response.code()+""+response.message(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Datark> call, Throwable t) {
+                Log.d("OrderDetailsFragment","onFailure:"+t.getMessage());
+            }
+        });
     }
 
     private void submitForm() {
-        if (!validateName() || !validateEmail() || !validatePhoneNumber()) {
+        if (!validateName() && !validateEmail() && !validatePhoneNumber() && !validateAddress()) {
             return;
         }
-        ItemRequest itemRequest = new ItemRequest();
-        itemRequest.setPhone("Android");
-        itemRequest.setPrice(48448);
-        itemRequest.setLocation("sss 2");
-        itemRequest.setComment("hghuhu");
-        Toast.makeText(getContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+
     }
 
     private boolean validateName() {
         if (mInputName.getText().toString().trim().isEmpty()) {
-            mInputLayoutName.setError(getString(R.string.err_msg_name));
+            mInputLayoutPrice.setError(getString(R.string.err_msg_name));
             requestFocus(mInputName);
             return false;
         } else {
-            mInputLayoutName.setErrorEnabled(false);
+            mInputLayoutPrice.setErrorEnabled(false);
         }
 
         return true;
@@ -145,11 +181,11 @@ public class OrderDetailsFragment extends Fragment {
         String surname = mInputSurname.getText().toString().trim();
 
         if (surname.isEmpty() || !isValidSurname(surname)) {
-            mInputLayoutSurname.setError(getString(R.string.err_msg_email));
+            mInputLayoutComment.setError(getString(R.string.err_msg_email));
             requestFocus(mInputSurname);
             return false;
         } else {
-            mInputLayoutSurname.setErrorEnabled(false);
+            mInputLayoutComment.setErrorEnabled(false);
         }
 
         return true;
@@ -167,6 +203,18 @@ public class OrderDetailsFragment extends Fragment {
         return true;
     }
 
+    private boolean validateAddress() {
+        if (mInputNumber.getText().toString().trim().isEmpty()) {
+            mInputLayoutAddress.setError(getString(R.string.address_error));
+            requestFocus(mInputNumber);
+            return false;
+        } else {
+            mInputLayoutAddress.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
     private static boolean isValidSurname(String surname) {
         return !TextUtils.isEmpty(surname);
     }
@@ -174,64 +222,6 @@ public class OrderDetailsFragment extends Fragment {
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             ((Activity) getContext()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-        private boolean backspacingFlag = false;
-        private boolean editedFlag = false;
-
-        private MyTextWatcher(View view) {
-
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-
-            String string = editable.toString();
-            String phone = string.replaceAll("[^\\d]", "");
-
-            if (!editedFlag) {
-
-                Pattern pt = Pattern.compile("([0-9](.[0-9]*)?)");
-                Matcher m = pt.matcher(phone);
-
-
-                if (phone.length() >= 7 && !backspacingFlag) {
-
-                    //editedFlag = true;
-                    editedFlag = m.matches();
-                    String ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 5) + "-" + phone.substring(5, 7) + "-" + phone.substring(7);
-                    mInputNumber.setText(ans);
-
-                    mInputNumber.setSelection(mInputNumber.getText().length());
-
-                }
-            } else {
-                editedFlag = false;
-            }
-
-            switch (view.getId()) {
-                case R.id.input_name:
-                    validateName();
-                    break;
-                case R.id.input_surname:
-                    validateEmail();
-                    break;
-//                case R.id.input_number:
-//                    validatePhoneNumber();
-//                    break;
-            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.adapters; //H
+package com.orange_team.narinjapp.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

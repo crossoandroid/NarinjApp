@@ -52,7 +52,6 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
     StringBuilder strReturnedAddress;
     SupportMapFragment mapFragment;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -175,6 +174,7 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
             moveMap();
         }
     }
+
 
     private void moveMap() {
         LatLng latLng = new LatLng(latitude, longitude);

@@ -1,4 +1,4 @@
-package com.orange_team.narinjapp.adapters.viewholder; //H
+package com.orange_team.narinjapp.adapters.viewholder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.model.Chef;
 import com.squareup.picasso.Picasso;
-
 
 public class ChefsListViewHolder extends RecyclerView.ViewHolder {
 

@@ -5,6 +5,13 @@ import java.util.List;
 
 public class Result {
 
+    private List<Body> bodies;
+
+    public List<Body> sendOrder()
+    {
+        return bodies;
+    }
+
     public static class NFood {
 
         public long dishId;
@@ -29,4 +36,6 @@ public class Result {
             public String path;
         }
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.orange_team.narinjapp.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static int menuCount;
+    public static String PREFS_NAME="Narinj";
     static FrameLayout mMenuRootFrame, mRedCircle;
     static TextView mItemsCountTV;
     DrawerLayout drawer;
@@ -90,12 +92,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setBackgroundColor(getResources().getColor(R.color.nav_color));
+
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
     public void onBackPressed() {
@@ -137,6 +137,14 @@ public class MainActivity extends AppCompatActivity
         mMenuRootFrame = (FrameLayout) cartItem.getActionView();
         mRedCircle = (FrameLayout) mMenuRootFrame.findViewById(R.id.menuIconRedCircleFrame);
         mItemsCountTV = (TextView) mMenuRootFrame.findViewById(R.id.menuIconRedCircleText);
+            SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            if (prefs.getInt("count", 0) != 0) {
+                menuCount = prefs.getInt("count", 0);
+
+            } else {
+                menuCount = 0;
+            }
+        mItemsCountTV.setText(""+menuCount);
         mMenuRootFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,14 +217,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void updateMenuCount(int count) {
-        menuCount=count;
         if (count == 0) {
             mItemsCountTV.setText("");
-            mRedCircle.setVisibility(View.GONE);
 
         } else {
-            mRedCircle.setVisibility(View.VISIBLE);
-            mItemsCountTV.setText("" + count);
+            mItemsCountTV.setText(""+count);
         }
     }
 

@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import com.orange_team.narinjapp.R;
 import com.squareup.picasso.Picasso;
 
-/**
- * Created by Dish on 01.03.2017.
- */
+
 
 public class CustomSwipeAdapter extends PagerAdapter {
     Context mContext;

@@ -1,10 +1,10 @@
 package com.orange_team.narinjapp.fragments;
 
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,6 @@ import com.orange_team.narinjapp.db.DataBaseHelper;
 import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Food;
-import com.orange_team.narinjapp.model.OrderedItem;
 import com.orange_team.narinjapp.model.Result;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -42,7 +40,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.orange_team.narinjapp.utils.DividerItemDecor;
 
 
 public class FoodListFragment extends Fragment  {
@@ -56,22 +53,19 @@ public class FoodListFragment extends Fragment  {
     RecyclerView mRecyclerView;
     View mDialogView;
     Food mFood;
-    int qtybyId;
-    int totalbyId;
     RetrofitInterface mRetrofitInterface;
     Call<List<Result.NFood>> mFoodListCall;
     android.os.Handler mHandler;
-    OrderedItem mOrderedItem;
-    List<OrderedItem> mOrderedItemsList;
+    private int cart=0;
     int value = 1;
     Button count;
     TextView itemPrice;
     int total = 0;
     SQLiteDatabase db;
-    Boolean mChecker = false;
     DataBaseHelper myDbHelpel;
     MediaPlayer mMediaPlayer;
     ProgressBar mProgressBar;
+
 
     public static final String CHEF_ID = "Chef partnerId";
     public static final String CATEGORY_KEY = "Category";
@@ -90,6 +84,8 @@ public class FoodListFragment extends Fragment  {
     public static final int HANDLER_MESSAGE_0 = 0;
     public static final int HANDLER_MESSAGE_1 = 1;
     public static final String DEFAULT_FOOD = "default_food";
+    public static final String PREFS_NAME = "Narinj";
+
 
 
     @Nullable
@@ -110,11 +106,9 @@ public class FoodListFragment extends Fragment  {
 
     public void init() {
         Log.d(Constants.LOG_TAG, "init");
-
-        createObjects();
-        defineAdapterContent();
-        defineComponents();
-
+            createObjects();
+            defineAdapterContent();
+            defineComponents();
     }
 
     private void createObjects() {
@@ -172,7 +166,6 @@ public class FoodListFragment extends Fragment  {
         mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarFoodListFragment);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //mRecyclerView.addItemDecoration(new DividerItemDecor(getContext(), LinearLayoutManager.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mFoodListAdapter);
         mFoodListAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
@@ -290,12 +283,11 @@ public class FoodListFragment extends Fragment  {
 
 
     private void createDialog(final Food food) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food_dialog, null);
         alertDialog.setView(mDialogView);
         ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
-
         itemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
         itemPrice.setText("" + food.getPrice());
         //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
@@ -335,29 +327,33 @@ public class FoodListFragment extends Fragment  {
 
         final long dishId = food.getId();
 
+
         alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                qtybyId = Integer.parseInt(count.getText().toString());
-                int q = qtybyId;
-                totalbyId = Integer.parseInt(itemPrice.getText().toString());
-                int t = totalbyId;
+
                 mOrderQuantity = Integer.parseInt(count.getText().toString());
 
                 myDbHelpel = new DataBaseHelper(getContext());
                 db = myDbHelpel.getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-
                 values.put(DBDescription.Cart.COLUMN_NAME, "" + food.getName());
                 values.put(DBDescription.Cart.COLUMN_QTY, count.getText().toString());
                 values.put(DBDescription.Cart.COLUMN_TOTAL, itemPrice.getText().toString());
-
                 values.put(DBDescription.Cart.COLUMN_IMG_PATH, food.getPicture());
+                values.put(DBDescription.Cart.COLUMN_CHIEF_ID,mCurrentChefId);
+                values.put(DBDescription.Cart.COLUMN_DISH_ID,mFood.getId());
                 db.insert(DBDescription.Cart.TABLE_NAME, null, values);
 
                 myDbHelpel.close();
+                cart+=Integer.parseInt(count.getText().toString());
+                MainActivity.updateMenuCount(cart);
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        .edit();
+                editor.putInt("count", cart);
+                editor.commit();
                 Toast.makeText(getContext(), getString(R.string.orderplace) + food.getName(), Toast.LENGTH_LONG).show();
 
             }
