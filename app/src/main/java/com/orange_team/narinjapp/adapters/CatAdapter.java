@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +66,8 @@ public class CatAdapter extends BaseAdapter {
         Holder holder = new Holder();
         View rowView;
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        convertView.setLayoutParams(new GridView.LayoutParams(params));
         if(convertView==null) {
             rowView = inflater.inflate(R.layout.category_items, null);
             holder.img = (ImageView) rowView.findViewById(R.id.lunch);

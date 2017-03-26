@@ -17,14 +17,19 @@
 
     </android.support.v4.view.ViewPager>
 
-    <GridView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/category_menu"
-        android:columnWidth="@dimen/grid_view_column_width"
-        android:gravity="center"
-        android:numColumns="3"
-        android:stretchMode="spacingWidthUniform"
         android:layout_weight="1.9"
-        />
+        android:layout_height="0dp">
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/category_menu"
+            android:gravity="center"
+            android:numColumns="3"
+            />
+    </LinearLayout>
+
 </LinearLayout>
