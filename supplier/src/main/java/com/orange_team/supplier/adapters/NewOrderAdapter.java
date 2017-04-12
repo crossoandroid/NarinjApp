@@ -8,20 +8,20 @@ import android.view.ViewGroup;
 
 import com.orange_team.supplier.R;
 import com.orange_team.supplier.adapters.viewholder.NewOrderViewHolder;
-import com.orange_team.supplier.models.OrderDetails;
+import com.orange_team.supplier.models.Body;
 
 import java.util.List;
 
 
 public class NewOrderAdapter extends RecyclerView.Adapter<NewOrderViewHolder> {
 
-    Context mContext;
-    List<OrderDetails> mOrderDetailsList;
+    private Context mContext;
+    private List<Body> mBodies;
     IOnItemSelectedListener mOnItemSelectedListener;
 
-    public NewOrderAdapter(Context context, List<OrderDetails> orderDetailsList){
+    public NewOrderAdapter(Context context, List<Body> bodies){
         mContext = context;
-        mOrderDetailsList = orderDetailsList;
+        mBodies = bodies;
     }
 
     @Override
@@ -32,8 +32,8 @@ public class NewOrderAdapter extends RecyclerView.Adapter<NewOrderViewHolder> {
         viewHolder.setOnClickListener(new NewOrderViewHolder.IOnClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mOnItemSelectedListener!=null){
-                    mOnItemSelectedListener.onItemSelected(mOrderDetailsList.get(position));
+                if(mOnItemSelectedListener != null){
+                    mOnItemSelectedListener.onItemSelected(mBodies.get(position));
                 }
             }
         });
@@ -42,12 +42,12 @@ public class NewOrderAdapter extends RecyclerView.Adapter<NewOrderViewHolder> {
 
     @Override
     public void onBindViewHolder(NewOrderViewHolder holder, int position) {
-        holder.setData(mOrderDetailsList.get(position));
+        holder.setData(mBodies.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mOrderDetailsList.size();
+        return mBodies.size();
     }
 
 
@@ -56,8 +56,6 @@ public class NewOrderAdapter extends RecyclerView.Adapter<NewOrderViewHolder> {
     }
 
     public interface IOnItemSelectedListener {
-
-        void onItemSelected(OrderDetails orderDetails);
-
+        void onItemSelected(Body body);
     }
 }

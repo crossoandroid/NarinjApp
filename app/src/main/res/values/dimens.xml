@@ -19,7 +19,7 @@
     <dimen name="food_item_primary_text_size">16sp</dimen>
     <dimen name="food_item_secondary_text_size">14sp</dimen>
     <dimen name="food_item_price_text_size">18sp</dimen>
-    <dimen name="food_total_price_text_size">25sp</dimen>
+    <dimen name="food_total_price_text_size">20sp</dimen>
     <dimen name="basket_padding">10dp</dimen>
     <dimen name="basket_continue_button_height">36dp</dimen>
     <dimen name="basket_continue_button_width">88dp</dimen>

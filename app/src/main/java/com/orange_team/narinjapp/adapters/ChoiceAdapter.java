@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.viewholder.FoodRecyclerViewHolder;
 import com.orange_team.narinjapp.db.DBDescription;
 import com.orange_team.narinjapp.db.DataBaseHelper;
 import com.orange_team.narinjapp.fragments.BasketFragment;
+import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.model.Food;
+import com.orange_team.narinjapp.utils.CartPreferences;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -42,7 +45,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final FoodRecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final FoodRecyclerViewHolder holder, int position) {
         holder.setData(foods.get(position));
         Picasso.with(context).load(foods.get(position).getPicture()).into(holder.cartItemImg);
 
@@ -51,12 +54,12 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
             public void onClick(View v) {
                 if (value <= 1) {
                     value = 1;
-                    total = value * foods.get(position).getPrice();
+                    total = value * foods.get(holder.getAdapterPosition()).getPrice();
                     holder.mFoodQty.setText("" + value);
                     holder.mFoodPrice.setText(String.valueOf(total));
                 } else {
                     value--;
-                    total = value * foods.get(position).getPrice();
+                    total = value * foods.get(holder.getAdapterPosition()).getPrice();
                     holder.mFoodQty.setText("" + value);
                     holder.mFoodPrice.setText(String.valueOf(total));
                 }
@@ -67,7 +70,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
             @Override
             public void onClick(View v) {
                 value++;
-                total = value * foods.get(position).getPrice();
+                total = value * foods.get(holder.getAdapterPosition()).getPrice();
                 holder.mFoodQty.setText("" + value);
                 holder.mFoodPrice.setText(String.valueOf(total));
             }
@@ -77,8 +80,11 @@ public class ChoiceAdapter extends RecyclerView.Adapter<FoodRecyclerViewHolder> 
             public void onClick(View v) {
                 newPos = holder.getAdapterPosition();
                 deleteItem(foods.get(newPos).getName());
-                BasketFragment.inttotal-=foods.get(newPos).getPrice();
-                BasketFragment.mTotal.setText("Ընդամենը:"+BasketFragment.inttotal);
+                BasketFragment.sum-=foods.get(newPos).getPrice();
+                FoodListFragment.cart-=Integer.parseInt(foods.get(newPos).getCount());
+                MainActivity.updateMenuCount(FoodListFragment.cart);
+                CartPreferences.saveInt(context, "count", FoodListFragment.cart);
+                BasketFragment.foodTotal.setText("Ընդամենը:"+BasketFragment.sum);
                 foods.remove(newPos);
                 notifyItemRemoved(newPos);
                 notifyItemRangeChanged(newPos,foods.size());

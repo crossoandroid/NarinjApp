@@ -5,19 +5,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orange_team.supplier.R;
-import com.orange_team.supplier.models.OrderDetails;
+import com.orange_team.supplier.models.Body;
 
 
 public class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
 
 
-    TextView mDateAndTime;
+    TextView mHistoryOrderName,mHistoryOrderAddress;
     IOnItemClick mIOnItemClick;
 
     public OrderHistoryViewHolder(View itemView) {
         super(itemView);
 
-        mDateAndTime = (TextView) itemView.findViewById(R.id.dateAndTimeTextView);
+        mHistoryOrderName = (TextView) itemView.findViewById(R.id.historyOrderName);
+        mHistoryOrderAddress = (TextView) itemView.findViewById(R.id.historyOrderAddress);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,10 +30,10 @@ public class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setData(OrderDetails orderDetails){
-        mDateAndTime.setText(orderDetails.getDateAndTime());
+    public void setData(Body body){
+        mHistoryOrderName.setText(body.getName());
+        mHistoryOrderAddress.setText(body.getLocation());
     }
-
 
     public interface IOnItemClick{
          void itemClick(int position);

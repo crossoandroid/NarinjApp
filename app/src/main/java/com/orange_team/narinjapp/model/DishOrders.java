@@ -11,7 +11,9 @@ import java.io.Serializable;
 
 public class DishOrders
 {
+    @SerializedName("count")
     private int count;
+    @SerializedName("dish")
     private Dish dish;
 
     public int getCount ()

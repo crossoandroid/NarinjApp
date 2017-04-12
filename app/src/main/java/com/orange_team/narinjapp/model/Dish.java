@@ -5,8 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Dish
 {
+    @SerializedName("name")
     private String name;
-
+    @SerializedName("dishId")
     private long dishId;
 
     public String getName ()

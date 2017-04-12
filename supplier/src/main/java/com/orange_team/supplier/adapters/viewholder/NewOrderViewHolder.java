@@ -5,16 +5,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orange_team.supplier.R;
-import com.orange_team.supplier.models.OrderDetails;
+import com.orange_team.supplier.models.Body;
 
 public class NewOrderViewHolder extends RecyclerView.ViewHolder {
 
-    TextView mUserName, mUserAddress;
+    private TextView mUserName, mUserAddress;
     IOnClickListener mOnClickListener;
 
     public NewOrderViewHolder(View itemView) {
         super(itemView);
-
         mUserName = (TextView)itemView.findViewById(R.id.userNameNewOrderItems);
         mUserAddress = (TextView)itemView.findViewById(R.id.userAddressNewOrderItems);
 
@@ -26,13 +25,11 @@ public class NewOrderViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
-
     }
 
-    public void setData(OrderDetails orderDetails){
-        mUserName.setText(orderDetails.getUserName());
-        mUserAddress.setText(orderDetails.getAddress());
-
+    public void setData(Body body){
+        mUserName.setText(body.getName());
+        mUserAddress.setText(body.getLocation());
     }
 
     public void setOnClickListener(IOnClickListener onClickListener) {
@@ -42,7 +39,4 @@ public class NewOrderViewHolder extends RecyclerView.ViewHolder {
     public interface IOnClickListener {
         void onItemClick(int position);
     }
-
-
-
 }

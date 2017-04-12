@@ -5,12 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    android:orientation="vertical"
-    tools:context="com.orange_team.user_application.narinj.suppliertest.activity.HistoryActivity">
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recyclerHistoryActivity"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-</android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/historyActivityOrderName"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/historyActivityOrderNumber"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/historyActivityOrderAddress"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/historyActivityOrderPrice"
+        android:textSize="15sp"/>
+
+    <ListView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/historyActivityListView">
+
+    </ListView>
+
 </LinearLayout>

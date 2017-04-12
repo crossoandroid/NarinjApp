@@ -33,7 +33,7 @@
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
 
-        <item name="android:background">#4CAF50 </item>
+        <item name="android:background">@color/primary_light </item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>

@@ -25,16 +25,31 @@
         android:paddingRight="@dimen/basket_padding"
         android:paddingBottom="@dimen/basket_padding"
         android:paddingLeft="@dimen/basket_padding"
-        android:background="#FFC107">
+        android:background="#FFC057">
 
+        <TextView
+            android:id="@+id/foodTotalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yndameny_label"
+            android:textSize="@dimen/food_total_price_text_size"
+            android:textColor="#303841"/>
+        <TextView
+            android:id="@+id/araqumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/araqum_label"
+            android:textSize="@dimen/food_total_price_text_size"
+            android:layout_below="@id/foodTotalText"
+            android:textColor="#303841"/>
         <TextView
             android:id="@+id/totalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/basket_total"
+            android:layout_below="@id/araqumText"
             android:textSize="@dimen/food_total_price_text_size"
-            android:textColor="#F57C00"/>
-
+            android:textColor="#303841"/>
         <Button
             android:minWidth="@dimen/basket_continue_button_width"
             android:height="@dimen/basket_continue_button_height"
@@ -46,6 +61,7 @@
             android:layout_alignParentRight="true"
             android:text="@string/button_continue"
             android:theme="@style/BtnStyle"
+            android:textColor="#303841"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
     </RelativeLayout>

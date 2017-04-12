@@ -7,38 +7,46 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.orange_team.supplier.R;
 import com.orange_team.supplier.activity.MainActivity;
 import com.orange_team.supplier.adapters.CustomAdapter;
-import com.orange_team.supplier.adapters.DetailedFoodItemsAdapter;
-import com.orange_team.supplier.models.OrderDetails;
+import com.orange_team.supplier.adapters.ListViewAdapter;
+import com.orange_team.supplier.models.Body;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CurrentOrderFragment extends Fragment {
 
-    Realm mRealm;
-    OrderDetails mOrderDetails;
-    TextView mUserNameTV, mPhoneTV, mAddressTV, mNoCurrentJobsTV;
-    RecyclerView mRecyclerView;
-    DetailedFoodItemsAdapter mDetailedFoodItemsAdapter;
-    Button mDeliveredBtn;
-    boolean mInitializer = true;
+    private TextView mUserNameTV, mPhoneTV, mAddressTV, mNoCurrentJobsTV, mTotalPrice;
+    private Button mDeliveredBtn,mWayButton;
+    private List<Body> bodies;
+    private ListViewAdapter mNewOrderAdapter;
+    private Body body1, body2;
+    private String mUserId;
+    private ListView mCurrentOrdersList;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private List<String> mKeyList;
 
     @Nullable
     @Override
@@ -48,125 +56,129 @@ public class CurrentOrderFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         Log.d(MainActivity.LOG_TAG, "onViewCreated Current Fragment");
-        mRealm.init(getContext());
-        mRealm=Realm.getDefaultInstance();
-        mUserNameTV = (TextView)getActivity().findViewById(R.id.userNameCurrentFragment);
-        mPhoneTV = (TextView)getActivity().findViewById(R.id.userPhoneCurrentFragment);
-        mAddressTV = (TextView)getActivity().findViewById(R.id.userAddressCurrentFragment);
-        mNoCurrentJobsTV = (TextView)getActivity().findViewById(R.id.noCurrentJobsCurrentFragment);
-        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerCurrentFragment);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
-        mDeliveredBtn = (Button) getActivity().findViewById(R.id.deliveredBtn);
 
-    }
+        mUserNameTV = (TextView) view.findViewById(R.id.userNameCurrentFragment);
+        mPhoneTV = (TextView) view.findViewById(R.id.userPhoneCurrentFragment);
+        mAddressTV = (TextView) view.findViewById(R.id.userAddressCurrentFragment);
+        mNoCurrentJobsTV = (TextView) view.findViewById(R.id.noCurrentJobsCurrentFragment);
+        mTotalPrice = (TextView) view.findViewById(R.id.totalPriceCurrentFragment);
+        mDeliveredBtn = (Button) view.findViewById(R.id.deliveredBtn);
+        mWayButton = (Button) view.findViewById(R.id.wayButton);
+        mCurrentOrdersList = (ListView) view.findViewById(R.id.currentOrderListView);
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
-            init();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mRealm.close();
+        init();
     }
 
     private void init() {
-
-        if(mInitializer) {
-            Log.d(MainActivity.LOG_TAG, ">>>>>>>>>>>>>>>>initializing until current order occurs<<<<<<<<<<<<<<");
-            defineObject();
-            if (mOrderDetails != null) {
-                mInitializer=false;
-                Log.d(MainActivity.LOG_TAG, ">>>>>>>>>>>>>>>>initializer set to false, not init will be done until order finalisation<<<<<<<<<<<<<<<");
-                defineComponents();
-            }
-        }
+        mKeyList = NewOrderFragment.getInstance();
+        defineObject();
+        defineComponents();
     }
 
     private void defineObject() {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                mOrderDetails = mRealm.where(OrderDetails.class)
-                        .equalTo(OrderDetails.REALM_IDENTIFIER, OrderDetails.CURRENT_OBJECT)
-                        .findFirst();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().getRef().child("Orders");
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getInstance().getCurrentUser();
 
+        if (user != null) {
+            mUserId = user.getUid();
+        }
+
+        bodies = new ArrayList<>();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                bodies.clear();
+                    for (DataSnapshot dd : dataSnapshot.getChildren()) {
+                        body1 = dd.getValue(Body.class);
+                        body1.setKey(dd.getKey());
+                        String status = body1.getStatus();
+                        String userId = body1.getSupplierId();
+                        if (TextUtils.equals(status,"retrieved") && TextUtils.equals(userId,mUserId)) {
+                            mDeliveredBtn.setVisibility(View.VISIBLE);
+                            mWayButton.setVisibility(View.VISIBLE);
+                            body2 = body1;
+                            mNewOrderAdapter = new ListViewAdapter(getContext(), 0, body2.getDishOrders());
+                            mCurrentOrdersList.setAdapter(mNewOrderAdapter);
+                            mUserNameTV.setText(body2.getName());
+                            mAddressTV.setText(body2.getLocation());
+                            mPhoneTV.setText(body2.getPhone());
+                            mTotalPrice.setText(body2.getPrice() + " դրամ");
+                        }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Նոր պատվերներ չկան", Toast.LENGTH_SHORT).show();
+                Log.d("dbError", databaseError.getMessage());
             }
         });
+
     }
 
     private void defineComponents() {
-
-        mUserNameTV.setVisibility(View.VISIBLE);
-        mPhoneTV.setVisibility(View.VISIBLE);
-        mAddressTV.setVisibility(View.VISIBLE);
-        mNoCurrentJobsTV.setVisibility(View.INVISIBLE);
-        mDeliveredBtn.setVisibility(View.VISIBLE);
-
-        mUserNameTV.setText(mOrderDetails.getUserName());
-        mPhoneTV.setText(mOrderDetails.getPhone());
-        mAddressTV.setText(mOrderDetails.getAddress());
-        mDetailedFoodItemsAdapter = new DetailedFoodItemsAdapter(getContext(), mOrderDetails.getOrderedDishAndCountList());
-        mRecyclerView.setAdapter(mDetailedFoodItemsAdapter);
         mDeliveredBtn.setOnClickListener(mOnClickListener);
+        mWayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendId();
+            }
+        });
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMessage("Are you sure the order is completed?");
 
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     save();
-
-                    return;
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                   return;
+                    return;
                 }
             }).show();
-
-
-
-
         }
     };
 
-    public void save(){
-        mInitializer=true;
+    public void save() {
+        ((ViewPager) getActivity().findViewById(R.id.viewPager)).setCurrentItem(CustomAdapter.ORDER_HISTORY_FRAGMENT_POSITION);
 
-        Log.d(MainActivity.LOG_TAG, ">>>>>>>>>>>>>>>>initializer set to true, for further init()<<<<<<<<<<<<<<<");
-        mUserNameTV.setVisibility(View.INVISIBLE);
-        mPhoneTV.setVisibility(View.INVISIBLE);
-        mAddressTV.setVisibility(View.INVISIBLE);
-        mNoCurrentJobsTV.setVisibility(View.VISIBLE);
-        mDeliveredBtn.setVisibility(View.INVISIBLE);
-        mRecyclerView.setAdapter(null);
 
-        mRealm.beginTransaction();
-        mOrderDetails.setRealmIdentifier(OrderDetails.HISTORY_OBJECT);
-        DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
-        mOrderDetails.setDateAndTime((df.format(Calendar.getInstance().getTime())));
-        mRealm.commitTransaction();
 
-        ((ViewPager)getActivity().findViewById(R.id.viewPager)).setCurrentItem(CustomAdapter.ORDER_HISTORY_FRAGMENT_POSITION);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Orders").child(body2.getKey());
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            myRef.child("Status").setValue("delivered");
+        }
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
+        FirebaseDatabase nDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference nRef = nDatabase.getReference().getRef().child("Notifications").child("DeliveredNot");
+        nRef.child("orderID").setValue(mKeyList);
+        nRef.child("status").setValue(0);
 
     }
 
+    public void sendId(){
+        FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = newDatabase.getReference().getRef().child("Notifications").child("SupplierGoNot");
 
-
+        mRef.child("orderID").setValue(mKeyList);
+        mRef.child("status").setValue(0);
+    }
 }

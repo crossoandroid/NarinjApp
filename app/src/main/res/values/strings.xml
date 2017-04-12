@@ -58,4 +58,7 @@
     <string name="service_error">Սերվիսը հասանելի չէ</string>
     <string name="service_error2">Սխալ լատիտուդ և լոնգիտուդ</string>
     <string name="error_not_found_message">Not found</string>
+    <string name="araqum_label">Առաքում</string>
+    <string name="yndameny_label">Ընդամենը</string>
+    <string name="hint_name">Name</string>
 </resources>

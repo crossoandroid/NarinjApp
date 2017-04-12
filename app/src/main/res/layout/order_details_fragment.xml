@@ -24,7 +24,7 @@
                 android:id="@+id/input_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_price"
+                android:hint="@string/hint_name"
                 android:textSize="@dimen/personal_data_text_size"
                 android:imeOptions="actionDone"/>
         </android.support.design.widget.TextInputLayout>
@@ -45,25 +45,25 @@
         </android.support.design.widget.TextInputLayout>
 
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_number"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <com.github.pinball83.maskededittext.MaskedEditText
+                android:id="@+id/masked_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
-
-                <com.github.pinball83.maskededittext.MaskedEditText
-                    android:id="@+id/masked_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint=   "@string/hint_phone_number"
-                    app:mask="+374 (**) **-**-**"
-                    app:notMaskedSymbol="*"
-                    app:maskIconColor="@color/colorPrimary"
-                    android:imeOptions="actionDone"/>
-            </android.support.design.widget.TextInputLayout>
+                android:inputType="number"
+                android:hint=   "@string/hint_phone_number"
+                app:mask="+374 (**) **-**-**"
+                app:notMaskedSymbol="*"
+                app:maskIconColor="@color/colorPrimary"
+                android:imeOptions="actionDone"/>
+        </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout

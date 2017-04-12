@@ -28,23 +28,26 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.fragments.AboutUsFragment;
 import com.orange_team.narinjapp.fragments.BasketFragment;
+import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
 import com.orange_team.narinjapp.fragments.MapFrag;
 import com.orange_team.narinjapp.fragments.OrdersDetailsFrag;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
+import com.orange_team.narinjapp.services.FirebaseNotificationService;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static int menuCount;
-    public static String PREFS_NAME="Narinj";
+    public static int mMenuCount;
     static FrameLayout mMenuRootFrame, mRedCircle;
     static TextView mItemsCountTV;
-    DrawerLayout drawer;
+    DrawerLayout mDrawer;
+    private static SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +85,10 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
@@ -93,6 +96,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setBackgroundColor(getResources().getColor(R.color.nav_color));
 
+        mPrefs= this.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        startService(new Intent(this, FirebaseNotificationService.class));
 
     }
 
@@ -137,20 +142,23 @@ public class MainActivity extends AppCompatActivity
         mMenuRootFrame = (FrameLayout) cartItem.getActionView();
         mRedCircle = (FrameLayout) mMenuRootFrame.findViewById(R.id.menuIconRedCircleFrame);
         mItemsCountTV = (TextView) mMenuRootFrame.findViewById(R.id.menuIconRedCircleText);
-            SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-            if (prefs.getInt("count", 0) != 0) {
-                menuCount = prefs.getInt("count", 0);
 
-            } else {
-                menuCount = 0;
-            }
-        mItemsCountTV.setText(""+menuCount);
+        if (mPrefs.getInt("count", 0) != 0) {
+            mMenuCount = mPrefs.getInt("count", 0);
+
+        } else {
+            mMenuCount = 0;
+            cartItem.setOnMenuItemClickListener(null);
+        }
+        mItemsCountTV.setText("" + mMenuCount);
         mMenuRootFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onOptionsItemSelected(cartItem);
             }
         });
+
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -209,7 +217,7 @@ public class MainActivity extends AppCompatActivity
 
 
         }
-
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -217,8 +225,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void updateMenuCount(int count) {
-        if (count == 0) {
-            mItemsCountTV.setText("");
+        if (count <= 0) {
+            mItemsCountTV.setText("0");
 
         } else {
             mItemsCountTV.setText(""+count);

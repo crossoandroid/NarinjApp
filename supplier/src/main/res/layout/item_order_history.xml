@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dateAndTimeTextView"
-        android:text="20/03/2017 13:50"
-        android:textSize="30sp"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/historyOrderName"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="50dp"/>
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/historyOrderAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
+
+
+</LinearLayout>

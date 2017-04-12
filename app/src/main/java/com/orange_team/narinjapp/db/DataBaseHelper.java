@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-	private static String DB_NAME = "Cart7.DB";
+	private static String DB_NAME = "Cart8.DB";
 	private static final int DATABASE_VERSION=1;
 
 	private SQLiteDatabase myDataBase;

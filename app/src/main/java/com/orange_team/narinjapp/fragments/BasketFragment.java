@@ -18,13 +18,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.ChoiceAdapter;
 import com.orange_team.narinjapp.db.DBDescription;
 import com.orange_team.narinjapp.db.DataBaseHelper;
 import com.orange_team.narinjapp.model.Dish;
 import com.orange_team.narinjapp.model.DishOrders;
-import com.orange_team.narinjapp.utils.AlertDialogManager;
+import com.orange_team.narinjapp.utils.NetworkDialogManager;
 import com.orange_team.narinjapp.model.Food;
+import com.orange_team.narinjapp.utils.CartPreferences;
 import com.orange_team.narinjapp.utils.InternetConnectionDetector;
 
 
@@ -33,21 +35,23 @@ import java.util.List;
 
 public class BasketFragment extends Fragment {
 
-    public static TextView mTotal;
+    public static TextView foodTotal;
+    TextView mSupp, mTotal;
     Button mContinueBtn;
-    String price;
+    String mPrice;
     RecyclerView mBasketRecyclerView;
     ChoiceAdapter mAdapter;
-    List<Food> foodList;
-    static List<DishOrders> dishOrders;
+    List<Food> mFoodList;
+    static List<DishOrders> mDishOrders;
     SQLiteDatabase db;
-    String name, qty, imgPath;
-    String chiefId,dishId;
-    Cursor cursor = null;
-    public static int inttotal;
+    String mName, mQty, mImgPath;
+    String mChiefId, mDishId;
+    Cursor mCursor = null;
+    public int inttotal;
     Boolean isInternetPresent = false;
     InternetConnectionDetector internetConnectionDetector;
-
+    public static int araqum = 400;
+    public static int sum;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,13 +64,16 @@ public class BasketFragment extends Fragment {
         init(view);
     }
 
+
     private void init(View view) {
 
-        foodList = new ArrayList<>();
+        mFoodList = new ArrayList<>();
         mBasketRecyclerView = (RecyclerView) view.findViewById(R.id.basket_recycler);
         ItemTouchHelper itemTouch=new ItemTouchHelper(simpleCallback);
         itemTouch.attachToRecyclerView(mBasketRecyclerView);
-        mTotal = (TextView) view.findViewById(R.id.totalText);
+        foodTotal = (TextView) view.findViewById(R.id.foodTotalText);
+        mSupp=(TextView)view.findViewById(R.id.araqumText);
+        mTotal=(TextView)view.findViewById(R.id.totalText);
         mContinueBtn = (Button) view.findViewById(R.id.continue_btn);
 
 
@@ -82,8 +89,8 @@ public class BasketFragment extends Fragment {
                 }
                 else
                 {
-                    AlertDialogManager alertDialogManager=new AlertDialogManager();
-                    alertDialogManager.showAlertDialog(getContext(),getString(R.string.enable_internet),getString(R.string.internet_access),true);
+                    NetworkDialogManager networkDialogManager =new NetworkDialogManager();
+                    networkDialogManager.showAlertDialog(getContext(),getString(R.string.enable_internet),getString(R.string.internet_access),true);
                 }
             }
         });
@@ -100,64 +107,60 @@ public class BasketFragment extends Fragment {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-
-
     }
 
     private void initFields()
     {
-        dishOrders=new ArrayList<>();
-
-        for (int i = 0; i < foodList.size(); i++) {
-            Dish dish=new Dish();
-            DishOrders dishOrder =new DishOrders();
-            dish.setName(foodList.get(i).getName());
-            dish.setDishId(foodList.get(i).getId());
+        mDishOrders =new ArrayList<>();
+        for (int i = 0; i < mFoodList.size(); i++) {
+            Dish dish = new Dish();
+            DishOrders dishOrder = new DishOrders();
+            dish.setName(mFoodList.get(i).getName());
+            dish.setDishId(mFoodList.get(i).getId());
             dishOrder.setDish(dish);
-            dishOrder.setCount(Integer.parseInt(foodList.get(i).getCount()));
-            dishOrders.add(dishOrder);
+            dishOrder.setCount(Integer.parseInt(mFoodList.get(i).getCount()));
+            mDishOrders.add(dishOrder);
         }
     }
     public void getList() {
-        new SplashScreenDelay().execute();
+        new DBRead().execute();
     }
 
-    private class SplashScreenDelay extends AsyncTask<String, Integer, Integer> {
-        private static final String TAG = "SplashScreenTask";
-
+    private class DBRead extends AsyncTask<String, Integer, Integer> {
         @Override
         protected Integer doInBackground(String... params) {
-            foodList.clear();
+            mFoodList.clear();
             DataBaseHelper myDbHelper =  new DataBaseHelper(getContext());
 
             db = myDbHelper.getReadableDatabase();
 
-            cursor = db.rawQuery("select * from "+ DBDescription.Cart.TABLE_NAME, null);
-            if (cursor.getCount() != 0) {
-                if (cursor.moveToFirst()) {
+            mCursor = db.rawQuery("select * from "+ DBDescription.Cart.TABLE_NAME, null);
+            if (mCursor.getCount() != 0) {
+                if (mCursor.moveToFirst()) {
                     do {
                         Food food=new Food();
 
-                        name = cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_NAME));
-                        qty = cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_QTY));
-                        price = cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_TOTAL));
-                        imgPath=cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_IMG_PATH));
-                        dishId=cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_DISH_ID));
-                        chiefId=cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_CHIEF_ID));
+                        mName = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_NAME));
+                        mQty = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_QTY));
+                        mPrice = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_TOTAL));
+                        mImgPath = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_IMG_PATH));
+                        mDishId = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_DISH_ID));
+                        mChiefId = mCursor.getString(mCursor.getColumnIndex(DBDescription.Cart.COLUMN_CHIEF_ID));
 
-                        food.setName(name);
-                        food.setPrice(Integer.parseInt(price));
-                        food.setCount(qty);
-                        food.setPicture(imgPath);
-                        food.setChiefId(Long.parseLong(chiefId));
-                        food.setId(Long.parseLong(dishId));
-                        foodList.add(food);
 
-                    } while (cursor.moveToNext());
+                        food.setName(mName);
+                        food.setPrice(Integer.parseInt(mPrice));
+                        food.setCount(mQty);
+                        food.setPicture(mImgPath);
+                        food.setChiefId(Long.parseLong(mChiefId));
+                        food.setId(Long.parseLong(mDishId));
+                        mFoodList.add(food);
+
+                    } while (mCursor.moveToNext());
                 }
             }
 
-            cursor.close();
+            mCursor.close();
             db.close();
             myDbHelper.close();
             return null;
@@ -166,15 +169,18 @@ public class BasketFragment extends Fragment {
         @Override
         protected void onPostExecute(Integer result) {
 
-            Log.d("Vishal", "" + foodList.size());
+            Log.d("Vishal", "" + mFoodList.size());
             inttotal = 0;
             mBasketRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new ChoiceAdapter(getActivity(), foodList);
+            mAdapter = new ChoiceAdapter(getActivity(), mFoodList);
             mBasketRecyclerView.setAdapter(mAdapter);
-            for (int i = 0; i < foodList.size(); i++) {
-                inttotal+=foodList.get(i).getPrice()+400;
+            for (int i = 0; i < mFoodList.size(); i++) {
+                inttotal+= mFoodList.get(i).getPrice();
             }
-            mTotal.setText("Ընդամենը:"+inttotal);
+            foodTotal.setText("Ընդհանուր:"+inttotal);
+            mSupp.setText("Առաքում:"+araqum);
+            sum=inttotal+araqum;
+            mTotal.setText("Ընդամենը"+sum);
         }
     }
 
@@ -187,18 +193,21 @@ public class BasketFragment extends Fragment {
         @Override
         public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
             final int position = viewHolder.getAdapterPosition();
-            mAdapter.deleteItem(foodList.get(position).getName());
-            inttotal-= foodList.get(position).getPrice()-400;
-            foodList.remove(position);
-            mTotal.setText("Ընդամենը:"+inttotal);
+            mAdapter.deleteItem(mFoodList.get(position).getName());
+            inttotal-= mFoodList.get(position).getPrice();
+            FoodListFragment.cart-=Integer.parseInt(mFoodList.get(position).getCount());
+            MainActivity.updateMenuCount(FoodListFragment.cart);
+            CartPreferences.saveInt(getContext(),"count",FoodListFragment.cart);
+            mFoodList.remove(position);
+            foodTotal.setText("Ընդհանուր:"+inttotal);
             mAdapter.notifyItemRemoved(position);
-            mAdapter.notifyItemRangeChanged(position,foodList.size());
+            mAdapter.notifyItemRangeChanged(position, mFoodList.size());
         }
     };
 
     public static List<DishOrders> listInstance()
     {
-        return dishOrders;
+        return mDishOrders;
     }
 }
 

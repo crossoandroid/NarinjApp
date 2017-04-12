@@ -1,6 +1,7 @@
 package com.orange_team.supplier.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,10 +19,8 @@ public class CustomAdapter extends FragmentPagerAdapter {
     public static final int CURRENT_ORDER_FRAGMENT_POSITION = 1;
     public static final int ORDER_HISTORY_FRAGMENT_POSITION = 2;
 
-
     public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {
         super(supportFragmentManager);
-
     }
 
     @Override

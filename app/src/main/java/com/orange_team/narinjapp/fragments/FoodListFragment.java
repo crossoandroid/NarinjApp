@@ -5,13 +5,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.activities.MainActivity;
 import com.orange_team.narinjapp.adapters.FoodListAdapter;
@@ -34,15 +39,18 @@ import com.orange_team.narinjapp.enums.OrderCategories;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
 import com.orange_team.narinjapp.model.Food;
 import com.orange_team.narinjapp.model.Result;
+import com.orange_team.narinjapp.utils.CartPreferences;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FoodListFragment extends Fragment  {
+public class FoodListFragment extends Fragment {
 
     FoodListAdapter mFoodListAdapter;
     List<Food> mFoodList;
@@ -56,7 +64,7 @@ public class FoodListFragment extends Fragment  {
     RetrofitInterface mRetrofitInterface;
     Call<List<Result.NFood>> mFoodListCall;
     android.os.Handler mHandler;
-    private int cart=0;
+    public static int cart = 0;
     int value = 1;
     Button count;
     TextView itemPrice;
@@ -65,7 +73,7 @@ public class FoodListFragment extends Fragment  {
     DataBaseHelper myDbHelpel;
     MediaPlayer mMediaPlayer;
     ProgressBar mProgressBar;
-
+    SharedPreferences mPrefs;
 
     public static final String CHEF_ID = "Chef partnerId";
     public static final String CATEGORY_KEY = "Category";
@@ -84,8 +92,6 @@ public class FoodListFragment extends Fragment  {
     public static final int HANDLER_MESSAGE_0 = 0;
     public static final int HANDLER_MESSAGE_1 = 1;
     public static final String DEFAULT_FOOD = "default_food";
-    public static final String PREFS_NAME = "Narinj";
-
 
 
     @Nullable
@@ -101,19 +107,23 @@ public class FoodListFragment extends Fragment  {
         Log.d(Constants.LOG_TAG, "onViewCreated");
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     public void init() {
         Log.d(Constants.LOG_TAG, "init");
-            createObjects();
-            defineAdapterContent();
-            defineComponents();
+        createObjects();
+        defineAdapterContent();
+        defineComponents();
     }
 
     private void createObjects() {
         Log.d(Constants.LOG_TAG, "createObjects");
-
+        mPageValue=0;
+        mPrefs = getContext().getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        cart = mPrefs.getInt("count", 0);
         mFoodList = new ArrayList<>();
         mFoodListAdapter = new FoodListAdapter(getActivity());
         mMediaPlayer = MediaPlayer.create(getContext(), R.raw.click_one);
@@ -125,10 +135,10 @@ public class FoodListFragment extends Fragment  {
                         if (mFoodList.size() == 0) {
                             Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
-                        if (mFoodList.size() % (mPageValue*10) == 0) {
+                        if (mFoodList.size() % (mPageValue * 10) == 0) {
                             mFoodListCall = mRetrofitInterface.getChefFoodList(mCurrentChefId, mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
-                        }else {
+                        } else {
                             mProgressBar.setVisibility(View.GONE);
                             mFoodListAdapter.setFoodList(mFoodList);
                         }
@@ -139,14 +149,13 @@ public class FoodListFragment extends Fragment  {
 
                     case HANDLER_MESSAGE_1: {
                         if (mFoodList.size() == 0) {
-                            Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText((AppCompatActivity) getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
                         }
 
-                        if (mFoodList.size() % (mPageValue*10) == 0) {
+                        if (mFoodList.size() % (mPageValue * 10) == 0) {
                             mFoodListCall = mRetrofitInterface.getFoodByCategory(mCurrentCategory, mPageValue, COUNT_VALUE);
                             getObjects(mFoodListCall);
-                        }
-                        else {
+                        } else {
                             mProgressBar.setVisibility(View.GONE);
                             mFoodListAdapter.setFoodList(mFoodList);
                         }
@@ -163,7 +172,7 @@ public class FoodListFragment extends Fragment  {
     private void defineComponents() {
         Log.d(Constants.LOG_TAG, "defineComponents");
 
-        mProgressBar = (ProgressBar)getActivity().findViewById(R.id.progressBarFoodListFragment);
+        mProgressBar = (ProgressBar) getActivity().findViewById(R.id.progressBarFoodListFragment);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.itemRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
@@ -240,7 +249,7 @@ public class FoodListFragment extends Fragment  {
                     mFood.setPrice(food.price);
                     if (food.files.size() > 0) {
                         mFood.setPicture(IMAGE_BASE_URL + food.files.get(0).path);
-                    }else{
+                    } else {
                         mFood.setPicture(DEFAULT_FOOD);
                     }
                     mFoodList.add(mFood);
@@ -277,13 +286,12 @@ public class FoodListFragment extends Fragment  {
 
             Log.d(Constants.LOG_TAG, food.getName() + " Button");
             createDialog(food);
-
         }
     };
 
 
     private void createDialog(final Food food) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
         alertDialog.setTitle(food.getName());
         mDialogView = getActivity().getLayoutInflater().inflate(R.layout.selected_food_dialog, null);
         alertDialog.setView(mDialogView);
@@ -292,6 +300,35 @@ public class FoodListFragment extends Fragment  {
         itemPrice.setText("" + food.getPrice());
         //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
+
+        plusMinusButtonEvent(food);
+
+        alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String c = count.getText().toString();
+                insertToDB(food.getName(), c, itemPrice.getText().toString(), food.getPicture(), mCurrentChefId, mFood.getId());
+
+                cart += Integer.parseInt(c);
+                MainActivity.updateMenuCount(cart);
+                CartPreferences.saveInt(getContext(), "count", cart);
+            }
+        });
+
+
+        alertDialog.setNegativeButton(DO_NOT_ORDER, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        Dialog dialog = alertDialog.create();
+        dialog.show();
+    }
+
+    private void plusMinusButtonEvent(final Food food) {
         Button minus = (Button) mDialogView.findViewById(R.id.btn_minus);
         count = (Button) mDialogView.findViewById(R.id.btn_display);
         Button plus = (Button) mDialogView.findViewById(R.id.btn_plus);
@@ -323,51 +360,33 @@ public class FoodListFragment extends Fragment  {
                 itemPrice.setText(String.valueOf(total));
             }
         });
-
-
-        final long dishId = food.getId();
-
-
-        alertDialog.setPositiveButton(MAKE_ORDER, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-
-                mOrderQuantity = Integer.parseInt(count.getText().toString());
-
-                myDbHelpel = new DataBaseHelper(getContext());
-                db = myDbHelpel.getWritableDatabase();
-                ContentValues values = new ContentValues();
-
-                values.put(DBDescription.Cart.COLUMN_NAME, "" + food.getName());
-                values.put(DBDescription.Cart.COLUMN_QTY, count.getText().toString());
-                values.put(DBDescription.Cart.COLUMN_TOTAL, itemPrice.getText().toString());
-                values.put(DBDescription.Cart.COLUMN_IMG_PATH, food.getPicture());
-                values.put(DBDescription.Cart.COLUMN_CHIEF_ID,mCurrentChefId);
-                values.put(DBDescription.Cart.COLUMN_DISH_ID,mFood.getId());
-                db.insert(DBDescription.Cart.TABLE_NAME, null, values);
-
-                myDbHelpel.close();
-                cart+=Integer.parseInt(count.getText().toString());
-                MainActivity.updateMenuCount(cart);
-                SharedPreferences.Editor editor = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                        .edit();
-                editor.putInt("count", cart);
-                editor.commit();
-                Toast.makeText(getContext(), getString(R.string.orderplace) + food.getName(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-
-        alertDialog.setNegativeButton(DO_NOT_ORDER, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        Dialog dialog = alertDialog.create();
-        dialog.show();
     }
+
+
+    public void insertToDB(String name, String count, String price, String imgURL, long chefId, long id) {
+        String c = "0";
+        myDbHelpel = new DataBaseHelper(getContext());
+        db = myDbHelpel.getWritableDatabase();
+        ContentValues values = new ContentValues();
+//        String query = "SELECT " + DBDescription.Cart.COLUMN_QTY + " FROM " + DBDescription.Cart.TABLE_NAME + " WHERE " + DBDescription.Cart.COLUMN_NAME + "='" + name.trim() + "'";
+        Cursor cursor = db.query(DBDescription.Cart.TABLE_NAME, null, DBDescription.Cart.COLUMN_NAME + " = ?", new String[] {name}, null, null, null);
+        if (cursor.moveToFirst()) {
+            c = cursor.getString(cursor.getColumnIndex(DBDescription.Cart.COLUMN_QTY));
+            int cnt = Integer.parseInt(c) + Integer.parseInt(count);
+            values.put(DBDescription.Cart.COLUMN_QTY, "" + cnt);
+            db.update(DBDescription.Cart.TABLE_NAME, values, DBDescription.Cart.COLUMN_NAME + " = ?", new String[] {name});
+        } else {
+            values.put(DBDescription.Cart.COLUMN_NAME, "" + name);
+            values.put(DBDescription.Cart.COLUMN_TOTAL, price);
+            values.put(DBDescription.Cart.COLUMN_QTY, "" + count);
+            values.put(DBDescription.Cart.COLUMN_IMG_PATH, imgURL);
+            values.put(DBDescription.Cart.COLUMN_CHIEF_ID, chefId);
+            values.put(DBDescription.Cart.COLUMN_DISH_ID, id);
+            db.insert(DBDescription.Cart.TABLE_NAME, null, values);
+        }
+
+        cursor.close();
+        myDbHelpel.close();
+    }
+
 }

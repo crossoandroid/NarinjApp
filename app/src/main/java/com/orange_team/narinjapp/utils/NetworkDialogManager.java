@@ -6,8 +6,7 @@ import android.content.DialogInterface;
 
 import com.orange_team.narinjapp.R;
 
-public class AlertDialogManager {
-	@SuppressWarnings("deprecation")
+public class NetworkDialogManager {
 	public void showAlertDialog(Context context, String title, String message, Boolean status) {
 		AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 

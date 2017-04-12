@@ -1,63 +1,31 @@
 package com.orange_team.supplier.models;
 
-import io.realm.RealmObject;
+import java.io.Serializable;
 
+public class Dish implements Serializable
+{
+    private String Name;
 
-public class Dish extends RealmObject {
+    private long DishId;
 
-    private String name;
-
-    private long dishId;
-
-    private String pictureUrl;
-
-    private int price;
-
-    private String chefName;
-
-
-    public Dish() {
+    public String getName ()
+    {
+        return Name;
     }
 
-    public String getChefName() {
-        return chefName;
+    public void setName (String name)
+    {
+        this.Name = name;
     }
 
-    public void setChefName(String chefName) {
-        this.chefName = chefName;
+    public long getDishId ()
+    {
+        return DishId;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public void setDishId (long dishId)
+    {
+        this.DishId = dishId;
     }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getDishId() {
-        return dishId;
-    }
-
-    public void setDishId(long dishId) {
-        this.dishId = dishId;
-    }
-
 
 }

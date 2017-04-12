@@ -8,32 +8,21 @@ import android.view.ViewGroup;
 
 import com.orange_team.supplier.R;
 import com.orange_team.supplier.adapters.viewholder.OrderHistoryViewHolder;
-import com.orange_team.supplier.models.OrderDetails;
+import com.orange_team.supplier.models.Body;
 
 import java.util.List;
-
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryViewHolder> {
 
-    Context mContext;
+    private Context mContext;
+    private List<Body> mBodies;
     IOnItemSelectedListener mOnItemSelectedListener;
-    RealmResults<OrderDetails> mOrderDetailsList;
 
-    public OrderHistoryAdapter(Context context, RealmResults<OrderDetails> orderDetailsList) {
+    public OrderHistoryAdapter(Context context, List<Body> bodies) {
         mContext = context;
-        mOrderDetailsList = orderDetailsList;
-        mOrderDetailsList.addChangeListener(mRealmChangeListener);
+        mBodies = bodies;
     }
-
-    RealmChangeListener mRealmChangeListener = new RealmChangeListener() {
-        @Override
-        public void onChange(Object element) {
-            notifyDataSetChanged();
-        }
-    };
 
     @Override
     public OrderHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,7 +32,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryViewHo
             @Override
             public void itemClick(int position) {
                 if(mOnItemSelectedListener!=null){
-                    mOnItemSelectedListener.onItemSelected(mOrderDetailsList.get(position));
+                    mOnItemSelectedListener.onItemSelected(mBodies.get(position));
                 }
             }
         });
@@ -53,12 +42,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryViewHo
 
     @Override
     public void onBindViewHolder(OrderHistoryViewHolder holder, int position) {
-        holder.setData(mOrderDetailsList.get(position));
+        holder.setData(mBodies.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mOrderDetailsList.size();
+        return mBodies.size();
     }
 
     public void setOnItemSelectedListener(IOnItemSelectedListener onItemSelectedListener) {
@@ -66,9 +55,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryViewHo
     }
 
     public interface IOnItemSelectedListener {
-
-        void onItemSelected(OrderDetails orderDetails);
-
+        void onItemSelected(Body body);
     }
 
 }

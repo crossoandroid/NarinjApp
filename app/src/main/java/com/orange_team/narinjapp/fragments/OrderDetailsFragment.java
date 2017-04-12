@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.style.MaskFilterSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +23,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.application.NApplication;
 import com.orange_team.narinjapp.interfaces.RetrofitInterface;
-import com.orange_team.narinjapp.model.Datark;
 import com.orange_team.narinjapp.model.DishOrders;
 import com.orange_team.narinjapp.model.Body;
-import com.orange_team.narinjapp.utils.AlertDialogManager;
+import com.orange_team.narinjapp.model.ItemRequest;
 import com.orange_team.narinjapp.utils.InternetConnectionDetector;
+import com.orange_team.narinjapp.utils.NetworkDialogManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +40,7 @@ import retrofit2.Response;
 public class OrderDetailsFragment extends Fragment {
 
     private EditText mInputName, mInputSurname, mInputNumber, mInputAddress;
-    private TextInputLayout mInputLayoutPrice, mInputLayoutComment, mInputLayoutNumber,mInputLayoutAddress;
+    private TextInputLayout mInputLayoutName, mInputLayoutComment, mInputLayoutNumber,mInputLayoutAddress;
     private Button mOrderBtn;
     RetrofitInterface mRetrofitInterface;
     Body body;
@@ -54,6 +50,8 @@ public class OrderDetailsFragment extends Fragment {
     InternetConnectionDetector internetConnectionDetector;
     FirebaseDatabase fbdb;
     DatabaseReference ref;
+    public static String orderKey;
+    int x = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +65,7 @@ public class OrderDetailsFragment extends Fragment {
 
     private void init(View view) {
 
-        mInputLayoutPrice = (TextInputLayout) view.findViewById(R.id.input_layout_price);
+        mInputLayoutName = (TextInputLayout) view.findViewById(R.id.input_layout_price);
         mInputLayoutComment = (TextInputLayout) view.findViewById(R.id.input_layout_comment);
         mInputLayoutNumber = (TextInputLayout) view.findViewById(R.id.input_layout_number);
         mInputLayoutAddress = (TextInputLayout) view.findViewById(R.id.input_layout_address);
@@ -117,10 +115,11 @@ public class OrderDetailsFragment extends Fragment {
                 isInternetPresent=internetConnectionDetector.isConnectingToInternet();
                 if(isInternetPresent) {
                     sendPost();
+                    Log.d("TAGTAGTAG",""+orderKey);
                 }
                 else
                 {
-                    AlertDialogManager alertDialogManager=new AlertDialogManager();
+                    NetworkDialogManager alertDialogManager=new NetworkDialogManager();
                     alertDialogManager.showAlertDialog(getContext(),getString(R.string.enable_internet),getString(R.string.internet_access),true);
                 }
             }
@@ -130,29 +129,44 @@ public class OrderDetailsFragment extends Fragment {
 
     public void sendPost()
     {
+        final int count;
         bodies=new ArrayList<>();
         fbdb=FirebaseDatabase.getInstance();
-        ref=fbdb.getReference().push();
+        //ref = fbdb.getReference();
+        ref=fbdb.getReference().child("Orders").push();
+        orderKey=ref.getKey();
+
+
         body =new Body();
         dishOrders=BasketFragment.listInstance();
         mRetrofitInterface = ((NApplication) getActivity().getApplication()).getRetrofitInterface();
         body.setPhone(mInputNumber.getText().toString());
         body.setComment(mInputSurname.getText().toString());
-        body.setPrice(BasketFragment.inttotal);
+        body.setPrice(BasketFragment.sum);
         body.setLocation(mInputAddress.getText().toString());
 
         body.setDishOrders(dishOrders);
         bodies.add(body);
-        ref.setValue(bodies);
-        Call<Datark> call=mRetrofitInterface.sendItems(body);
-        call.enqueue(new Callback<Datark>() {
+        ref.child("Phone").setValue(body.getPhone());
+        ref.child("Comment").setValue(body.getComment());
+        ref.child("Price").setValue(body.getPrice());
+        ref.child("Location").setValue(body.getLocation());
+        ref.child("DishOrders").setValue(body.getDishOrders());
+        ref.child("SupplierId").setValue("");
+        ref.child("Status").setValue("");
+        ref.child("Name").setValue(mInputName.getText().toString());
+        ref.child("OrderKey").setValue(orderKey);
+
+
+        Call<ItemRequest> call=mRetrofitInterface.sendItems(bodies.get(0));
+        call.enqueue(new Callback<ItemRequest>() {
             @Override
-            public void onResponse(Call<Datark> call, Response<Datark> response) {
+            public void onResponse(Call<ItemRequest> call, Response<ItemRequest> response) {
                 Toast.makeText(getContext(),response.code()+""+response.message(),Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFailure(Call<Datark> call, Throwable t) {
+            public void onFailure(Call<ItemRequest> call, Throwable t) {
                 Log.d("OrderDetailsFragment","onFailure:"+t.getMessage());
             }
         });
@@ -167,11 +181,11 @@ public class OrderDetailsFragment extends Fragment {
 
     private boolean validateName() {
         if (mInputName.getText().toString().trim().isEmpty()) {
-            mInputLayoutPrice.setError(getString(R.string.err_msg_name));
+            mInputLayoutName.setError(getString(R.string.err_msg_name));
             requestFocus(mInputName);
             return false;
         } else {
-            mInputLayoutPrice.setErrorEnabled(false);
+            mInputLayoutName.setErrorEnabled(false);
         }
 
         return true;
@@ -225,6 +239,3 @@ public class OrderDetailsFragment extends Fragment {
         }
     }
 }
-
-
-

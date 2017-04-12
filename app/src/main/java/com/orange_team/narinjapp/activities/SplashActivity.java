@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import com.orange_team.narinjapp.R;
 
 public class SplashActivity extends AppCompatActivity {
-    String regId;
 
     @Override
     public void onAttachedToWindow() {
@@ -47,24 +46,25 @@ public class SplashActivity extends AppCompatActivity {
         logoImage.clearAnimation();
         logoImage.startAnimation(anim);
 
-
-        Thread th = new Thread() {
+        anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                try {
-
-                    sleep(3500);
-                    Intent i = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(i);
-                    finish();
-
-                } catch (Exception e) {
-
-                }
+            public void onAnimationStart(Animation animation) {
 
             }
-        };
-        th.start();
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Intent i = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
 }
