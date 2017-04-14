@@ -115,6 +115,7 @@ public class OrderDetailsFragment extends Fragment {
                 isInternetPresent=internetConnectionDetector.isConnectingToInternet();
                 if(isInternetPresent) {
                     sendPost();
+                    orderKey=ref.getKey();
                     Log.d("TAGTAGTAG",""+orderKey);
                 }
                 else
@@ -134,7 +135,7 @@ public class OrderDetailsFragment extends Fragment {
         fbdb=FirebaseDatabase.getInstance();
         //ref = fbdb.getReference();
         ref=fbdb.getReference().child("Orders").push();
-        orderKey=ref.getKey();
+
 
 
         body =new Body();

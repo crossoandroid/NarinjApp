@@ -47,9 +47,7 @@ public class FirebaseNotificationService extends Service {
     public FirebaseDatabase mDatabase;
     Context context;
     Notification notification;
-    FirebaseOrderBody body;
-    String value = "";
-    List<String> orderID;
+    String orderID;
 
     @Override
     public void onCreate() {
@@ -58,27 +56,18 @@ public class FirebaseNotificationService extends Service {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mDatabase = FirebaseDatabase.getInstance();
+        saveNotificationKey(OrderDetailsFragment.orderKey);
         setupNotificationListener();
     }
-
-
-    /*private boolean alReadyNotified(String key){
-        if(sharedPreferences.getBoolean(key,false)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
 
     private void saveNotificationKey(String key){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(key,true);
         editor.commit();
-    }*/
+    }
 
     private void setupNotificationListener() {
-        orderID = new ArrayList<>();
+
 
         mDatabase.getReference().child("Notifications")
                 .orderByChild("status").equalTo(0)
@@ -90,18 +79,18 @@ public class FirebaseNotificationService extends Service {
                             for (DataSnapshot ds:dataSnapshot.getChildren()){
                                 ds.getValue();
                                 if(ds.getKey().equals("orderID")){
-                                    orderID = (List<String>) ds.getValue();
+                                    orderID = (String)ds.getValue();
                                     break;
                                 }
                             }
 
-                            for (int i = 0; i < orderID.size(); i++) {
-                                if (TextUtils.equals(OrderDetailsFragment.orderKey,orderID.get(i))) {
+
+                                if (TextUtils.equals(OrderDetailsFragment.orderKey,orderID)) {
                                     Log.d("TAGTAGTAG", "" + OrderDetailsFragment.orderKey + ":::::" + dataSnapshot.child("orderID").getValue());
                                     notification = dataSnapshot.getValue(Notification.class);
                                     showNotification(context, notification, dataSnapshot.getKey());
+
                                 }
-                            }
 
                         }
                     }
@@ -145,31 +134,6 @@ public class FirebaseNotificationService extends Service {
         return null;
     }
 
-
-    /*public void sendNotification(final Context context, String orderID, String message, String description, String type) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Notifications");
-        String pushKey = databaseReference.push().getKey();
-
-        Notification notification = new Notification();
-        notification.setDescription(description);
-        notification.setMessage(message);
-        notification.setOrderID(orderID);
-        notification.setType(type);
-
-        Map<String, Object> forumValues = notification.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(pushKey, forumValues);
-        databaseReference.setPriority(ServerValue.TIMESTAMP);
-        databaseReference.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError == null) {
-                    Toast.makeText(context, "Notification sent", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }*/
-
     private void showNotification(Context context, Notification notification, String notification_key) {
         flagNotificationAsSent(notification_key);
 
@@ -195,7 +159,7 @@ public class FirebaseNotificationService extends Service {
 
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
+        mNotificationManager.notify(1,mBuilder.build());
 
     }
 
@@ -204,9 +168,5 @@ public class FirebaseNotificationService extends Service {
                 .child(notification_key)
                 .child("status")
                 .setValue(1);
-        mDatabase.getReference().child("Notifications")
-                .child(notification_key)
-                .child("orderID")
-                .setValue("ddd");
     }
 }

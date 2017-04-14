@@ -8,17 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Notification {
-    ArrayList<String> orderID;
+    String orderID;
     String message;
     String description;
     String type;
     long timestamp,status;
 
-    public ArrayList<String> getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(ArrayList<String> orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 

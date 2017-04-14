@@ -1,6 +1,7 @@
 package com.orange_team.supplier.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,9 @@ import com.orange_team.supplier.R;
 import com.orange_team.supplier.activity.MainActivity;
 import com.orange_team.supplier.adapters.CustomAdapter;
 import com.orange_team.supplier.adapters.ListViewAdapter;
+import com.orange_team.supplier.adapters.NewOrderAdapter;
 import com.orange_team.supplier.models.Body;
+import com.orange_team.supplier.service.LocationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +50,7 @@ public class CurrentOrderFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private List<String> mKeyList;
-
+    String ss="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class CurrentOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendId();
+                getActivity().startService(new Intent(getActivity(), LocationService.class));
             }
         });
     }
@@ -169,7 +173,23 @@ public class CurrentOrderFragment extends Fragment {
 
         FirebaseDatabase nDatabase = FirebaseDatabase.getInstance();
         DatabaseReference nRef = nDatabase.getReference().getRef().child("Notifications").child("DeliveredNot");
-        nRef.child("orderID").setValue(mKeyList);
+
+        FirebaseDatabase mData = FirebaseDatabase.getInstance();
+        DatabaseReference mDR = mData.getReference().getRef().child("Notifications").child("RetrievedNot");
+
+        mDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ss=(String)dataSnapshot.child("orderID").getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        nRef.child("orderID").setValue(ss);
         nRef.child("status").setValue(0);
 
     }
@@ -178,7 +198,21 @@ public class CurrentOrderFragment extends Fragment {
         FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = newDatabase.getReference().getRef().child("Notifications").child("SupplierGoNot");
 
-        mRef.child("orderID").setValue(mKeyList);
+        FirebaseDatabase mData = FirebaseDatabase.getInstance();
+        DatabaseReference mDR = mData.getReference().getRef().child("Notifications").child("RetrievedNot");
+
+        mDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ss=(String)dataSnapshot.child("orderID").getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRef.child("orderID").setValue(ss);
         mRef.child("status").setValue(0);
     }
 }

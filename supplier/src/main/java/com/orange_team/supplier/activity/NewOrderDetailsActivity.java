@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.orange_team.supplier.R;
 import com.orange_team.supplier.adapters.CustomAdapter;
 import com.orange_team.supplier.adapters.ListViewAdapter;
+import com.orange_team.supplier.adapters.NewOrderAdapter;
 import com.orange_team.supplier.fragments.NewOrderFragment;
 import com.orange_team.supplier.models.Body;
 
@@ -90,7 +91,7 @@ public class NewOrderDetailsActivity extends AppCompatActivity {
 
                 FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference newRef = newDatabase.getReference().getRef().child("Notifications").child("RetrievedNot");
-                newRef.child("orderID").setValue(mKeyList);
+                newRef.child("orderID").setValue(mBody.getKey());
                 //newRef.setValue(mBody.getKey());
                 newRef.child("status").setValue(0);
 
