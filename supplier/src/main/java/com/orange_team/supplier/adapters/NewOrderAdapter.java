@@ -58,5 +58,4 @@ public class NewOrderAdapter extends RecyclerView.Adapter<NewOrderViewHolder> {
     public interface IOnItemSelectedListener {
         void onItemSelected(Body body);
     }
-
 }

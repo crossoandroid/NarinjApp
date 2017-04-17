@@ -8,25 +8,25 @@
     <string name="cart_icon_menu">Shop cart</string>
     <string name="logo_image_description">Logo of company</string>
     <string name="basket_total">Total:</string>
-    <string name="button_continue">Continue</string>
+    <string name="button_continue">Շարունակել</string>
 
-    <string name="hint_price">Price</string>
-    <string name="hint_comment">Comment</string>
-    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_price">Ընդհանուր գինը</string>
+    <string name="hint_comment">Նշումներ</string>
+    <string name="hint_phone_number">Հեռ.</string>
 
     <string name="btn_sign_up">Sign Up</string>
-    <string name="err_msg_name">Enter your name</string>
-    <string name="err_msg_email">Enter your surname</string>
-    <string name="err_msg_password">Enter your phone number</string>
-    <string name="noselect">Select Atleast one item.</string>
-    <string name="orderplace">Your order is successfully placed in cart.</string>
+    <string name="err_msg_name">Լրացրեք դաշտը</string>
+    <string name="noselect">Ընտրեք առնվազն 1 ապրանք</string>
+    <string name="orderplace">Ապրանքը զամբյուղում է</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_domain_word">narinj.am</string>
     <string name="internet_access">Միացրեք Ձեր սմարտֆոնի ինտերնետը:Հավելվածով կարող եք օգտվել միայն ինտերնետի առկայության դեպքւմ!</string>
-    <string name="enable_internet">Միացնել</string>
-    <string name="description">Description</string>
+    <string name="enable_internet">Ինտերնետի բացակայություն </string>
+    <string name="order_thanks_title">Շնորհակալություն գնումների համար!</string>
+    <string name="order_thanks_text">Սիրով՝ Narinj Team</string>
+    <string name="description">Բաղադրություն</string>
     <string name="disable_internet">Դուրս գալ</string>
     <string name="error_internet_connection">Հասանելի ինտեռնետ չկա!Խնդրում ենք միացնել հասանելի WiFi կապ կամ 3G/4G ինտերնետը</string>
     <string name="home_page">Գլխավոր</string>
@@ -53,12 +53,11 @@
     <string name="share_message">Պատվիրեք տնական պատրաստված համեղ ուտելիքներ Narinj հավելվածի օգնությամբ: \n https://itunes.apple.com/us/app/narinj/id1173335884?mt=8</string>
     <string name="share_via">Տարածել...</string>
     <string name="request_base_url">http://narinj.am/</string>
-    <string name="hint_address">Address</string>
-    <string name="address_error">Enter your address or find by GPS</string>
+    <string name="hint_address">Հասցե</string>
     <string name="service_error">Սերվիսը հասանելի չէ</string>
     <string name="service_error2">Սխալ լատիտուդ և լոնգիտուդ</string>
-    <string name="error_not_found_message">Not found</string>
+    <string name="error_not_found_message">Չի գտնվել</string>
     <string name="araqum_label">Առաքում</string>
     <string name="yndameny_label">Ընդամենը</string>
-    <string name="hint_name">Name</string>
+    <string name="hint_name">Անուն</string>
 </resources>

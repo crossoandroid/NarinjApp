@@ -77,8 +77,8 @@ public class FoodListFragment extends Fragment {
 
     public static final String CHEF_ID = "Chef partnerId";
     public static final String CATEGORY_KEY = "Category";
-    public static final String MAKE_ORDER = "Make Order";
-    public static final String DO_NOT_ORDER = "Cancel";
+    public static final String MAKE_ORDER = "Ավելացնել";
+    public static final String DO_NOT_ORDER = "Չեղարկել";
     public static final String SOUP = "soup";
     public static final String SALAD = "salad";
     public static final String LUNCH = "lunch";
@@ -108,8 +108,9 @@ public class FoodListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        BasketFragment.deleteCache(getContext());
     }
 
     public void init() {
@@ -133,7 +134,7 @@ public class FoodListFragment extends Fragment {
                 switch (msg.what) {
                     case HANDLER_MESSAGE_0: {
                         if (mFoodList.size() == 0) {
-                            Toast.makeText(getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Դատարկ է", Toast.LENGTH_SHORT).show();
                         }
                         if (mFoodList.size() % (mPageValue * 10) == 0) {
                             mFoodListCall = mRetrofitInterface.getChefFoodList(mCurrentChefId, mPageValue, COUNT_VALUE);
@@ -149,7 +150,7 @@ public class FoodListFragment extends Fragment {
 
                     case HANDLER_MESSAGE_1: {
                         if (mFoodList.size() == 0) {
-                            Toast.makeText((AppCompatActivity) getContext(), "The list is currently empty.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText((AppCompatActivity) getContext(), "Դատարկ է", Toast.LENGTH_SHORT).show();
                         }
 
                         if (mFoodList.size() % (mPageValue * 10) == 0) {
@@ -267,7 +268,7 @@ public class FoodListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Result.NFood>> call, Throwable t) {
-                Toast.makeText(getContext(), "Food list was not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Չգտնվեց", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -297,7 +298,8 @@ public class FoodListFragment extends Fragment {
         alertDialog.setView(mDialogView);
         ((TextView) mDialogView.findViewById(R.id.descDialog)).setText(food.getDesc());
         itemPrice = (TextView) mDialogView.findViewById(R.id.itemPriceDialog);
-        itemPrice.setText("" + food.getPrice());
+        final String itemPriceStr=""+food.getPrice();
+        itemPrice.setText(itemPriceStr+" դրամ");
         //((TextView) mDialogView.findViewById(R.id.chefName)).setText(food.getChefName());
         Picasso.with(getContext()).load(food.getPicture()).resize(300, 200).centerCrop().into((ImageView) mDialogView.findViewById(R.id.foodImageDialog));
 
@@ -308,7 +310,7 @@ public class FoodListFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 String c = count.getText().toString();
-                insertToDB(food.getName(), c, itemPrice.getText().toString(), food.getPicture(), mCurrentChefId, mFood.getId());
+                insertToDB(food.getName(), c, itemPriceStr, food.getPicture(), mCurrentChefId, mFood.getId());
 
                 cart += Integer.parseInt(c);
                 MainActivity.updateMenuCount(cart);

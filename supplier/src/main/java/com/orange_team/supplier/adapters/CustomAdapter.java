@@ -14,7 +14,7 @@ import com.orange_team.supplier.fragments.OrderHistoryFragment;
 
 public class CustomAdapter extends FragmentPagerAdapter {
 
-    private String fragments [] = {"New Orders", "Current Order", "Order History"};
+    private String fragments [] = {"Նոր պատվերներ", "Ընթացիկ պատվեր", "Պատվերների պատմություն"};
     public static final int NEW_ORDER_FRAGMENT_POSITION = 0;
     public static final int CURRENT_ORDER_FRAGMENT_POSITION = 1;
     public static final int ORDER_HISTORY_FRAGMENT_POSITION = 2;

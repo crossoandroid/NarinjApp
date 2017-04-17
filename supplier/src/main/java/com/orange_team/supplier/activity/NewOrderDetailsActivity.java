@@ -1,14 +1,6 @@
 package com.orange_team.supplier.activity;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.orange_team.supplier.R;
 import com.orange_team.supplier.adapters.CustomAdapter;
 import com.orange_team.supplier.adapters.ListViewAdapter;
-import com.orange_team.supplier.adapters.NewOrderAdapter;
 import com.orange_team.supplier.fragments.NewOrderFragment;
 import com.orange_team.supplier.models.Body;
 
@@ -43,6 +35,7 @@ public class NewOrderDetailsActivity extends AppCompatActivity {
     List<String> mDishesName, mDishesCount;
     ListViewAdapter mAdapter;
     List<String> mKeyList;
+    public static boolean take = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,36 +61,41 @@ public class NewOrderDetailsActivity extends AppCompatActivity {
 
         mToTake = (Button) findViewById(R.id.ToTake);
 
-        mNewOrderName.setText(mBody.getName());
-        mNewOrderPhoneNumber.setText(mBody.getPhone());
-        mNewOrderAddress.setText(mBody.getLocation());
-        mNewOrderPrice.setText(mBody.getPrice() + " դրամ");
+        mNewOrderName.setText("Անուն։ " + mBody.getName());
+        mNewOrderPhoneNumber.setText("Հեռ․։ " + mBody.getPhone());
+        mNewOrderAddress.setText("Հասցե։ " + mBody.getLocation());
+        mNewOrderPrice.setText("Գումար։ " + mBody.getPrice() + " դրամ");
 
-        mToTake.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mKeyList = NewOrderFragment.getInstance();
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Orders").child(mBody.getKey());
-                mAuth = FirebaseAuth.getInstance();
+        if (take) {
+            mToTake.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    take = false;
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Orders").child(mBody.getKey());
+                    mAuth = FirebaseAuth.getInstance();
 
-                FirebaseUser user = mAuth.getInstance().getCurrentUser();
+                    FirebaseUser user = mAuth.getInstance().getCurrentUser();
 
-                if (user != null) {
-                    String id = user.getUid();
-                    myRef.child("Status").setValue("retrieved");
-                    myRef.child("SupplierId").setValue(id);
+                    if (user != null) {
+                        String id = user.getUid();
+                        myRef.child("Status").setValue("retrieved");
+                        myRef.child("SupplierId").setValue(id);
+                    }
+
+                    FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference newRef = newDatabase.getReference().getRef().child("Notifications").child("RetrievedNot");
+                    newRef.child("orderID").setValue(mBody.getKey());
+                    //newRef.setValue(mBody.getKey());
+                    newRef.child("status").setValue(0);
+
+                    mViewPager.setCurrentItem(CustomAdapter.CURRENT_ORDER_FRAGMENT_POSITION);
+                    finish();
                 }
-
-                FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference newRef = newDatabase.getReference().getRef().child("Notifications").child("RetrievedNot");
-                newRef.child("orderID").setValue(mBody.getKey());
-                //newRef.setValue(mBody.getKey());
-                newRef.child("status").setValue(0);
-
-                mViewPager.setCurrentItem(CustomAdapter.CURRENT_ORDER_FRAGMENT_POSITION);
-                finish();
-            }
-        });
+            });
+        }else {
+            Toast.makeText(NewOrderDetailsActivity.this, "Դուք արդեն ունեք ակտիվ պատվեր", Toast.LENGTH_SHORT).show();
+        }
     }
+
 }

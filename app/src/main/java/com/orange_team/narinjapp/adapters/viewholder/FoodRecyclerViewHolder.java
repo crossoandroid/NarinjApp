@@ -31,7 +31,7 @@ public class FoodRecyclerViewHolder extends RecyclerView.ViewHolder{
         mPlusBtn=(Button)itemView.findViewById(R.id.btn_plus);
         mMinusBtn=(Button)itemView.findViewById(R.id.btn_minus);
         mFoodName.setText(food.getName()+"");
-        mFoodPrice.setText(food.getPrice()+"");
+        mFoodPrice.setText(food.getPrice()+" դրամ");
         mFoodQty.setText(food.getCount()+"");
     }
 }

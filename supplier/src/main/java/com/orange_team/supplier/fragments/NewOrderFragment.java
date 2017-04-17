@@ -39,9 +39,6 @@ public class NewOrderFragment extends Fragment {
     private List<Body> mBodies;
     private ProgressBar mProgressBar;
     Body mBody;
-    static String key;
-    private static List<String> keyList;
-
 
     @Nullable
     @Override
@@ -60,7 +57,6 @@ public class NewOrderFragment extends Fragment {
     }
 
     private void init() {
-        keyList = new ArrayList<>();
         defineComponents();
         defineObject();
     }
@@ -73,19 +69,13 @@ public class NewOrderFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mBodies.clear();
-                keyList.clear();
                 for (DataSnapshot dd : dataSnapshot.getChildren()) {
                     if (dd != null) {
                         Body body1 = dd.getValue(Body.class);
                         body1.setKey(dd.getKey());
-                        key = dd.getKey();
-                        keyList.add(key);
-                        String status = body1.getStatus();
-
-                        if (TextUtils.equals(status,"")){
+                        if (TextUtils.equals(body1.getStatus(),"")) {
                             mBodies.add(body1);
                         }
-
                         mProgressBar.setVisibility(View.INVISIBLE);
                         mNewOrderAdapter = new NewOrderAdapter(getContext(), mBodies);
                         mNewOrderAdapter.setOnItemSelectedListener(mOnItemSelectedListener);
@@ -107,7 +97,6 @@ public class NewOrderFragment extends Fragment {
         mBody = new Body();
         mBodies = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
     }
 
     NewOrderAdapter.IOnItemSelectedListener mOnItemSelectedListener = new NewOrderAdapter.IOnItemSelectedListener() {
@@ -119,7 +108,4 @@ public class NewOrderFragment extends Fragment {
         }
     };
 
-    public static List<String> getInstance(){
-        return keyList;
-    }
 }

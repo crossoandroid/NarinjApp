@@ -3,6 +3,8 @@ package com.orange_team.narinjapp.fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,10 +29,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.orange_team.narinjapp.R;
+import com.orange_team.narinjapp.model.MapInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +50,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 
 public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final int PERMISSION_REQUEST_CODE = 5;
 
@@ -92,15 +102,6 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION
                             }, PERMISSION_REQUEST_CODE);
-
-
-
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
@@ -109,21 +110,18 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
         });
 
 
-
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        showSuppler();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        try {
-            getCurrentLocation();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -136,58 +134,64 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
 
     }
 
-    private void getCurrentLocation() throws IOException {
-        mMap.clear();
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (location != null) {
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-
-
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-                if (addresses != null) {
-                    Address returnedAddress = addresses.get(0);
-                    strReturnedAddress = new StringBuilder("Address:\n");
-                    for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                    }
-
-                    Log.v("address", strReturnedAddress.toString());
-                } else {
-                    Log.v("address", strReturnedAddress.toString());
-                }
-
-
-            moveMap();
-        }
-    }
+//    private void getCurrentLocation() throws IOException {
+//        mMap.clear();
+//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+//        if (location != null) {
+//            longitude = location.getLongitude();
+//            latitude = location.getLatitude();
+//
+//            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+//
+//
+//                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+//
+//                if (addresses != null) {
+//                    Address returnedAddress = addresses.get(0);
+//                    strReturnedAddress = new StringBuilder("Address:\n");
+//                    for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+//                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+//                    }
+//
+//                    Log.v("address", strReturnedAddress.toString());
+//                } else {
+//                    Log.v("address", strReturnedAddress.toString());
+//                }
+//
+//
+//            moveMap();
+//        }
+//    }
 
 
     private void moveMap() {
         LatLng latLng = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mapmarkericon",80,80)))
                 .position(latLng)
                 .draggable(true)
-                .title("Marker"));
+                .title("Supplier"));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
 
+    }
+
+    public Bitmap resizeMapIcons(String iconName, int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable","com.orange_team.narinjapp"));
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
     }
 
     @Override
@@ -202,43 +206,28 @@ public class MapFrag extends Fragment implements GoogleApiClient.ConnectionCallb
         super.onStop();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(mMap == null){
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    mMap = googleMap;
 
-                    LatLng india = new LatLng(0, 0);
-                    mMap.addMarker(new MarkerOptions().position(india).title("Marker"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(india));
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
+    private void showSuppler() {
+        FirebaseDatabase fbdb = FirebaseDatabase.getInstance();
+        DatabaseReference ref = fbdb.getReference().getRef().child("Tracking");
 
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{
-                                        Manifest.permission.ACCESS_FINE_LOCATION,
-                                        Manifest.permission.ACCESS_COARSE_LOCATION
-                                }, PERMISSION_REQUEST_CODE);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mMap.clear();
+                MapInfo mapInfo = dataSnapshot.getValue(MapInfo.class);
+                if (mapInfo.getShow() == 1) {
+                    longitude = mapInfo.getLongitude();
+                    latitude = mapInfo.getLatitude();
+                    moveMap();
 
-
-
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    mMap.setMyLocationEnabled(true);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
-
-
 }

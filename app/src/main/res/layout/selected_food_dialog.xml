@@ -52,7 +52,7 @@
                 android:layout_marginTop="@dimen/dialog_margins"
                 android:layout_marginRight="@dimen/dialog_margins"
                 android:layout_gravity=""
-                android:text="Price"
+                android:text="Գին"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/food_item_price_text_size"/>
 
@@ -73,7 +73,7 @@
             android:layout_marginBottom="@dimen/dialog_margins"
             android:layout_marginLeft="@dimen/dialog_margins"
             android:layout_below="@+id/itemPriceDialog"
-            android:text="Description"
+            android:text="Բաղադրություն"
             android:textColor="#ffffff"/>
 
     </LinearLayout>

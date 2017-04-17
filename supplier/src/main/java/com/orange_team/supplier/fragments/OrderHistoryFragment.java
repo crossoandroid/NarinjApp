@@ -53,7 +53,6 @@ public class OrderHistoryFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.orderHistoryRecycler);
         mProgressBar = (ProgressBar) view.findViewById(R.id.historyProgressBar);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
         mProgressBar.setVisibility(View.VISIBLE);
         init();
@@ -83,9 +82,7 @@ public class OrderHistoryFragment extends Fragment {
 
                         Body body1 = dd.getValue(Body.class);
                         body1.setKey(dd.getKey());
-                        String status = body1.getStatus();
-                        String userId = body1.getSupplierId();
-                        if (TextUtils.equals(status,"delivered") && TextUtils.equals(userId,mUserId)) {
+                        if (TextUtils.equals(body1.getStatus(),"delivered") && TextUtils.equals(body1.getSupplierId(),mUserId)) {
                             mBodyList.add(body1);
                             mProgressBar.setVisibility(View.GONE);
                         }

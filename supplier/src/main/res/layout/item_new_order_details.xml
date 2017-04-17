@@ -2,7 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:background="@drawable/shape">
 
     <TextView
         android:id="@+id/userNameNewOrderItems"
@@ -19,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/userNameNewOrderItems"
         android:layout_centerHorizontal="true"
-        android:gravity="left"
+        android:gravity="center"
         android:padding="10dp"
         android:text="Address"
         android:textSize="20sp" />

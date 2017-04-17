@@ -4,6 +4,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#faa734"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,33 +12,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.orange_team.supplier.activity.LoginActivity">
 
+
+   <ImageView
+       android:layout_marginTop="50dp"
+       android:layout_width="80dp"
+       android:layout_height="80dp"
+       android:src="@drawable/logonav"
+       android:layout_gravity="center"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center">
+        android:layout_marginTop="60dp"
+        android:orientation="vertical">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:inputType="textEmailAddress"
-            android:hint="Մուտքանուն"/>
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/password"
-            android:inputType="textPassword"
-            android:hint="Գաղտնաբառ"/>
+            android:layout_marginBottom="10dp"
+            android:hint="Մուտքանուն"
+            android:inputType="textEmailAddress"
+            android:textColor="#ffffff" />
 
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:hint="Գաղտնաբառ"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/signIn"
-            android:text="Մուտք"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Մուտք"
+            android:textColor="#ffffff"
+            android:theme="@style/AppTheme.Orange" />
     </LinearLayout>
 
 

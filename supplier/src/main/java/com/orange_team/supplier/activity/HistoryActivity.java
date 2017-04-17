@@ -37,10 +37,10 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void defineObject(){
-        mHistoryName.setText(mBody.getName());
-        mHistoryNumber.setText(mBody.getPhone());
-        mHistoryAddress.setText(mBody.getLocation());
-        mHistoryPrice.setText(mBody.getPrice() + " Դրամ");
+        mHistoryName.setText("Անուն։ " + mBody.getName());
+        mHistoryNumber.setText("Հեռ․։ " + mBody.getPhone());
+        mHistoryAddress.setText("Հասցե։ " + mBody.getLocation());
+        mHistoryPrice.setText("Գումար։ " + mBody.getPrice() + " դրամ");
         mHistoryAdapter = new ListViewAdapter(HistoryActivity.this,0, mBody.getDishOrders());
         mHistoryListView.setAdapter(mHistoryAdapter);
     }

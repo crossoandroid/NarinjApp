@@ -17,7 +17,7 @@ public class NetworkDialogManager {
 		if (status != null)
 			alertDialog.setIcon((status) ? R.mipmap.ic_launcher : R.mipmap.ic_launcher);
 
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		alertDialog.setButton("Ընդունել", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				finish();

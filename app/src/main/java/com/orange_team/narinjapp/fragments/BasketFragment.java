@@ -1,5 +1,6 @@
 package com.orange_team.narinjapp.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import com.orange_team.narinjapp.utils.CartPreferences;
 import com.orange_team.narinjapp.utils.InternetConnectionDetector;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +67,13 @@ public class BasketFragment extends Fragment {
     }
 
 
-    private void init(View view) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        deleteCache(getContext());
+    }
 
+    private void init(View view) {
         mFoodList = new ArrayList<>();
         mBasketRecyclerView = (RecyclerView) view.findViewById(R.id.basket_recycler);
         ItemTouchHelper itemTouch=new ItemTouchHelper(simpleCallback);
@@ -208,6 +215,27 @@ public class BasketFragment extends Fragment {
     public static List<DishOrders> listInstance()
     {
         return mDishOrders;
+    }
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else
+            return dir!= null && dir.isFile() && dir.delete();
     }
 }
 

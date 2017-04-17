@@ -23,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -31,11 +30,9 @@ import com.orange_team.narinjapp.R;
 import com.orange_team.narinjapp.constants.Constants;
 import com.orange_team.narinjapp.fragments.AboutUsFragment;
 import com.orange_team.narinjapp.fragments.BasketFragment;
-import com.orange_team.narinjapp.fragments.FoodListFragment;
 import com.orange_team.narinjapp.fragments.HelpPageFragment;
 import com.orange_team.narinjapp.fragments.MainFragment;
 import com.orange_team.narinjapp.fragments.MapFrag;
-import com.orange_team.narinjapp.fragments.OrdersDetailsFrag;
 import com.orange_team.narinjapp.fragments.WhyUsePageFragment;
 import com.orange_team.narinjapp.services.FirebaseNotificationService;
 
@@ -182,10 +179,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.help) {
             HelpPageFragment helpPageFragment = new HelpPageFragment();
             fragmentTransaction.replace(R.id.fragment_main, helpPageFragment);
-        } else if (id == R.id.order_details) {
-            OrdersDetailsFrag ordersDetailsFrag = new OrdersDetailsFrag();
-            fragmentTransaction.replace(R.id.fragment_main,ordersDetailsFrag);
-
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

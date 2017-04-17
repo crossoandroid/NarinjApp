@@ -1,13 +1,16 @@
 package com.orange_team.supplier.fragments;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +52,7 @@ public class CurrentOrderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private List<String> mKeyList;
+
     String ss="";
     @Nullable
     @Override
@@ -74,7 +77,6 @@ public class CurrentOrderFragment extends Fragment {
     }
 
     private void init() {
-        mKeyList = NewOrderFragment.getInstance();
         defineObject();
         defineComponents();
     }
@@ -129,7 +131,7 @@ public class CurrentOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendId();
-                getActivity().startService(new Intent(getActivity(), LocationService.class));
+               // getLocation();
             }
         });
     }
@@ -156,9 +158,6 @@ public class CurrentOrderFragment extends Fragment {
 
     public void save() {
         ((ViewPager) getActivity().findViewById(R.id.viewPager)).setCurrentItem(CustomAdapter.ORDER_HISTORY_FRAGMENT_POSITION);
-
-
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Orders").child(body2.getKey());
         mAuth = FirebaseAuth.getInstance();
@@ -214,5 +213,11 @@ public class CurrentOrderFragment extends Fragment {
         });
         mRef.child("orderID").setValue(ss);
         mRef.child("status").setValue(0);
+    }
+
+    public void getLocation()
+    {
+        MainActivity mainActivity=new MainActivity();
+        mainActivity.sendLocation();
     }
 }

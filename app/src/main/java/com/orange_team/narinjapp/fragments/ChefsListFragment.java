@@ -48,6 +48,12 @@ public class ChefsListFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        BasketFragment.deleteCache(getContext());
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         init();
     }

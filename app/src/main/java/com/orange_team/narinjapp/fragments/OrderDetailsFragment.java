@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.orange_team.narinjapp.model.Body;
 import com.orange_team.narinjapp.model.ItemRequest;
 import com.orange_team.narinjapp.utils.InternetConnectionDetector;
 import com.orange_team.narinjapp.utils.NetworkDialogManager;
+import com.orange_team.narinjapp.utils.OrderDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +119,11 @@ public class OrderDetailsFragment extends Fragment {
                     sendPost();
                     orderKey=ref.getKey();
                     Log.d("TAGTAGTAG",""+orderKey);
+                    Fragment fragment=new OrderDetailsFragment();
+                    removeAddFragment(fragment);
+                    OrderDialogManager orderDialogManager=new OrderDialogManager();
+
+                    orderDialogManager.showAlertDialog(getContext(),getContext().getString(R.string.order_thanks_title),getContext().getString(R.string.order_thanks_text));
                 }
                 else
                 {
@@ -130,13 +137,10 @@ public class OrderDetailsFragment extends Fragment {
 
     public void sendPost()
     {
-        final int count;
         bodies=new ArrayList<>();
         fbdb=FirebaseDatabase.getInstance();
         //ref = fbdb.getReference();
         ref=fbdb.getReference().child("Orders").push();
-
-
 
         body =new Body();
         dishOrders=BasketFragment.listInstance();
@@ -163,7 +167,7 @@ public class OrderDetailsFragment extends Fragment {
         call.enqueue(new Callback<ItemRequest>() {
             @Override
             public void onResponse(Call<ItemRequest> call, Response<ItemRequest> response) {
-                Toast.makeText(getContext(),response.code()+""+response.message(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),response.code()+""+response.message(),Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -196,7 +200,7 @@ public class OrderDetailsFragment extends Fragment {
         String surname = mInputSurname.getText().toString().trim();
 
         if (surname.isEmpty() || !isValidSurname(surname)) {
-            mInputLayoutComment.setError(getString(R.string.err_msg_email));
+            mInputLayoutComment.setError(getString(R.string.err_msg_name));
             requestFocus(mInputSurname);
             return false;
         } else {
@@ -208,7 +212,7 @@ public class OrderDetailsFragment extends Fragment {
 
     private boolean validatePhoneNumber() {
         if (mInputNumber.getText().toString().trim().isEmpty()) {
-            mInputLayoutNumber.setError(getString(R.string.err_msg_password));
+            mInputLayoutNumber.setError(getString(R.string.err_msg_name));
             requestFocus(mInputNumber);
             return false;
         } else {
@@ -220,7 +224,7 @@ public class OrderDetailsFragment extends Fragment {
 
     private boolean validateAddress() {
         if (mInputNumber.getText().toString().trim().isEmpty()) {
-            mInputLayoutAddress.setError(getString(R.string.address_error));
+            mInputLayoutAddress.setError(getString(R.string.err_msg_name));
             requestFocus(mInputNumber);
             return false;
         } else {
@@ -238,5 +242,18 @@ public class OrderDetailsFragment extends Fragment {
         if (view.requestFocus()) {
             ((Activity) getContext()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    private void removeAddFragment(Fragment fragment)
+    {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment mainFragment = new MainFragment();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.add(R.id.fragment_main,mainFragment);
+        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+            fragmentManager.popBackStack();
+        }
+        fragmentTransaction.commit();
     }
 }
