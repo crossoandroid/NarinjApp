@@ -21,13 +21,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "MyLog";
     private static final int REQUEST_CODE_PERMISSION = 2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
-    LocationService gps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         try {
             if (ActivityCompat.checkSelfPermission(this, mPermission)
                     != MockPackageManager.PERMISSION_GRANTED) {
@@ -35,12 +34,10 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{mPermission},
                         REQUEST_CODE_PERMISSION);
 
-                // If any permission above not allowed by user, this condition will execute every time, else your else part will work
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         init();
 
     }
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onDestroy");
     }
 
-    public void sendLocation() {
+   /* public void sendLocation() {
         // create class object
         gps = new LocationService(MainActivity.this);
 
@@ -90,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Your Location is - \nLat: "
                     + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            //gps.showSettingsAlert();
-/*            Toast.makeText(this, "Your Location is - \nLat: "
-                    + 0.0 + "\nLong: " + 0.0, Toast.LENGTH_LONG).show();*/
+            gps.showSettingsAlert();
         }
-    }
+    }*/
 }

@@ -43,7 +43,7 @@ import java.util.List;
 public class CurrentOrderFragment extends Fragment {
 
     private TextView mUserNameTV, mPhoneTV, mAddressTV, mNoCurrentJobsTV, mTotalPrice;
-    private Button mDeliveredBtn,mWayButton;
+    private Button mDeliveredBtn, mWayButton;
     private List<Body> bodies;
     private ListViewAdapter mNewOrderAdapter;
     private Body body1, body2;
@@ -52,8 +52,9 @@ public class CurrentOrderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    LocationService gps;
+    String ss = "";
 
-    String ss="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,22 +98,22 @@ public class CurrentOrderFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bodies.clear();
-                    for (DataSnapshot dd : dataSnapshot.getChildren()) {
-                        body1 = dd.getValue(Body.class);
-                        body1.setKey(dd.getKey());
-                        String status = body1.getStatus();
-                        String userId = body1.getSupplierId();
-                        if (TextUtils.equals(status,"retrieved") && TextUtils.equals(userId,mUserId)) {
-                            mDeliveredBtn.setVisibility(View.VISIBLE);
-                            mWayButton.setVisibility(View.VISIBLE);
-                            body2 = body1;
-                            mNewOrderAdapter = new ListViewAdapter(getContext(), 0, body2.getDishOrders());
-                            mCurrentOrdersList.setAdapter(mNewOrderAdapter);
-                            mUserNameTV.setText(body2.getName());
-                            mAddressTV.setText(body2.getLocation());
-                            mPhoneTV.setText(body2.getPhone());
-                            mTotalPrice.setText(body2.getPrice() + " դրամ");
-                        }
+                for (DataSnapshot dd : dataSnapshot.getChildren()) {
+                    body1 = dd.getValue(Body.class);
+                    body1.setKey(dd.getKey());
+                    String status = body1.getStatus();
+                    String userId = body1.getSupplierId();
+                    if (TextUtils.equals(status, "retrieved") && TextUtils.equals(userId, mUserId)) {
+                        mDeliveredBtn.setVisibility(View.VISIBLE);
+                        mWayButton.setVisibility(View.VISIBLE);
+                        body2 = body1;
+                        mNewOrderAdapter = new ListViewAdapter(getContext(), 0, body2.getDishOrders());
+                        mCurrentOrdersList.setAdapter(mNewOrderAdapter);
+                        mUserNameTV.setText(body2.getName());
+                        mAddressTV.setText(body2.getLocation());
+                        mPhoneTV.setText(body2.getPhone());
+                        mTotalPrice.setText(body2.getPrice() + " դրամ");
+                    }
                 }
             }
 
@@ -131,7 +132,7 @@ public class CurrentOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendId();
-               // getLocation();
+                sendLocation();
             }
         });
     }
@@ -146,6 +147,7 @@ public class CurrentOrderFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     save();
+                    stopGps();
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
@@ -179,7 +181,7 @@ public class CurrentOrderFragment extends Fragment {
         mDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ss=(String)dataSnapshot.child("orderID").getValue();
+                ss = (String) dataSnapshot.child("orderID").getValue();
             }
 
             @Override
@@ -191,9 +193,11 @@ public class CurrentOrderFragment extends Fragment {
         nRef.child("orderID").setValue(ss);
         nRef.child("status").setValue(0);
 
+
     }
 
-    public void sendId(){
+    public void sendId() {
+        final String[] sss = {""};
         FirebaseDatabase newDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = newDatabase.getReference().getRef().child("Notifications").child("SupplierGoNot");
 
@@ -203,7 +207,7 @@ public class CurrentOrderFragment extends Fragment {
         mDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ss=(String)dataSnapshot.child("orderID").getValue();
+                sss[0] = (String) dataSnapshot.child("orderID").getValue();
             }
 
             @Override
@@ -211,13 +215,44 @@ public class CurrentOrderFragment extends Fragment {
 
             }
         });
-        mRef.child("orderID").setValue(ss);
+        mRef.child("orderID").setValue(sss[0]);
         mRef.child("status").setValue(0);
+
     }
 
-    public void getLocation()
-    {
-        MainActivity mainActivity=new MainActivity();
-        mainActivity.sendLocation();
+    public void sendLocation() {
+
+        double latitude;
+        double longitude;
+        gps = new LocationService(getContext());
+
+        if (gps.canGetLocation()) {
+
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+
+            Log.d("MyLog", "Your Location is - \nLat: "
+                    + latitude + "\nLong: " + longitude);
+
+
+            FirebaseDatabase mData = FirebaseDatabase.getInstance();
+            DatabaseReference mDR = mData.getReference().getRef().child("Tracking");
+            mDR.child("show").setValue(1);
+            mDR.child("latitude").setValue(latitude);
+            mDR.child("longitude").setValue(longitude);
+        } else {
+            gps.showSettingsAlert();
+        }
+
+
+    }
+
+    private void stopGps() {
+        gps.stopUsingGPS();
+        FirebaseDatabase mDataLoc = FirebaseDatabase.getInstance();
+        DatabaseReference mDRLoc = mDataLoc.getReference().getRef().child("Tracking");
+        mDRLoc.child("show").setValue(0);
+        mDRLoc.child("latitude").setValue(0);
+        mDRLoc.child("longitude").setValue(0);
     }
 }
